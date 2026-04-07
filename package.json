@@ -1,0 +1,29 @@
+{
+  "name": "fatec_projetointegrador3",
+  "version": "1.0.0",
+  "description": "<br>",
+  "main": "app/app.js",
+  "scripts": {
+    "start": "node app/app.js",
+    "start:app": "node app/app.js",
+    "start:ms:ponto-coleta": "node microsservicos/ponto-coleta/app.js",
+    "start:ms:autenticacao": "node microsservicos/autenticacao/app.js",
+    "start:ms:relatorio-animais": "node microsservicos/relatorio-animais/app.js",
+    "start:ms:relatorio-tampinhas": "node microsservicos/relatorio-tampinhas/app.js",
+    "test": "echo \"No tests configured yet\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaianeKCamargo/FATEC_ProjetoIntegrador3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "bugs": {
+    "url": "https://github.com/DaianeKCamargo/FATEC_ProjetoIntegrador3/issues"
+  },
+  "homepage": "https://github.com/DaianeKCamargo/FATEC_ProjetoIntegrador3#readme"
+}
