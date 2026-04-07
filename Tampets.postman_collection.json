@@ -1,0 +1,449 @@
+{
+  "info": {
+    "name": "Tampets API Collection",
+    "description": "Colecao Postman da API principal e microservicos do projeto Tampets.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "f4f8b1d7-2a5c-4d95-9230-0a9e2cfbd141"
+  },
+  "variable": [
+    { "key": "app", "value": "http://localhost:5500" },
+    { "key": "msPontoColeta", "value": "http://localhost:5501" },
+    { "key": "msAutenticacao", "value": "http://localhost:5502" },
+    { "key": "msRelatorioAnimais", "value": "http://localhost:5503" },
+    { "key": "msRelatorioTampinhas", "value": "http://localhost:5504" }
+  ],
+  "item": [
+    {
+      "name": "Healthchecks",
+      "item": [
+        {
+          "name": "APP - Health",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/health"
+          }
+        },
+        {
+          "name": "MS Ponto Coleta - Health",
+          "request": {
+            "method": "GET",
+            "url": "{{msPontoColeta}}/health"
+          }
+        },
+        {
+          "name": "MS Autenticacao - Health",
+          "request": {
+            "method": "GET",
+            "url": "{{msAutenticacao}}/health"
+          }
+        },
+        {
+          "name": "MS Relatorio Animais - Health",
+          "request": {
+            "method": "GET",
+            "url": "{{msRelatorioAnimais}}/health"
+          }
+        },
+        {
+          "name": "MS Relatorio Tampinhas - Health",
+          "request": {
+            "method": "GET",
+            "url": "{{msRelatorioTampinhas}}/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "App Principal - Usuarios",
+      "item": [
+        {
+          "name": "Listar Usuarios",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/usuarios"
+          }
+        },
+        {
+          "name": "Criar Usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Daiane\",\n  \"email\": \"daiane@email.com\"\n}"
+            },
+            "url": "{{app}}/api/usuarios"
+          }
+        },
+        {
+          "name": "Buscar Usuario por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/usuarios/1"
+          }
+        },
+        {
+          "name": "Atualizar Usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Daiane Atualizada\",\n  \"email\": \"daiane.atualizada@email.com\"\n}"
+            },
+            "url": "{{app}}/api/usuarios/1"
+          }
+        },
+        {
+          "name": "Remover Usuario",
+          "request": {
+            "method": "DELETE",
+            "url": "{{app}}/api/usuarios/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "App Principal - Pontos de Coleta",
+      "item": [
+        {
+          "name": "Listar Pontos de Coleta",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/pontos-coleta"
+          }
+        },
+        {
+          "name": "Criar Ponto de Coleta",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeEmpresa\": \"Empresa Verde\",\n  \"endereco\": \"Rua das Flores, 100\",\n  \"aprovado\": true\n}"
+            },
+            "url": "{{app}}/api/pontos-coleta"
+          }
+        },
+        {
+          "name": "Buscar Ponto de Coleta por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/pontos-coleta/1"
+          }
+        },
+        {
+          "name": "Atualizar Ponto de Coleta",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeEmpresa\": \"Empresa Verde Atualizada\",\n  \"endereco\": \"Rua das Flores, 120\",\n  \"aprovado\": true\n}"
+            },
+            "url": "{{app}}/api/pontos-coleta/1"
+          }
+        },
+        {
+          "name": "Remover Ponto de Coleta",
+          "request": {
+            "method": "DELETE",
+            "url": "{{app}}/api/pontos-coleta/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "App Principal - Noticias",
+      "item": [
+        {
+          "name": "Listar Noticias",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/noticias"
+          }
+        },
+        {
+          "name": "Criar Noticia",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Nova campanha de castracao\",\n  \"link\": \"https://exemplo.com/noticia-campanha\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia.jpg\"\n}"
+            },
+            "url": "{{app}}/api/noticias"
+          }
+        },
+        {
+          "name": "Buscar Noticia por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/noticias/1"
+          }
+        },
+        {
+          "name": "Atualizar Noticia",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Campanha atualizada\",\n  \"link\": \"https://exemplo.com/noticia-campanha-atualizada\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia-atualizada.jpg\"\n}"
+            },
+            "url": "{{app}}/api/noticias/1"
+          }
+        },
+        {
+          "name": "Remover Noticia",
+          "request": {
+            "method": "DELETE",
+            "url": "{{app}}/api/noticias/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "MS Ponto Coleta",
+      "item": [
+        {
+          "name": "Listar Pontos de Coleta",
+          "request": {
+            "method": "GET",
+            "url": "{{msPontoColeta}}/api/pontos-coleta"
+          }
+        },
+        {
+          "name": "Criar Ponto de Coleta",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeEmpresa\": \"Coleta Centro\",\n  \"endereco\": \"Av. Central, 500\",\n  \"telefone\": \"11999990000\",\n  \"status\": \"pendente\"\n}"
+            },
+            "url": "{{msPontoColeta}}/api/pontos-coleta"
+          }
+        },
+        {
+          "name": "Buscar Ponto de Coleta por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{msPontoColeta}}/api/pontos-coleta/1"
+          }
+        },
+        {
+          "name": "Atualizar Ponto de Coleta",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"aprovado\"\n}"
+            },
+            "url": "{{msPontoColeta}}/api/pontos-coleta/1"
+          }
+        },
+        {
+          "name": "Remover Ponto de Coleta",
+          "request": {
+            "method": "DELETE",
+            "url": "{{msPontoColeta}}/api/pontos-coleta/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "MS Autenticacao",
+      "item": [
+        {
+          "name": "Listar Credenciais",
+          "request": {
+            "method": "GET",
+            "url": "{{msAutenticacao}}/api/credenciais"
+          }
+        },
+        {
+          "name": "Criar Credencial",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario\": \"admin\",\n  \"senha\": \"123456\",\n  \"ativo\": true\n}"
+            },
+            "url": "{{msAutenticacao}}/api/credenciais"
+          }
+        },
+        {
+          "name": "Buscar Credencial por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{msAutenticacao}}/api/credenciais/1"
+          }
+        },
+        {
+          "name": "Atualizar Credencial",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senha\": \"novaSenha123\"\n}"
+            },
+            "url": "{{msAutenticacao}}/api/credenciais/1"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuario\": \"admin\",\n  \"senha\": \"novaSenha123\"\n}"
+            },
+            "url": "{{msAutenticacao}}/api/credenciais/login"
+          }
+        },
+        {
+          "name": "Remover Credencial",
+          "request": {
+            "method": "DELETE",
+            "url": "{{msAutenticacao}}/api/credenciais/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "MS Relatorio Animais",
+      "item": [
+        {
+          "name": "Listar Relatorios Animais",
+          "request": {
+            "method": "GET",
+            "url": "{{msRelatorioAnimais}}/api/relatorios-animais"
+          }
+        },
+        {
+          "name": "Criar Relatorio Animal",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": \"2026-04-07\",\n  \"tipoAnimal\": \"gato\",\n  \"quantidade\": 3\n}"
+            },
+            "url": "{{msRelatorioAnimais}}/api/relatorios-animais"
+          }
+        },
+        {
+          "name": "Buscar Relatorio Animal por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/1"
+          }
+        },
+        {
+          "name": "Atualizar Relatorio Animal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipoAnimal\": \"cachorro\",\n  \"quantidade\": 4\n}"
+            },
+            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/1"
+          }
+        },
+        {
+          "name": "Remover Relatorio Animal",
+          "request": {
+            "method": "DELETE",
+            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "MS Relatorio Tampinhas",
+      "item": [
+        {
+          "name": "Listar Relatorios Tampinhas",
+          "request": {
+            "method": "GET",
+            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas"
+          }
+        },
+        {
+          "name": "Criar Relatorio Tampinhas",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": \"2026-04-07\",\n  \"quantidadeKg\": 12.5\n}"
+            },
+            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas"
+          }
+        },
+        {
+          "name": "Buscar Relatorio Tampinhas por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/1"
+          }
+        },
+        {
+          "name": "Atualizar Relatorio Tampinhas",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantidadeKg\": 15\n}"
+            },
+            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/1"
+          }
+        },
+        {
+          "name": "Remover Relatorio Tampinhas",
+          "request": {
+            "method": "DELETE",
+            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/1"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+###
+# Colecao HTTP - FATEC Projeto Integrador 3
+# Execute os servicos antes dos testes:
+# npm run start:app
+# npm run start:ms:ponto-coleta
+# npm run start:ms:autenticacao
+# npm run start:ms:relatorio-animais
+# npm run start:ms:relatorio-tampinhas
+
+@app = http://localhost:5500
+@msPontoColeta = http://localhost:5501
+@msAutenticacao = http://localhost:5502
+@msRelatorioAnimais = http://localhost:5503
+@msRelatorioTampinhas = http://localhost:5504
+
+###
+# HEALTHCHECKS
+GET {{app}}/health
+
+###
+GET {{msPontoColeta}}/health
+
+###
+GET {{msAutenticacao}}/health
+
+###
+GET {{msRelatorioAnimais}}/health
+
+###
+GET {{msRelatorioTampinhas}}/health
+
+###
+# APP PRINCIPAL - USUARIOS
+GET {{app}}/api/usuarios
+
+###
+POST {{app}}/api/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Daiane",
+  "email": "daiane@email.com"
+}
+
+###
+GET {{app}}/api/usuarios/1
+
+###
+PUT {{app}}/api/usuarios/1
+Content-Type: application/json
+
+{
+  "nome": "Daiane Atualizada",
+  "email": "daiane.atualizada@email.com"
+}
+
+###
+DELETE {{app}}/api/usuarios/1
+
+###
+# APP PRINCIPAL - PONTOS DE COLETA
+GET {{app}}/api/pontos-coleta
+
+###
+POST {{app}}/api/pontos-coleta
+Content-Type: application/json
+
+{
+  "nomeEmpresa": "Empresa Verde",
+  "endereco": "Rua das Flores, 100",
+  "aprovado": true
+}
+
+###
+GET {{app}}/api/pontos-coleta/1
+
+###
+PUT {{app}}/api/pontos-coleta/1
+Content-Type: application/json
+
+{
+  "nomeEmpresa": "Empresa Verde Atualizada",
+  "endereco": "Rua das Flores, 120",
+  "aprovado": true
+}
+
+###
+DELETE {{app}}/api/pontos-coleta/1
+
+###
+# APP PRINCIPAL - NOTICIAS
+GET {{app}}/api/noticias
+
+###
+POST {{app}}/api/noticias
+Content-Type: application/json
+
+{
+  "titulo": "Nova campanha de castracao",
+  "link": "https://exemplo.com/noticia-campanha",
+  "imagem": "https://exemplo.com/imagens/noticia.jpg"
+}
+
+###
+GET {{app}}/api/noticias/1
+
+###
+PUT {{app}}/api/noticias/1
+Content-Type: application/json
+
+{
+  "titulo": "Campanha atualizada",
+  "link": "https://exemplo.com/noticia-campanha-atualizada",
+  "imagem": "https://exemplo.com/imagens/noticia-atualizada.jpg"
+}
+
+###
+DELETE {{app}}/api/noticias/1
+
+###
+# MICROSERVICO - PONTO DE COLETA
+GET {{msPontoColeta}}/api/pontos-coleta
+
+###
+POST {{msPontoColeta}}/api/pontos-coleta
+Content-Type: application/json
+
+{
+  "nomeEmpresa": "Coleta Centro",
+  "endereco": "Av. Central, 500",
+  "telefone": "11999990000",
+  "status": "pendente"
+}
+
+###
+GET {{msPontoColeta}}/api/pontos-coleta/1
+
+###
+PUT {{msPontoColeta}}/api/pontos-coleta/1
+Content-Type: application/json
+
+{
+  "status": "aprovado"
+}
+
+###
+DELETE {{msPontoColeta}}/api/pontos-coleta/1
+
+###
+# MICROSERVICO - AUTENTICACAO
+GET {{msAutenticacao}}/api/credenciais
+
+###
+POST {{msAutenticacao}}/api/credenciais
+Content-Type: application/json
+
+{
+  "usuario": "admin",
+  "senha": "123456",
+  "ativo": true
+}
+
+###
+GET {{msAutenticacao}}/api/credenciais/1
+
+###
+PUT {{msAutenticacao}}/api/credenciais/1
+Content-Type: application/json
+
+{
+  "senha": "novaSenha123"
+}
+
+###
+POST {{msAutenticacao}}/api/credenciais/login
+Content-Type: application/json
+
+{
+  "usuario": "admin",
+  "senha": "novaSenha123"
+}
+
+###
+DELETE {{msAutenticacao}}/api/credenciais/1
+
+###
+# MICROSERVICO - RELATORIO DE ANIMAIS
+GET {{msRelatorioAnimais}}/api/relatorios-animais
+
+###
+POST {{msRelatorioAnimais}}/api/relatorios-animais
+Content-Type: application/json
+
+{
+  "data": "2026-04-07",
+  "tipoAnimal": "gato",
+  "quantidade": 3
+}
+
+###
+GET {{msRelatorioAnimais}}/api/relatorios-animais/1
+
+###
+PUT {{msRelatorioAnimais}}/api/relatorios-animais/1
+Content-Type: application/json
+
+{
+  "tipoAnimal": "cachorro",
+  "quantidade": 4
+}
+
+###
+DELETE {{msRelatorioAnimais}}/api/relatorios-animais/1
+
+###
+# MICROSERVICO - RELATORIO DE TAMPINHAS
+GET {{msRelatorioTampinhas}}/api/relatorios-tampinhas
+
+###
+POST {{msRelatorioTampinhas}}/api/relatorios-tampinhas
+Content-Type: application/json
+
+{
+  "data": "2026-04-07",
+  "quantidadeKg": 12.5
+}
+
+###
+GET {{msRelatorioTampinhas}}/api/relatorios-tampinhas/1
+
+###
+PUT {{msRelatorioTampinhas}}/api/relatorios-tampinhas/1
+Content-Type: application/json
+
+{
+  "quantidadeKg": 15
+}
+
+###
+DELETE {{msRelatorioTampinhas}}/api/relatorios-tampinhas/1
