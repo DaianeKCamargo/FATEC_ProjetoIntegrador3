@@ -51,7 +51,7 @@ O sistema será dividido em:
 
 ## Documentação do Projeto
 
-- Link do confluence: [Adicionar]
+- Link do [Confluence](https://projetointegradortampets.atlassian.net/wiki/spaces/PIT/overview)
 - Link do Jira: [Adicionar]
 - Link para o documento de requisitos: [Adicionar]
 
@@ -59,9 +59,8 @@ O sistema será dividido em:
 
 ## Sprints
 
-| nº Sprint |      objetivo     | Data Início | Data Término |
-| _________ | __________________| ___________ | ____________ |
-
+| Nº Sprint |      Objetivo     | Data Início | Data Término |
+|---|---|---|---|
 | 1         | Back-end Parte 1  | 01/04/2026  | 22/04/2026   |
 
 
