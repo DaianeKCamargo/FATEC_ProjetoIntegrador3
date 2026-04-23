@@ -10,7 +10,7 @@ Nícolas de Oliveira Dias;
 Nicole Janine Bolzani Oliveira;
 Sabrina Sant'Ana da Silva Alves;
 
----
+
 
 ## Visão Geral
 
@@ -20,7 +20,6 @@ A solução foi projetada para resolver um problema real de negócio, utilizando
 
 O projeto beneficente Tampets surgiu em 2019 pela idealizadora Lia, com o objetivo de diminuir a quantidade de animais nas ruas, focando na redução da reprodução de cães e gatos por meio da castração. 
 
----
 
 ## Problema de Negócio
 
@@ -30,7 +29,6 @@ Projetos beneficentes, como o Tampets, buscam arrecadar recursos para custear ca
 
 Dessa forma, surge a necessidade de uma solução digital que centralize essas informações, otimize a gestão do projeto e aumente a transparência das ações realizadas.
 
----
 
 ## Solução Proposta
 
@@ -40,7 +38,6 @@ No que se refere às tecnologias e à arquitetura adotada, o sistema será estru
 
 Como diferencial, a solução promove a integração entre a arrecadação de recursos e o impacto social gerado, oferecendo também um sistema de notificações para usuários e administradores, além de um controle administrativo completo que garante maior eficiência na gestão do projeto.
 
----
 
 ## Arquitetura da Solução
 
@@ -51,7 +48,6 @@ O sistema será dividido em:
 - Backend/API: regras de negócio e validações
 - Banco de Dados: armazenamento das informações
 
----
 
 ## Documentação do Projeto
 
@@ -59,16 +55,15 @@ O sistema será dividido em:
 - Link do Jira: [Adicionar]
 - Link para o documento de requisitos: [Adicionar]
 
----
+
 
 ## Sprints
 
-| nº Sprint | objetivo  | Data Início | Data Término |
-| _________ | _________ | ___________ | ____________ |
+| nº Sprint |      objetivo     | Data Início | Data Término |
+| _________ | __________________| ___________ | ____________ |
 
-| 1         | [Definir] | [Definir]   | [Definir]    |
+| 1         | Back-end Parte 1  | 01/04/2026  | 22/04/2026   |
 
----
 
 ## Técnologias Utilizadas
 
@@ -76,11 +71,11 @@ O sistema será dividido em:
 - Frontend: [A definir]
 - Backend: [A definir]
 - Banco de Dados: [A definir]
-- Infraestrutura: Cloud (ex: Vercel)
+- Infraestrutura: Vercel
 - Versionamento: Git / GitHub
-- Gestão: [Jira / Trello / outro]
+- Gestão: Confluence, Jira
 
----
+
 
 ## Funcionalidades
 
@@ -94,7 +89,6 @@ F7: Aprovação/reprovação de cadastros pelo administrador;
 F8: Notificações para admin e usuários;
 F9: Cadastro de notícias (imagem, título e link);
 
----
 
 ## Resultados Esperados
 
@@ -104,23 +98,23 @@ F9: Cadastro de notícias (imagem, título e link);
 - Facilidade na gestão de pontos de coleta;
 - Base escalável para evolução futura do sistema;
 
----
+
 
 ## Como Executar o Produto
 - [Ex: Node.js / Python / Java instalado]
 - Gerenciador de pacotes (npm, pip, etc.)
 
----
+
 ## Instalação
 
-# Clonar o repositório
-git clone [URL_DO_REPOSITORIO]
+### Clonar o repositório
+<code>git clone FATEC_ProjetoIntegrador3</code>
 
-# Acessar a pasta do projeto
-cd [NOME_DO_PROJETO]
+### Acessar a pasta do projeto
+<code>cd FATEC_ProjetoIntegrador3</code>
 
-# Instalar dependências
-npm install
+### Instalar dependências
+<code>npm install</code>
 
-# Rodar aplicação
-npm start
+### Rodar aplicação
+<code>npm start</code>
