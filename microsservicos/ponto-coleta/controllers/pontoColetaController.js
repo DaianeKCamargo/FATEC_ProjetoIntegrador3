@@ -1,52 +1,84 @@
-const model = require("../models/pontoColetaModel");
+const { ZodError } = require("zod");
+const service = require("../services/pontoColetaService");
 
-function listar(req, res) {
-    return res.status(200).json(model.listar());
-}
-
-function buscarPorId(req, res) {
-    const id = Number(req.params.id);
-    const item = model.buscarPorId(id);
-    if (!item) {
-        return res.status(404).json({ message: "Ponto de coleta nao encontrado" });
-    }
-    return res.status(200).json(item);
-}
-
-function criar(req, res) {
-    const { nomeEmpresa, endereco } = req.body;
-    if (!nomeEmpresa || !endereco) {
-        return res
-            .status(400)
-            .json({ message: "nomeEmpresa e endereco sao obrigatorios" });
+function handleError(res, error) {
+    if (error instanceof ZodError) {
+        return res.status(400).json({
+            message: "Dados invalidos",
+            errors: error.errors.map((item) => ({
+                field: item.path.join("."),
+                message: item.message,
+            })),
+        });
     }
 
-    const novo = model.criar(req.body);
-    return res.status(201).json(novo);
+    if (error.statusCode) {
+        return res.status(error.statusCode).json({ message: error.message });
+    }
+
+    console.error("Erro no pontoColetaController:", error);
+    return res.status(500).json({ message: "Erro interno do servidor" });
 }
 
-function atualizar(req, res) {
-    const id = Number(req.params.id);
-    const atualizado = model.atualizar(id, req.body);
-    if (!atualizado) {
-        return res.status(404).json({ message: "Ponto de coleta nao encontrado" });
+async function criarSolicitacao(req, res) {
+    try {
+        const created = await service.criarSolicitacao(req.body);
+        return res.status(201).json(created);
+    } catch (error) {
+        return handleError(res, error);
     }
-    return res.status(200).json(atualizado);
 }
 
-function remover(req, res) {
-    const id = Number(req.params.id);
-    const removido = model.remover(id);
-    if (!removido) {
-        return res.status(404).json({ message: "Ponto de coleta nao encontrado" });
+async function listarSolicitacoes(req, res) {
+    try {
+        const items = await service.listarSolicitacoes(req.query.status);
+        return res.status(200).json(items);
+    } catch (error) {
+        return handleError(res, error);
     }
-    return res.status(204).send();
+}
+
+async function buscarSolicitacaoPorId(req, res) {
+    try {
+        const item = await service.buscarSolicitacaoPorId(req.params.id);
+        return res.status(200).json(item);
+    } catch (error) {
+        return handleError(res, error);
+    }
+}
+
+async function atualizarSolicitacao(req, res) {
+    try {
+        const updated = await service.atualizarSolicitacao(req.params.id, req.body);
+        return res.status(200).json(updated);
+    } catch (error) {
+        return handleError(res, error);
+    }
+}
+
+async function revisarSolicitacao(req, res) {
+    try {
+        const result = await service.revisarSolicitacao(req.params.id, req.body);
+        return res.status(200).json(result);
+    } catch (error) {
+        return handleError(res, error);
+    }
+}
+
+async function listarAprovados(req, res) {
+    try {
+        const items = await service.listarAprovados();
+        return res.status(200).json(items);
+    } catch (error) {
+        return handleError(res, error);
+    }
 }
 
 module.exports = {
-    listar,
-    buscarPorId,
-    criar,
-    atualizar,
-    remover,
+    criarSolicitacao,
+    listarSolicitacoes,
+    buscarSolicitacaoPorId,
+    atualizarSolicitacao,
+    revisarSolicitacao,
+    listarAprovados,
 };

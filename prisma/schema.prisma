@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PointCollectionStatus {
+  PENDENTE
+  APROVADO
+  RECUSADO
+}
+
+model AddressPoint {
+  idAdress       Int                       @id @default(autoincrement()) @map("id_adress")
+  street         String
+  number         String
+  complement     String?
+  district       String
+  city           String
+  postCode       String                    @map("post_code")
+  createdAt      DateTime                  @default(now()) @map("created_at")
+  updatedAt      DateTime                  @updatedAt @map("updated_at")
+  tempPoints     PointCollectionRequest[]
+  approvedPoints PointCollectionApproved[]
+
+  @@map("adress_point")
+}
+
+model PointCollectionRequest {
+  idPc            Int                       @id @default(autoincrement()) @map("id_pc")
+  opensPc         Boolean                   @default(false) @map("opens_pc")
+  nameUser        String                    @map("name_user")
+  linkPhoto       String                    @map("link_photo")
+  cpfUser         String                    @map("cpf_user")
+  cpnjPoint       String                    @map("cpnj_point")
+  emailUser       String                    @map("email_user")
+  celUser         String                    @map("cel_user")
+  namePoint       String                    @map("name_point")
+  hourInit        String                    @map("hour_init")
+  hour            String
+  status          PointCollectionStatus     @default(PENDENTE)
+  reviewReason    String?                   @map("review_reason")
+  reviewedAt      DateTime?                 @map("reviewed_at")
+  approvedPointId Int?                      @unique @map("approved_point_id")
+  idAdress        Int                       @map("id_adress")
+  createdAt       DateTime                  @default(now()) @map("created_at")
+  updatedAt       DateTime                  @updatedAt @map("updated_at")
+  address         AddressPoint              @relation(fields: [idAdress], references: [idAdress])
+  approvedPoint   PointCollectionApproved?  @relation("RequestToApproved", fields: [approvedPointId], references: [idPcApproved])
+
+  @@index([status])
+  @@index([idAdress])
+  @@map("point_collection")
+}
+
+model PointCollectionApproved {
+  idPcApproved Int                     @id @default(autoincrement()) @map("id_pc_approved")
+  opensPc      Boolean                 @default(false) @map("opens_pc")
+  nameUser     String                  @map("name_user")
+  linkPhoto    String                  @map("link_photo")
+  cpfUser      String                  @map("cpf_user")
+  cpnjPoint    String                  @map("cpnj_point")
+  emailUser    String                  @map("email_user")
+  celUser      String                  @map("cel_user")
+  namePoint    String                  @map("name_point")
+  hourInit     String                  @map("hour_init")
+  hour         String
+  approvedAt   DateTime                @default(now()) @map("approved_at")
+  idAdress     Int                     @map("id_adress")
+  address      AddressPoint            @relation(fields: [idAdress], references: [idAdress])
+  sourceRequest PointCollectionRequest? @relation("RequestToApproved")
+
+  @@index([idAdress])
+  @@map("point_collection_approved")
+}

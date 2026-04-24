@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const pontoColetaRoutes = require("./routes/pontoColetaRoutes");
 
@@ -7,7 +8,11 @@ const PORT = process.env.PONTO_COLETA_PORT || 5501;
 app.use(express.json());
 
 app.get("/health", (req, res) => {
-    res.status(200).json({ status: "ok", service: "ms-ponto-coleta" });
+    res.status(200).json({
+        status: "ok",
+        service: "ms-ponto-coleta",
+        database: process.env.DATABASE_URL ? "configured" : "missing DATABASE_URL",
+    });
 });
 
 app.use("/api/pontos-coleta", pontoColetaRoutes);

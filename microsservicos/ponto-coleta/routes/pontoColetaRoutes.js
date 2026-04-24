@@ -3,10 +3,11 @@ const controller = require("../controllers/pontoColetaController");
 
 const router = express.Router();
 
-router.get("/", controller.listar);
-router.get("/:id", controller.buscarPorId);
-router.post("/", controller.criar);
-router.put("/:id", controller.atualizar);
-router.delete("/:id", controller.remover);
+router.post("/requests", controller.criarSolicitacao);
+router.get("/requests", controller.listarSolicitacoes);
+router.get("/requests/:id", controller.buscarSolicitacaoPorId);
+router.patch("/requests/:id", controller.atualizarSolicitacao);
+router.patch("/requests/:id/review", controller.revisarSolicitacao);
+router.get("/approved", controller.listarAprovados);
 
 module.exports = router;
