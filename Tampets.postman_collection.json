@@ -6,11 +6,26 @@
     "_postman_id": "f4f8b1d7-2a5c-4d95-9230-0a9e2cfbd141"
   },
   "variable": [
-    { "key": "app", "value": "http://localhost:5500" },
-    { "key": "msPontoColeta", "value": "http://localhost:5501" },
-    { "key": "msAutenticacao", "value": "http://localhost:5502" },
-    { "key": "msRelatorioAnimais", "value": "http://localhost:5503" },
-    { "key": "msRelatorioTampinhas", "value": "http://localhost:5504" }
+    {
+      "key": "app",
+      "value": "http://localhost:5500"
+    },
+    {
+      "key": "msPontoColeta",
+      "value": "http://localhost:5501"
+    },
+    {
+      "key": "msAutenticacao",
+      "value": "http://localhost:5502"
+    },
+    {
+      "key": "msRelatorioAnimais",
+      "value": "http://localhost:5503"
+    },
+    {
+      "key": "msRelatorioTampinhas",
+      "value": "http://localhost:5504"
+    }
   ],
   "item": [
     {
@@ -68,7 +83,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -89,7 +107,10 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -122,7 +143,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -143,7 +167,10 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -176,7 +203,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -197,7 +227,10 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -219,52 +252,99 @@
       "name": "MS Ponto Coleta",
       "item": [
         {
-          "name": "Listar Pontos de Coleta",
-          "request": {
-            "method": "GET",
-            "url": "{{msPontoColeta}}/api/pontos-coleta"
-          }
-        },
-        {
-          "name": "Criar Ponto de Coleta",
+          "name": "Criar Solicitacao de Ponto",
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nomeEmpresa\": \"Coleta Centro\",\n  \"endereco\": \"Av. Central, 500\",\n  \"telefone\": \"11999990000\",\n  \"status\": \"pendente\"\n}"
+              "raw": "{\n  \"opensPc\": true,\n  \"nameUser\": \"Daiane Camargo\",\n  \"linkPhoto\": \"https://images.example.com/ponto-centro.jpg\",\n  \"cpfUser\": \"11144477735\",\n  \"cpnjPoint\": \"11222333000181\",\n  \"emailUser\": \"daiane@email.com\",\n  \"celUser\": \"11988887777\",\n  \"namePoint\": \"Ponto Centro\",\n  \"hourInit\": \"08:00\",\n  \"hour\": \"18:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"100\",\n    \"complement\": \"Sala 2\",\n    \"district\": \"Centro\",\n    \"city\": \"Sao Paulo\",\n    \"postCode\": \"01001000\"\n  }\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests"
           }
         },
         {
-          "name": "Buscar Ponto de Coleta por ID",
+          "name": "Listar Solicitacoes",
           "request": {
             "method": "GET",
-            "url": "{{msPontoColeta}}/api/pontos-coleta/1"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests"
           }
         },
         {
-          "name": "Atualizar Ponto de Coleta",
+          "name": "Listar Solicitacoes por Status",
           "request": {
-            "method": "PUT",
+            "method": "GET",
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests?status=PENDENTE"
+          }
+        },
+        {
+          "name": "Buscar Solicitacao por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/1"
+          }
+        },
+        {
+          "name": "Atualizar Solicitacao",
+          "request": {
+            "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"status\": \"aprovado\"\n}"
+              "raw": "{\n  \"hourInit\": \"09:00\",\n  \"hour\": \"19:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"120\",\n    \"complement\": \"Sala 2\",\n    \"district\": \"Centro\",\n    \"city\": \"Sao Paulo\",\n    \"postCode\": \"01001000\"\n  }\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/1"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/1"
           }
         },
         {
-          "name": "Remover Ponto de Coleta",
+          "name": "Aprovar Solicitacao",
           "request": {
-            "method": "DELETE",
-            "url": "{{msPontoColeta}}/api/pontos-coleta/1"
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"APPROVE\",\n  \"reason\": \"Documentacao validada\"\n}"
+            },
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/1/review"
+          }
+        },
+        {
+          "name": "Recusar Solicitacao",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decision\": \"REJECT\",\n  \"reason\": \"Endereco inconsistente\"\n}"
+            },
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/2/review"
+          }
+        },
+        {
+          "name": "Listar Aprovados",
+          "request": {
+            "method": "GET",
+            "url": "{{msPontoColeta}}/api/pontos-coleta/approved"
           }
         }
       ]
@@ -284,7 +364,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -305,7 +388,10 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -319,7 +405,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -352,7 +441,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -373,7 +465,10 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -406,7 +501,10 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -427,7 +525,10 @@
           "request": {
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
