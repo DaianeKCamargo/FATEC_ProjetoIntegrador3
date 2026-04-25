@@ -76,3 +76,14 @@ model PointCollectionApproved {
   @@index([idAdress])
   @@map("point_collection_approved")
 }
+model RelatorioAnimais {
+  id           Int      @id @default(autoincrement())
+  data         DateTime @db.Date
+  tipoAnimal   String   @map("tipo_animal")
+  quantidade   Int
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("relatorio_animais")
+}

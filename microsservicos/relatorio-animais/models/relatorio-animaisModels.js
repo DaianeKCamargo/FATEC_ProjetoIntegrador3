@@ -1,3 +1,5 @@
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 const relatoriosAnimais = [];
 let nextId = 1;
 
