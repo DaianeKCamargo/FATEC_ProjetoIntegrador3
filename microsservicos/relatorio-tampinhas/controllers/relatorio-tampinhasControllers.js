@@ -1,7 +1,18 @@
 const model = require("../models/relatorio-tampinhasModels");
 
+// regra de negócio (pode virar config depois)
+const FATOR_TAMPINHAS_POR_KG = 160;
+
 function listar(req, res) {
-    return res.status(200).json(model.listar());
+    const lista = model.listar();
+
+    const convertida = lista.map(item => ({
+        ...item,
+        peso_gramas: item.quantidadeKg * 1000,
+        quantidade_tampinhas: Math.round(item.quantidadeKg * FATOR_TAMPINHAS_POR_KG)
+    }));
+
+    return res.status(200).json(convertida);
 }
 
 function buscarPorId(req, res) {
@@ -14,15 +25,22 @@ function buscarPorId(req, res) {
             .json({ message: "Relatorio de tampinhas nao encontrado" });
     }
 
-    return res.status(200).json(item);
+    const convertido = {
+        ...item,
+        peso_gramas: item.quantidadeKg * 1000,
+        quantidade_tampinhas: Math.round(item.quantidadeKg * FATOR_TAMPINHAS_POR_KG)
+    };
+
+    return res.status(200).json(convertido);
 }
 
 function criar(req, res) {
     const { data, quantidadeKg } = req.body;
-    if (!data || quantidadeKg === undefined) {
-        return res
-            .status(400)
-            .json({ message: "data e quantidadeKg sao obrigatorios" });
+
+    if (!data || quantidadeKg === undefined || quantidadeKg <= 0) {
+        return res.status(400).json({
+            message: "data e quantidadeKg válidos são obrigatórios"
+        });
     }
 
     const novo = model.criar(req.body);
@@ -31,6 +49,14 @@ function criar(req, res) {
 
 function atualizar(req, res) {
     const id = Number(req.params.id);
+    const { quantidadeKg } = req.body;
+
+    if (quantidadeKg !== undefined && quantidadeKg <= 0) {
+        return res.status(400).json({
+            message: "quantidadeKg deve ser maior que zero"
+        });
+    }
+
     const atualizado = model.atualizar(id, req.body);
 
     if (!atualizado) {

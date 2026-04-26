@@ -10,11 +10,14 @@ function buscarPorId(id) {
 }
 
 function criar(dados) {
+    const quantidade = Number(dados.quantidadeKg);
+
     const novo = {
         id: nextId++,
-        data: dados.data || "",
-        quantidadeKg: Number(dados.quantidadeKg || 0),
+        data: dados.data || new Date().toISOString().split("T")[0],
+        quantidadeKg: isNaN(quantidade) ? 0 : quantidade,
     };
+
     relatoriosTampinhas.push(novo);
     return novo;
 }
@@ -23,8 +26,17 @@ function atualizar(id, dados) {
     const item = buscarPorId(id);
     if (!item) return null;
 
-    item.data = dados.data ?? item.data;
-    item.quantidadeKg = dados.quantidadeKg ?? item.quantidadeKg;
+    if (dados.data !== undefined) {
+        item.data = dados.data;
+    }
+
+    if (dados.quantidadeKg !== undefined) {
+        const novoValor = Number(dados.quantidadeKg);
+        if (!isNaN(novoValor)) {
+            item.quantidadeKg = novoValor;
+        }
+    }
+
     return item;
 }
 
