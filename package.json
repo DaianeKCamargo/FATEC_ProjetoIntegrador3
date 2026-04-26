@@ -25,8 +25,9 @@
   "dependencies": {
     "@prisma/client": "^6.7.0",
     "cpf-cnpj-validator": "^1.0.3",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "express": "^4.21.2",
+    "pg": "^8.20.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
