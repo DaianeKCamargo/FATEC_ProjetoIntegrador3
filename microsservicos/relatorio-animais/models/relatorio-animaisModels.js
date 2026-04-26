@@ -1,43 +1,41 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const relatoriosAnimais = [];
-let nextId = 1;
 
-function listar() {
-    return relatoriosAnimais;
+async function listar() {
+    return await prisma.relatorioAnimais.findMany();
 }
 
-function buscarPorId(id) {
-    return relatoriosAnimais.find((item) => item.id === id);
+async function buscarPorId(id) {
+    return await prisma.relatorioAnimais.findUnique({
+        where: { id }
+    });
 }
 
-function criar(dados) {
-    const novo = {
-        id: nextId++,
-        data: dados.data || "",
-        tipoAnimal: dados.tipoAnimal || "",
-        quantidade: Number(dados.quantidade || 0),
-    };
-    relatoriosAnimais.push(novo);
-    return novo;
+async function criar(dados) {
+    return await prisma.relatorioAnimais.create({
+        data: {
+            data: new Date(dados.data),
+            tipoAnimal: dados.tipoAnimal,
+            quantidade: Number(dados.quantidade)
+        }
+    });
 }
 
-function atualizar(id, dados) {
-    const item = buscarPorId(id);
-    if (!item) return null;
-
-    item.data = dados.data ?? item.data;
-    item.tipoAnimal = dados.tipoAnimal ?? item.tipoAnimal;
-    item.quantidade = dados.quantidade ?? item.quantidade;
-    return item;
+async function atualizar(id, dados) {
+    return await prisma.relatorioAnimais.update({
+        where: { id },
+        data: {
+            data: dados.data ? new Date(dados.data) : undefined,
+            tipoAnimal: dados.tipoAnimal,
+            quantidade: dados.quantidade
+        }
+    });
 }
 
-function remover(id) {
-    const indice = relatoriosAnimais.findIndex((item) => item.id === id);
-    if (indice === -1) return false;
-
-    relatoriosAnimais.splice(indice, 1);
-    return true;
+async function remover(id) {
+    return await prisma.relatorioAnimais.delete({
+        where: { id }
+    });
 }
 
 module.exports = {

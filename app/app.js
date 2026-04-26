@@ -3,6 +3,7 @@ const express = require("express");
 const usuarioRoutes = require("./routes/usuarioRoutes");
 const pontoColetaRoutes = require("./routes/pontoColetaRoutes");
 const noticiaRoutes = require("./routes/noticiaRoutes");
+const relatorioAnimaisRoutes = require("./routes/relatorio-animaisRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5500;
@@ -16,6 +17,7 @@ app.get("/health", (req, res) => {
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/pontos-coleta", pontoColetaRoutes);
 app.use("/api/noticias", noticiaRoutes);
+app.use("/api/relatorio-animais", relatorioAnimaisRoutes);
 
 app.use((req, res) => {
     res.status(404).json({ message: "Rota nao encontrada" });
