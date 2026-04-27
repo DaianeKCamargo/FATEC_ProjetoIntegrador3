@@ -27,6 +27,10 @@ app.use((req, res) => {
     return res.status(404).json({ message: "Rota nao encontrada" });
 });
 
-app.listen(PORT, () => {
-    console.log(`Microservico autenticacao em execucao na porta ${PORT}`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Microservico autenticacao em execucao na porta ${PORT}`);
+    });
+}
+
+module.exports = app;
