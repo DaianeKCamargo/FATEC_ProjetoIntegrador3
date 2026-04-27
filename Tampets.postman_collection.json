@@ -249,6 +249,66 @@
       ]
     },
     {
+      "name": "App Principal - Relatorio Animais",
+      "item": [
+        {
+          "name": "Listar Relatorios Animais",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/relatorio-animais"
+          }
+        },
+        {
+          "name": "Criar Relatorio Animal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": \"2026-04-07\",\n  \"tipoAnimal\": \"gato\",\n  \"quantidade\": 3\n}"
+            },
+            "url": "{{app}}/api/relatorio-animais"
+          }
+        },
+        {
+          "name": "Buscar Relatorio Animal por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/relatorio-animais/1"
+          }
+        },
+        {
+          "name": "Atualizar Relatorio Animal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipoAnimal\": \"cachorro\",\n  \"quantidade\": 4\n}"
+            },
+            "url": "{{app}}/api/relatorio-animais/1"
+          }
+        },
+        {
+          "name": "Remover Relatorio Animal",
+          "request": {
+            "method": "DELETE",
+            "url": "{{app}}/api/relatorio-animais/1"
+          }
+        }
+      ]
+    },
+    {
       "name": "MS Ponto Coleta",
       "item": [
         {

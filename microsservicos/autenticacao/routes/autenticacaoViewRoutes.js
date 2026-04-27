@@ -1,0 +1,51 @@
+const express = require("express");
+const model = require("../models/autenticacaoModels");
+
+const router = express.Router();
+
+router.get("/credenciais", (req, res) => {
+    const lista = model.listar();
+    res.render("lista", { credenciais: lista });
+});
+
+router.get("/credenciais/novo", (req, res) => {
+    res.render("novo", { errors: null, values: {} });
+});
+
+router.post("/credenciais/novo", (req, res) => {
+    const { usuario, senha } = req.body;
+    if (!usuario || !senha) {
+        return res.status(400).render("novo", { errors: ["usuario e senha sao obrigatorios"], values: req.body });
+    }
+
+    if (model.buscarPorUsuario(usuario)) {
+        return res.status(409).render("novo", { errors: ["usuario ja cadastrado"], values: req.body });
+    }
+
+    model.criar({ usuario, senha });
+    return res.redirect("/credenciais");
+});
+
+router.get("/login", (req, res) => {
+    res.render("login", { message: null });
+});
+
+router.post("/login", (req, res) => {
+    const { usuario, senha } = req.body;
+    if (!usuario || !senha) {
+        return res.status(400).render("login", { message: "usuario e senha sao obrigatorios" });
+    }
+
+    const credencial = model.buscarPorUsuario(usuario);
+    if (!credencial || credencial.senha !== senha || credencial.ativo === false) {
+        return res.status(401).render("login", { message: "Credenciais invalidas" });
+    }
+
+    return res.redirect("/menu");
+});
+
+router.get("/menu", (req, res) => {
+    res.render("menu");
+});
+
+module.exports = router;

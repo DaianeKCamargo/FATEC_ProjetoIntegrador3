@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Credenciais - Autenticacao</title>
+</head>
+
+<body>
+    <h1>Credenciais</h1>
+    <p><a href="/credenciais/novo">Criar nova credencial</a> | <a href="/login">Login</a></p>
+    <ul>
+        <% credenciais.forEach(function(c) { %>
+            <li><strong>
+                    <%= c.usuario %>
+                </strong> - <%= c.ativo ? 'ativo' : 'inativo' %>
+            </li>
+            <% }) %>
+    </ul>
+</body>
+
+</html>

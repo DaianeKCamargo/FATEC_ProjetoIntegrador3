@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Criar Credencial - Autenticacao</title>
+</head>
+
+<body>
+    <h1>Criar Credencial</h1>
+    <% if (errors && errors.length) { %>
+        <ul style="color:red;">
+            <% errors.forEach(function(err){ %>
+                <li>
+                    <%= err %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+            <form method="post" action="/credenciais/novo">
+                <label>Usuario: <input type="text" name="usuario" value="<%= values.usuario || '' %>" /></label><br />
+                <label>Senha: <input type="password" name="senha" /></label><br />
+                <button type="submit">Criar</button>
+            </form>
+            <p><a href="/credenciais">Voltar</a></p>
+</body>
+
+</html>
