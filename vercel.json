@@ -2,7 +2,7 @@
     "version": 2,
     "rewrites": [
         {
-            "source": "/login(.*)",
+            "source": "/(.*)",
             "destination": "/api/index"
         }
     ]
