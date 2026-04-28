@@ -107,19 +107,8 @@
             </div>
 
             <div class="form-grupo">
-                <label for="link">Link</label>
-                <input id="link" type="url" name="link" value="<%= noticia ? noticia.link : '' %>" required />
-            </div>
-
-            <div class="form-grupo">
-                <label for="imagem">URL da Imagem</label>
-                <input id="imagem" type="url" name="imagem" value="<%= noticia ? noticia.imagem : '' %>" required />
-            </div>
-
-            <div class="form-grupo">
-                <label for="data">Data</label>
-                <input id="data" type="date" name="data"
-                    value="<%= noticia && noticia.data ? noticia.data.toISOString().split('T')[0] : '' %>" required />
+                <label for="conteudo">Conteúdo</label>
+                <textarea id="conteudo" name="conteudo" required><%= noticia ? noticia.conteudo : '' %></textarea>
             </div>
 
             <div class="acoes">

@@ -28,7 +28,6 @@ model Noticia {
   titulo    String
   link      String
   imagem    String
-  data      DateTime @db.Date
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
