@@ -131,16 +131,35 @@
             <ul class="lista">
                 <% noticias.forEach(n=> { %>
                     <li class="item">
-                        <div class="item-titulo">
-                            <%= n.titulo %>
-                        </div>
-                        <div class="item-acoes">
-                            <a href="/noticias/<%= n.id %>" class="btn-small">Ver</a>
-                            <a href="/noticias/<%= n.id %>/editar" class="btn-small">Editar</a>
-                            <form action="/noticias/<%= n.id %>?_method=DELETE" method="POST" style="display:inline;">
-                                <button type="submit" class="btn-small btn-danger">Excluir</button>
-                            </form>
-                        </div>
+                        <% if (n.imagem) { %>
+                            <div style="margin-bottom: 12px;">
+                                <img src="<%= n.imagem %>" alt="<%= n.titulo %>"
+                                    style="max-width: 100%; max-height: 150px; border-radius: 4px; object-fit: cover;" />
+                            </div>
+                            <% } %>
+                                <div class="item-titulo">
+                                    <%= n.titulo %>
+                                </div>
+                                <div style="color: #666; font-size: 13px; margin-bottom: 8px; word-break: break-all;">
+                                    <a href="<%= n.link %>" target="_blank"
+                                        style="color: #0d6efd; text-decoration: none;">
+                                        <%= n.link %>
+                                    </a>
+                                </div>
+                                <% if (n.data) { %>
+                                    <div style="color: #999; font-size: 12px; margin-bottom: 8px;">
+                                        <strong>Data:</strong>
+                                        <%= new Date(n.data).toLocaleDateString('pt-BR') %>
+                                    </div>
+                                    <% } %>
+                                        <div class="item-acoes">
+                                            <a href="/noticias/<%= n.id %>" class="btn-small">Ver</a>
+                                            <a href="/noticias/<%= n.id %>/editar" class="btn-small">Editar</a>
+                                            <form action="/noticias/<%= n.id %>?_method=DELETE" method="POST"
+                                                style="display:inline;">
+                                                <button type="submit" class="btn-small btn-danger">Excluir</button>
+                                            </form>
+                                        </div>
                     </li>
                     <% }) %>
             </ul>

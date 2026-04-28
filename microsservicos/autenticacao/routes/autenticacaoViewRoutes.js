@@ -1,5 +1,6 @@
 const express = require("express");
 const model = require("../models/autenticacaoModels");
+const noticiasModel = require("../models/noticiasModel");
 
 const router = express.Router();
 
@@ -53,16 +54,88 @@ router.get("/menu", (req, res) => {
     });
 });
 
-router.get("/noticias", (req, res) => {
-    res.render("noticias", { noticias: [] });
+router.get("/noticias", async (req, res) => {
+    try {
+        const noticias = await noticiasModel.listar();
+        res.render("noticias", { noticias });
+    } catch (err) {
+        console.error("Erro ao listar notícias:", err);
+        res.render("noticias", { noticias: [] });
+    }
 });
 
 router.get("/noticias/novo", (req, res) => {
     res.render("formnews", { noticia: null });
 });
 
-router.get("/noticias/:id", (req, res) => {
-    res.render("detalhe", { noticia: { id: req.params.id, titulo: "Notícia", conteudo: "Conteúdo da notícia" } });
+router.post("/noticias", async (req, res) => {
+    try {
+        const { titulo, link, imagem, data } = req.body;
+        if (!titulo || !link || !imagem || !data) {
+            return res.render("formnews", {
+                noticia: null,
+                errors: ["Título, link, imagem e data são obrigatórios"]
+            });
+        }
+        await noticiasModel.criar({ titulo, link, imagem, data });
+        res.redirect("/noticias");
+    } catch (err) {
+        console.error("Erro ao criar notícia:", err);
+        res.render("formnews", { noticia: null, errors: ["Erro ao criar notícia"] });
+    }
+});
+
+router.get("/noticias/:id", async (req, res) => {
+    try {
+        const noticia = await noticiasModel.buscarPorId(req.params.id);
+        if (!noticia) {
+            return res.status(404).send("Notícia não encontrada");
+        }
+        res.render("detalhe", { noticia });
+    } catch (err) {
+        console.error("Erro ao buscar notícia:", err);
+        res.status(500).send("Erro ao buscar notícia");
+    }
+});
+
+router.get("/noticias/:id/editar", async (req, res) => {
+    try {
+        const noticia = await noticiasModel.buscarPorId(req.params.id);
+        if (!noticia) {
+            return res.status(404).send("Notícia não encontrada");
+        }
+        res.render("formnews", { noticia });
+    } catch (err) {
+        console.error("Erro ao buscar notícia:", err);
+        res.status(500).send("Erro ao buscar notícia");
+    }
+});
+
+router.put("/noticias/:id", async (req, res) => {
+    try {
+        const { titulo, link, imagem, data } = req.body;
+        if (!titulo || !link || !imagem || !data) {
+            return res.status(400).render("formnews", {
+                noticia: null,
+                errors: ["Título, link, imagem e data são obrigatórios"]
+            });
+        }
+        await noticiasModel.atualizar(req.params.id, { titulo, link, imagem, data });
+        res.redirect("/noticias");
+    } catch (err) {
+        console.error("Erro ao atualizar notícia:", err);
+        res.status(500).send("Erro ao atualizar notícia");
+    }
+});
+
+router.delete("/noticias/:id", async (req, res) => {
+    try {
+        await noticiasModel.remover(req.params.id);
+        res.redirect("/noticias");
+    } catch (err) {
+        console.error("Erro ao deletar notícia:", err);
+        res.status(500).send("Erro ao deletar notícia");
+    }
 });
 
 router.get("/relatorio", (req, res) => {
