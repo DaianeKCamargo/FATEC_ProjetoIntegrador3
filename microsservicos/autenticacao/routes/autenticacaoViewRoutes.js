@@ -48,6 +48,8 @@ router.get("/menu", (req, res) => {
     res.render("menu", {
         noticiasUrl: "/noticias",
         pontoColetaUrl: process.env.PONTO_COLETA_BASE_URL || "http://localhost:5501/menu",
+        relatorioAnimaisUrl: process.env.RELATORIO_ANIMAIS_BASE_URL || "http://localhost:5503/relatorios-animais",
+        relatorioTampinhasUrl: process.env.RELATORIO_TAMPINHAS_BASE_URL || "http://localhost:5504/tampinhas",
         relatorioUrl: "/relatorio",
         credenciaisUrl: "/credenciais",
     });
