@@ -1,6 +1,12 @@
 const { PrismaClient } = require("@prisma/client");
 
-const prisma = new PrismaClient();
+if (!process.env.DATABASE_URL) {
+    console.warn("AVISO: DATABASE_URL não está configurada");
+}
+
+const prisma = new PrismaClient({
+    errorFormat: 'pretty',
+});
 
 async function listar() {
     return await prisma.noticia.findMany({
