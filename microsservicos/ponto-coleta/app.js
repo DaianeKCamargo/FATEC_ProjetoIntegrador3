@@ -23,6 +23,8 @@ app.get("/health", (req, res) => {
 
 app.use("/api/pontos-coleta", pontoColetaRoutes);
 
+app.get('/menu', (req, res) => res.render('menu'));
+
 // Simple preview routes for templates
 app.get('/pontos', (req, res) => res.render('formspt', { errors: null, values: {} }));
 app.get('/pontos/solicitacao', (req, res) => res.render('Solicitacaopt', {}));

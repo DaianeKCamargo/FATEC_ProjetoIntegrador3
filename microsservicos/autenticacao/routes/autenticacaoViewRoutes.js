@@ -48,4 +48,8 @@ router.get("/menu", (req, res) => {
     res.render("menu");
 });
 
+router.get("/relatorio", (req, res) => {
+    res.render("relatorio-menu");
+});
+
 module.exports = router;

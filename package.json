@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node app/app.js",
     "start:app": "node app/app.js",
+    "start:ms:noticias": "node microsservicos/noticias/app.js",
     "start:ms:ponto-coleta": "node microsservicos/ponto-coleta/app.js",
     "start:ms:autenticacao": "node microsservicos/autenticacao/app.js",
     "start:ms:relatorio-animais": "node microsservicos/relatorio-animais/app.js",
