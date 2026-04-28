@@ -11,8 +11,10 @@
     "start:ms:relatorio-animais": "node microsservicos/relatorio-animais/app.js",
     "start:ms:relatorio-tampinhas": "node microsservicos/relatorio-tampinhas/app.js",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:migrate:dev": "prisma migrate dev",
     "prisma:studio": "prisma studio",
+    "setup": "npm install && npm run prisma:generate && npm run prisma:migrate:dev",
     "test": "echo \"No tests configured yet\" && exit 0"
   },
   "repository": {

@@ -13,6 +13,27 @@ enum PointCollectionStatus {
   RECUSADO
 }
 
+model User {
+  id        Int     @id @default(autoincrement())
+  nome      String
+  email     String  @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Noticia {
+  id        Int     @id @default(autoincrement())
+  titulo    String
+  link      String
+  imagem    String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("noticias")
+}
+
 model AddressPoint {
   idAdress       Int                       @id @default(autoincrement()) @map("id_adress")
   street         String
@@ -76,14 +97,35 @@ model PointCollectionApproved {
   @@index([idAdress])
   @@map("point_collection_approved")
 }
+
 model RelatorioAnimais {
   id           Int      @id @default(autoincrement())
   data         DateTime @db.Date
   tipoAnimal   String   @map("tipo_animal")
   quantidade   Int
-
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
   @@map("relatorio_animais")
+}
+
+model RelatorioTampinhas {
+  id            Int      @id @default(autoincrement())
+  data          DateTime @db.Date
+  quantidadeKg  Float    @map("quantidade_kg")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("relatorio_tampinhas")
+}
+
+model Credencial {
+  id        Int     @id @default(autoincrement())
+  usuario   String  @unique
+  senha     String
+  ativo     Boolean @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("credenciais")
 }
