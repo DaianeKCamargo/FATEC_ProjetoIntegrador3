@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notícias</title>
+</head>
+<body>
+    <h1>Lista de Notícias</h1>
+
+    <a href="/noticias/nova">Nova Notícia</a>
+
+    <ul>
+        <% noticias.forEach(n => { %>
+            <li>
+                <strong><%= n.titulo %></strong>
+                <br>
+
+                <a href="/noticias/<%= n.id %>">Ver</a> |
+                <a href="/noticias/<%= n.id %>/editar">Editar</a>
+
+                <form action="/noticias/<%= n.id %>?_method=DELETE" method="POST" style="display:inline;">
+                    <button type="submit">Excluir</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>

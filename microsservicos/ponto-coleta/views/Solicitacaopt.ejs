@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Solicitações</title>
+</head>
+<body>
+    <h1>Lista de Solicitações</h1>
+
+    <a href="/solicitacoes/nova">Nova Solicitação</a>
+
+    <ul>
+        <% solicitacoes.forEach(s => { %>
+            <li>
+                <a href="/solicitacoes/<%= s.id %>">
+                    <%= s.nome || "Sem nome" %> - <%= s.status %>
+                </a>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>

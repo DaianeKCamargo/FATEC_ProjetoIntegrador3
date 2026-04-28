@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Relatórios de Tampinhas</title>
+</head>
+<body>
+    <h1>Relatórios de Tampinhas</h1>
+
+    <a href="/tampinhas/novo">Novo Relatório</a>
+
+    <ul>
+        <% relatorios.forEach(r => { %>
+            <li>
+                <strong>Data:</strong> <%= r.data %> |
+                <strong>Kg:</strong> <%= r.quantidadeKg %> |
+                <strong>Gramas:</strong> <%= r.peso_gramas %>g |
+                <strong>Tampinhas:</strong> <%= r.quantidade_tampinhas %>
+                <br>
+
+                <a href="/tampinhas/<%= r.id %>">Ver</a> |
+                <a href="/tampinhas/<%= r.id %>/editar">Editar</a>
+
+                <form action="/tampinhas/<%= r.id %>?_method=DELETE" method="POST" style="display:inline;">
+                    <button type="submit">Excluir</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>

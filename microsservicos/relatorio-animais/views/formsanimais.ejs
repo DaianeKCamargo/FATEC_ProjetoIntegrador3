@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= relatorio ? "Editar" : "Novo" %> Relatório</title>
+</head>
+<body>
+    <h1><%= relatorio ? "Editar" : "Novo" %> Relatório de Animais</h1>
+
+    <form action="<%= relatorio ? '/relatorios/' + relatorio.id + '?_method=PUT' : '/relatorios' %>" method="POST">
+        
+        <label>Data:</label>
+        <input type="date" name="data" value="<%= relatorio ? relatorio.data : '' %>" required>
+        <br><br>
+
+        <label>Tipo de Animal:</label>
+        <input type="text" name="tipoAnimal" value="<%= relatorio ? relatorio.tipoAnimal : '' %>" required>
+        <br><br>
+
+        <label>Quantidade:</label>
+        <input type="number" name="quantidade" value="<%= relatorio ? relatorio.quantidade : '' %>" required>
+        <br><br>
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <a href="/relatorios">Voltar</a>
+</body>
+</html>

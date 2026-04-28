@@ -29,6 +29,7 @@
     "dotenv": "^16.4.5",
     "ejs": "^5.0.2",
     "express": "^4.22.1",
+    "method-override": "^3.0.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -38,5 +39,6 @@
   "bugs": {
     "url": "https://github.com/DaianeKCamargo/FATEC_ProjetoIntegrador3/issues"
   },
-  "homepage": "https://github.com/DaianeKCamargo/FATEC_ProjetoIntegrador3#readme"
+  "homepage": "https://github.com/DaianeKCamargo/FATEC_ProjetoIntegrador3#readme",
+  "type": "commonjs"
 }
