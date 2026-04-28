@@ -116,8 +116,8 @@ F9: Cadastro de notícias (imagem, título e link);
 <code>npm install</code>
 
 ### Rodar aplicação
-<code>npm start </code> - app principal
-<code>npm run start:ms:ponto-coleta</code> - ponto de coleta
-<code>npm run start:ms:autenticacao</code> - autenticação login
-<code>npm run start:ms:relatorio-animais</code> - relatorio animais
-<code>npm run start:ms:relatorio-tampinhas</code> - relatório tampinhas
+<code>npm start </code> - app principal <br>
+<code>npm run start:ms:ponto-coleta</code> - ponto de coleta <br>
+<code>npm run start:ms:autenticacao</code> - autenticação login <br>
+<code>npm run start:ms:relatorio-animais</code> - relatorio animais <br>
+<code>npm run start:ms:relatorio-tampinhas</code> - relatório tampinhas <br>
