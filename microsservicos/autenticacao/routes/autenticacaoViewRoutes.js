@@ -54,15 +54,15 @@ router.get("/menu", (req, res) => {
 });
 
 router.get("/noticias", (req, res) => {
-    const noticiasBaseUrl = process.env.NEWS_BASE_URL || "http://localhost:5505";
+    res.render("noticias", { noticias: [] });
+});
 
-    if (!process.env.NEWS_BASE_URL && process.env.VERCEL_URL) {
-        return res
-            .status(500)
-            .send("URL do microserviço de notícias nao configurada. Defina NEWS_BASE_URL com o dominio publico do deploy de noticias.");
-    }
+router.get("/noticias/novo", (req, res) => {
+    res.render("formnews", { noticia: null });
+});
 
-    return res.redirect(`${noticiasBaseUrl}/noticias`);
+router.get("/noticias/:id", (req, res) => {
+    res.render("detalhe", { noticia: { id: req.params.id, titulo: "Notícia", conteudo: "Conteúdo da notícia" } });
 });
 
 router.get("/relatorio", (req, res) => {
