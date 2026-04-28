@@ -45,11 +45,20 @@ router.post("/login", (req, res) => {
 });
 
 router.get("/menu", (req, res) => {
-    res.render("menu");
+    res.render("menu", {
+        noticiasUrl: process.env.NEWS_BASE_URL || "http://localhost:5505/noticias",
+        pontoColetaUrl: process.env.PONTO_COLETA_BASE_URL || "http://localhost:5501/menu",
+        relatorioUrl: "/relatorio",
+        credenciaisUrl: "/credenciais",
+    });
 });
 
 router.get("/relatorio", (req, res) => {
-    res.render("relatorio-menu");
+    res.render("relatorio-menu", {
+        relatorioAnimaisUrl: process.env.RELATORIO_ANIMAIS_BASE_URL || "http://localhost:5503/relatorios-animais",
+        relatorioTampinhasUrl: process.env.RELATORIO_TAMPINHAS_BASE_URL || "http://localhost:5504/tampinhas",
+        menuUrl: "/menu",
+    });
 });
 
 module.exports = router;
