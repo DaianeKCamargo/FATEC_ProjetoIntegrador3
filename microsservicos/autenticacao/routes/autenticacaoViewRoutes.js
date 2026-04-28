@@ -47,7 +47,7 @@ router.post("/login", (req, res) => {
 router.get("/menu", (req, res) => {
     res.render("menu", {
         noticiasUrl: "/noticias",
-        pontoColetaUrl: process.env.PONTO_COLETA_BASE_URL || "http://localhost:5501/menu",
+        pontoColetaUrl: "/pontos",
         relatorioUrl: "/relatorio",
         credenciaisUrl: "/credenciais",
     });
@@ -63,6 +63,36 @@ router.get("/noticias/novo", (req, res) => {
 
 router.get("/noticias/:id", (req, res) => {
     res.render("detalhe", { noticia: { id: req.params.id, titulo: "Notícia", conteudo: "Conteúdo da notícia" } });
+});
+router.get("/pontos", (req, res) => {
+    res.render("formspt", { errors: null, values: {} });
+});
+
+router.post("/pontos", (req, res) => {
+    const { nome, status } = req.body;
+
+    if (!nome) {
+        return res.status(400).render("formspt", {
+            errors: ["Nome e obrigatorio"],
+            values: req.body,
+        });
+    }
+
+    res.render("detalhept", {
+        solicitacao: {
+            id: Date.now(),
+            nome,
+            status: status || "PENDENTE",
+        },
+    });
+});
+
+router.get("/pontos/solicitacao", (req, res) => {
+    res.render("Solicitacaopt", {});
+});
+
+router.get("/pontos/:id", (req, res) => {
+    res.render("detalhept", { solicitacao: { id: req.params.id, nome: "Solicitação", status: "PENDENTE" } });
 });
 
 router.get("/relatorio", (req, res) => {
