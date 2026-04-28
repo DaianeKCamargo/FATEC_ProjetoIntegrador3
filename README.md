@@ -121,3 +121,38 @@ F9: Cadastro de notícias (imagem, título e link);
 <code>npm run start:ms:autenticacao</code> - autenticação login <br>
 <code>npm run start:ms:relatorio-animais</code> - relatorio animais <br>
 <code>npm run start:ms:relatorio-tampinhas</code> - relatório tampinhas <br>
+
+## Documentacao Postman
+
+Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Postman do repositorio.
+
+### Arquivos de colecao
+
+- `Tampets.postman_collection.json` (colecao consolidada da app principal + microservicos)
+- `microsservicos/ponto-coleta/ponto-coleta.postman_collection.json` (colecao dedicada do microservico de ponto de coleta)
+
+### Variaveis usadas na colecao principal
+
+- `app`: `http://localhost:5500`
+- `msPontoColeta`: `http://localhost:5501`
+- `msAutenticacao`: `http://localhost:5502`
+- `msRelatorioAnimais`: `http://localhost:5503`
+- `msRelatorioTampinhas`: `http://localhost:5504`
+- `msNoticias`: `http://localhost:5505`
+
+### Como importar no Postman
+
+1. Abra o Postman.
+2. Clique em **Import**.
+3. Selecione o arquivo `Tampets.postman_collection.json`.
+4. Ajuste as variaveis de URL se alguma porta estiver diferente no seu ambiente.
+
+### Cobertura da colecao principal
+
+- Healthchecks dos servicos ativos
+- CRUD da app principal: usuarios, pontos de coleta e noticias
+- Fluxo do ms ponto-coleta: requests, review e approved
+- CRUD do ms autenticacao
+- CRUD do ms relatorio-animais
+- CRUD do ms relatorio-tampinhas
+- CRUD do ms noticias

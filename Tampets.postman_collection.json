@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Tampets API Collection",
-    "description": "Colecao Postman da API principal e microservicos do projeto Tampets.",
+    "description": "Colecao Postman da API principal e microservicos do projeto Tampets. Inclui healthchecks e operacoes CRUD principais para uso em desenvolvimento local.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_postman_id": "f4f8b1d7-2a5c-4d95-9230-0a9e2cfbd141"
   },
@@ -25,6 +25,10 @@
     {
       "key": "msRelatorioTampinhas",
       "value": "http://localhost:5504"
+    },
+    {
+      "key": "msNoticias",
+      "value": "http://localhost:5505"
     }
   ],
   "item": [
@@ -482,6 +486,66 @@
           "request": {
             "method": "DELETE",
             "url": "{{msRelatorioAnimais}}/api/relatorios-animais/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "MS Noticias",
+      "item": [
+        {
+          "name": "Listar Noticias",
+          "request": {
+            "method": "GET",
+            "url": "{{msNoticias}}/api/noticias"
+          }
+        },
+        {
+          "name": "Criar Noticia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Campanha de arrecadacao\",\n  \"link\": \"https://exemplo.com/noticia\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia.jpg\"\n}"
+            },
+            "url": "{{msNoticias}}/api/noticias"
+          }
+        },
+        {
+          "name": "Buscar Noticia por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{msNoticias}}/api/noticias/1"
+          }
+        },
+        {
+          "name": "Atualizar Noticia",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Campanha atualizada\",\n  \"link\": \"https://exemplo.com/noticia-atualizada\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia-atualizada.jpg\"\n}"
+            },
+            "url": "{{msNoticias}}/api/noticias/1"
+          }
+        },
+        {
+          "name": "Remover Noticia",
+          "request": {
+            "method": "DELETE",
+            "url": "{{msNoticias}}/api/noticias/1"
           }
         }
       ]
