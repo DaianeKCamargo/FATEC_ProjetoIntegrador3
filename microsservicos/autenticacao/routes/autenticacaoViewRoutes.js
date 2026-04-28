@@ -54,9 +54,13 @@ router.get("/menu", (req, res) => {
 });
 
 router.get("/noticias", (req, res) => {
-    const noticiasBaseUrl =
-        process.env.NEWS_BASE_URL ||
-        (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:5505");
+    const noticiasBaseUrl = process.env.NEWS_BASE_URL || "http://localhost:5505";
+
+    if (!process.env.NEWS_BASE_URL && process.env.VERCEL_URL) {
+        return res
+            .status(500)
+            .send("URL do microserviço de notícias nao configurada. Defina NEWS_BASE_URL com o dominio publico do deploy de noticias.");
+    }
 
     return res.redirect(`${noticiasBaseUrl}/noticias`);
 });
