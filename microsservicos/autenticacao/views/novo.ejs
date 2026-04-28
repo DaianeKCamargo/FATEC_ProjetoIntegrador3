@@ -1,28 +1,132 @@
 <!doctype html>
-<html>
+<html lang="pt-BR">
 
 <head>
     <meta charset="utf-8" />
-    <title>Criar Credencial - Autenticacao</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Criar Credencial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 560px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .erro {
+            color: #b02a37;
+            background: #f8d7da;
+            border: 1px solid #f1aeb5;
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+        }
+
+        .form-grupo {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 18px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5c636a;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Criar Credencial</h1>
-    <% if (errors && errors.length) { %>
-        <ul style="color:red;">
-            <% errors.forEach(function(err){ %>
-                <li>
-                    <%= err %>
-                </li>
-                <% }) %>
-        </ul>
-        <% } %>
-            <form method="post" action="/credenciais/novo">
-                <label>Usuario: <input type="text" name="usuario" value="<%= values.usuario || '' %>" /></label><br />
-                <label>Senha: <input type="password" name="senha" /></label><br />
-                <button type="submit">Criar</button>
-            </form>
-            <p><a href="/login">Voltar</a></p>
+    <div class="container">
+        <h1>Criar Credencial</h1>
+
+        <% if (errors && errors.length) { %>
+            <div class="erro">
+                <ul>
+                    <% errors.forEach(function(err){ %>
+                        <li>
+                            <%= err %>
+                        </li>
+                        <% }) %>
+                </ul>
+            </div>
+            <% } %>
+
+                <form method="post" action="/credenciais/novo">
+                    <div class="form-grupo">
+                        <label for="usuario">Usuário</label>
+                        <input id="usuario" type="text" name="usuario" value="<%= values.usuario || '' %>" />
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="senha">Senha</label>
+                        <input id="senha" type="password" name="senha" />
+                    </div>
+
+                    <div class="acoes">
+                        <button class="btn btn-primary" type="submit">Criar</button>
+                        <a class="btn btn-secondary" href="/login">Voltar</a>
+                    </div>
+                </form>
+    </div>
 </body>
 
 </html>
