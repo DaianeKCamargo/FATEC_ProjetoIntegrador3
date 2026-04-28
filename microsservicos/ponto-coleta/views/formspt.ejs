@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nova Solicitação</title>
+</head>
+<body>
+    <h1>Criar Solicitação</h1>
+
+    <form action="/solicitacoes" method="POST">
+        <label>Nome:</label>
+        <input type="text" name="nome" required>
+
+        <label>Status:</label>
+        <input type="text" name="status">
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <a href="/solicitacoes">Voltar</a>
+</body>
+</html>
