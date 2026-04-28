@@ -46,11 +46,19 @@ router.post("/login", (req, res) => {
 
 router.get("/menu", (req, res) => {
     res.render("menu", {
-        noticiasUrl: process.env.NEWS_BASE_URL || "http://localhost:5505/noticias",
+        noticiasUrl: "/noticias",
         pontoColetaUrl: process.env.PONTO_COLETA_BASE_URL || "http://localhost:5501/menu",
         relatorioUrl: "/relatorio",
         credenciaisUrl: "/credenciais",
     });
+});
+
+router.get("/noticias", (req, res) => {
+    const noticiasBaseUrl =
+        process.env.NEWS_BASE_URL ||
+        (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:5505");
+
+    return res.redirect(`${noticiasBaseUrl}/noticias`);
 });
 
 router.get("/relatorio", (req, res) => {
