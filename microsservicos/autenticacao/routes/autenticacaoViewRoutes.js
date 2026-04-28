@@ -97,9 +97,48 @@ router.get("/pontos/:id", (req, res) => {
 
 router.get("/relatorio", (req, res) => {
     res.render("relatorio-menu", {
-        relatorioAnimaisUrl: process.env.RELATORIO_ANIMAIS_BASE_URL || "http://localhost:5503/relatorios-animais",
-        relatorioTampinhasUrl: process.env.RELATORIO_TAMPINHAS_BASE_URL || "http://localhost:5504/tampinhas",
+        relatorioAnimaisUrl: "/relatorios-animais",
+        relatorioTampinhasUrl: "/tampinhas",
         menuUrl: "/menu",
+    });
+});
+
+router.get("/relatorios-animais", (req, res) => {
+    res.render("relatorios", { relatorios: [] });
+});
+
+router.get("/relatorios-animais/novo", (req, res) => {
+    res.render("formsanimais", { errors: null, values: {} });
+});
+
+router.get("/relatorios-animais/:id", (req, res) => {
+    res.render("detalhes", {
+        relatorio: {
+            id: req.params.id,
+            data: new Date().toISOString().slice(0, 10),
+            tipoAnimal: "Animal",
+            quantidade: 0,
+        },
+    });
+});
+
+router.get("/tampinhas", (req, res) => {
+    res.render("tampinhas", { relatorios: [] });
+});
+
+router.get("/tampinhas/novo", (req, res) => {
+    res.render("formstampinhas", { errors: null, values: {} });
+});
+
+router.get("/tampinhas/:id", (req, res) => {
+    res.render("detalhestampinhas", {
+        relatorio: {
+            id: req.params.id,
+            data: new Date().toISOString().slice(0, 10),
+            quantidadeKg: 0,
+            peso_gramas: 0,
+            quantidade_tampinhas: 0,
+        },
     });
 });
 
