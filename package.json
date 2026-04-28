@@ -12,6 +12,8 @@
     "start:ms:relatorio-animais": "node microsservicos/relatorio-animais/app.js",
     "start:ms:relatorio-tampinhas": "node microsservicos/relatorio-tampinhas/app.js",
     "prisma:generate": "prisma generate",
+    "postinstall": "npm run prisma:generate",
+    "build": "npm run prisma:generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:studio": "prisma studio",
