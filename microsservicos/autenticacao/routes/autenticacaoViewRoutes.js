@@ -23,7 +23,7 @@ router.post("/credenciais/novo", (req, res) => {
     }
 
     model.criar({ usuario, senha });
-    return res.redirect("/credenciais");
+    return res.redirect("/login");
 });
 
 router.get("/login", (req, res) => {
