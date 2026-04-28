@@ -17,6 +17,10 @@ app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok", service: "ms-autenticacao" });
 });
 
+app.get("/", (req, res) => {
+    res.render("login", { message: null });
+});
+
 app.use("/api/credenciais", autenticacaoRoutes);
 app.use("/", autenticacaoViewRoutes);
 
