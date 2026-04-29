@@ -156,3 +156,7 @@ Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Post
 - CRUD do ms relatorio-animais
 - CRUD do ms relatorio-tampinhas
 - CRUD do ms noticias
+
+### Roteiro completo com exemplos
+
+- Consulte `postman/README_POSTMAN.md` para executar testes completos com payloads de exemplo, status esperados e casos de erro.

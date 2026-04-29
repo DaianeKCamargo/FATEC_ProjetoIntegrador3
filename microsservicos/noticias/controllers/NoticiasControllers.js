@@ -26,14 +26,13 @@ exports.buscarPorId = async (req, res) => {
 
 exports.criar = async (req, res) => {
   try {
-    const { titulo, conteudo, url } = req.body;
+    const { titulo, link, imagem } = req.body;
 
-    // validação
-    if (!titulo || !conteudo || !url) {
+    if (!titulo || !link || !imagem) {
       return res.status(400).json({ mensagem: "Campos obrigatórios" });
     }
 
-    const nova = await model.criarNoticia(titulo, conteudo, url);
+    const nova = await model.criarNoticia(titulo, link, imagem);
     res.status(201).json(nova);
   } catch (err) {
     res.status(500).json({ erro: err.message });
@@ -43,13 +42,8 @@ exports.criar = async (req, res) => {
 exports.atualizar = async (req, res) => {
   try {
     const { id } = req.params;
-    const { titulo, conteudo, url } = req.body;
 
-    if (!titulo || !conteudo || !url) {
-      return res.status(400).json({ mensagem: "Campos obrigatórios" });
-    }
-
-    const atualizada = await model.atualizarNoticia(id, titulo, conteudo, url);
+    const atualizada = await model.atualizarNoticia(id, req.body);
 
     res.json(atualizada);
   } catch (err) {

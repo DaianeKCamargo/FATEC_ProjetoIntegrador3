@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Tampets API Collection",
-    "description": "Colecao Postman da API principal e microservicos do projeto Tampets. Inclui healthchecks e operacoes CRUD principais para uso em desenvolvimento local.",
+    "description": "Colecao Postman da API principal e microservicos do projeto Tampets. Inclui healthchecks, operacoes CRUD e captura automatica de IDs para facilitar testes sequenciais com exemplos.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_postman_id": "f4f8b1d7-2a5c-4d95-9230-0a9e2cfbd141"
   },
@@ -29,6 +29,46 @@
     {
       "key": "msNoticias",
       "value": "http://localhost:5505"
+    },
+    {
+      "key": "usuarioId",
+      "value": "1"
+    },
+    {
+      "key": "pontoColetaId",
+      "value": "1"
+    },
+    {
+      "key": "noticiaId",
+      "value": "1"
+    },
+    {
+      "key": "solicitacaoId",
+      "value": "1"
+    },
+    {
+      "key": "solicitacaoIdReject",
+      "value": "2"
+    },
+    {
+      "key": "credencialId",
+      "value": "1"
+    },
+    {
+      "key": "credencialUsuario",
+      "value": "admin.exemplo"
+    },
+    {
+      "key": "relatorioAnimalId",
+      "value": "1"
+    },
+    {
+      "key": "msNoticiaId",
+      "value": "1"
+    },
+    {
+      "key": "relatorioTampinhasId",
+      "value": "1"
     }
   ],
   "item": [
@@ -97,13 +137,30 @@
               "raw": "{\n  \"nome\": \"Daiane\",\n  \"email\": \"daiane@email.com\"\n}"
             },
             "url": "{{app}}/api/usuarios"
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData && jsonData.id) {",
+                  "    pm.collectionVariables.set(\"usuarioId\", String(jsonData.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Buscar Usuario por ID",
           "request": {
             "method": "GET",
-            "url": "{{app}}/api/usuarios/1"
+            "url": "{{app}}/api/usuarios/{{usuarioId}}"
           }
         },
         {
@@ -120,14 +177,14 @@
               "mode": "raw",
               "raw": "{\n  \"nome\": \"Daiane Atualizada\",\n  \"email\": \"daiane.atualizada@email.com\"\n}"
             },
-            "url": "{{app}}/api/usuarios/1"
+            "url": "{{app}}/api/usuarios/{{usuarioId}}"
           }
         },
         {
           "name": "Remover Usuario",
           "request": {
             "method": "DELETE",
-            "url": "{{app}}/api/usuarios/1"
+            "url": "{{app}}/api/usuarios/{{usuarioId}}"
           }
         }
       ]
@@ -157,13 +214,30 @@
               "raw": "{\n  \"nomeEmpresa\": \"Empresa Verde\",\n  \"endereco\": \"Rua das Flores, 100\",\n  \"aprovado\": true\n}"
             },
             "url": "{{app}}/api/pontos-coleta"
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData && jsonData.id) {",
+                  "    pm.collectionVariables.set(\"pontoColetaId\", String(jsonData.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Buscar Ponto de Coleta por ID",
           "request": {
             "method": "GET",
-            "url": "{{app}}/api/pontos-coleta/1"
+            "url": "{{app}}/api/pontos-coleta/{{pontoColetaId}}"
           }
         },
         {
@@ -180,14 +254,14 @@
               "mode": "raw",
               "raw": "{\n  \"nomeEmpresa\": \"Empresa Verde Atualizada\",\n  \"endereco\": \"Rua das Flores, 120\",\n  \"aprovado\": true\n}"
             },
-            "url": "{{app}}/api/pontos-coleta/1"
+            "url": "{{app}}/api/pontos-coleta/{{pontoColetaId}}"
           }
         },
         {
           "name": "Remover Ponto de Coleta",
           "request": {
             "method": "DELETE",
-            "url": "{{app}}/api/pontos-coleta/1"
+            "url": "{{app}}/api/pontos-coleta/{{pontoColetaId}}"
           }
         }
       ]
@@ -217,13 +291,30 @@
               "raw": "{\n  \"titulo\": \"Nova campanha de castracao\",\n  \"link\": \"https://exemplo.com/noticia-campanha\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia.jpg\"\n}"
             },
             "url": "{{app}}/api/noticias"
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData && jsonData.id) {",
+                  "    pm.collectionVariables.set(\"noticiaId\", String(jsonData.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Buscar Noticia por ID",
           "request": {
             "method": "GET",
-            "url": "{{app}}/api/noticias/1"
+            "url": "{{app}}/api/noticias/{{noticiaId}}"
           }
         },
         {
@@ -240,14 +331,14 @@
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"Campanha atualizada\",\n  \"link\": \"https://exemplo.com/noticia-campanha-atualizada\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia-atualizada.jpg\"\n}"
             },
-            "url": "{{app}}/api/noticias/1"
+            "url": "{{app}}/api/noticias/{{noticiaId}}"
           }
         },
         {
           "name": "Remover Noticia",
           "request": {
             "method": "DELETE",
-            "url": "{{app}}/api/noticias/1"
+            "url": "{{app}}/api/noticias/{{noticiaId}}"
           }
         }
       ]
@@ -270,7 +361,24 @@
               "raw": "{\n  \"opensPc\": true,\n  \"nameUser\": \"Daiane Camargo\",\n  \"linkPhoto\": \"https://images.example.com/ponto-centro.jpg\",\n  \"cpfUser\": \"11144477735\",\n  \"cpnjPoint\": \"11222333000181\",\n  \"emailUser\": \"daiane@email.com\",\n  \"celUser\": \"11988887777\",\n  \"namePoint\": \"Ponto Centro\",\n  \"hourInit\": \"08:00\",\n  \"hour\": \"18:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"100\",\n    \"complement\": \"Sala 2\",\n    \"district\": \"Centro\",\n    \"city\": \"Sao Paulo\",\n    \"postCode\": \"01001000\"\n  }\n}"
             },
             "url": "{{msPontoColeta}}/api/pontos-coleta/requests"
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData && jsonData.idPc) {",
+                  "    pm.collectionVariables.set(\"solicitacaoId\", String(jsonData.idPc));",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Listar Solicitacoes",
@@ -290,7 +398,7 @@
           "name": "Buscar Solicitacao por ID",
           "request": {
             "method": "GET",
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/1"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/{{solicitacaoId}}"
           }
         },
         {
@@ -307,7 +415,7 @@
               "mode": "raw",
               "raw": "{\n  \"hourInit\": \"09:00\",\n  \"hour\": \"19:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"120\",\n    \"complement\": \"Sala 2\",\n    \"district\": \"Centro\",\n    \"city\": \"Sao Paulo\",\n    \"postCode\": \"01001000\"\n  }\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/1"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/{{solicitacaoId}}"
           }
         },
         {
@@ -324,7 +432,7 @@
               "mode": "raw",
               "raw": "{\n  \"decision\": \"APPROVE\",\n  \"reason\": \"Documentacao validada\"\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/1/review"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/{{solicitacaoId}}/review"
           }
         },
         {
@@ -341,7 +449,7 @@
               "mode": "raw",
               "raw": "{\n  \"decision\": \"REJECT\",\n  \"reason\": \"Endereco inconsistente\"\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/2/review"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/{{solicitacaoIdReject}}/review"
           }
         },
         {
@@ -375,16 +483,43 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"usuario\": \"admin\",\n  \"senha\": \"123456\",\n  \"ativo\": true\n}"
+              "raw": "{\n  \"usuario\": \"{{credencialUsuario}}\",\n  \"senha\": \"123456\",\n  \"ativo\": true\n}"
             },
             "url": "{{msAutenticacao}}/api/credenciais"
-          }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var generatedUser = 'admin.exemplo.' + Date.now();",
+                  "pm.collectionVariables.set('credencialUsuario', generatedUser);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData && jsonData.id) {",
+                  "    pm.collectionVariables.set(\"credencialId\", String(jsonData.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Buscar Credencial por ID",
           "request": {
             "method": "GET",
-            "url": "{{msAutenticacao}}/api/credenciais/1"
+            "url": "{{msAutenticacao}}/api/credenciais/{{credencialId}}"
           }
         },
         {
@@ -401,7 +536,7 @@
               "mode": "raw",
               "raw": "{\n  \"senha\": \"novaSenha123\"\n}"
             },
-            "url": "{{msAutenticacao}}/api/credenciais/1"
+            "url": "{{msAutenticacao}}/api/credenciais/{{credencialId}}"
           }
         },
         {
@@ -416,7 +551,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"usuario\": \"admin\",\n  \"senha\": \"novaSenha123\"\n}"
+              "raw": "{\n  \"usuario\": \"{{credencialUsuario}}\",\n  \"senha\": \"novaSenha123\"\n}"
             },
             "url": "{{msAutenticacao}}/api/credenciais/login"
           }
@@ -425,7 +560,7 @@
           "name": "Remover Credencial",
           "request": {
             "method": "DELETE",
-            "url": "{{msAutenticacao}}/api/credenciais/1"
+            "url": "{{msAutenticacao}}/api/credenciais/{{credencialId}}"
           }
         }
       ]
@@ -455,13 +590,30 @@
               "raw": "{\n  \"data\": \"2026-04-07\",\n  \"tipoAnimal\": \"gato\",\n  \"quantidade\": 3\n}"
             },
             "url": "{{msRelatorioAnimais}}/api/relatorios-animais"
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData && jsonData.id) {",
+                  "    pm.collectionVariables.set(\"relatorioAnimalId\", String(jsonData.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Buscar Relatorio Animal por ID",
           "request": {
             "method": "GET",
-            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/1"
+            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/{{relatorioAnimalId}}"
           }
         },
         {
@@ -478,14 +630,14 @@
               "mode": "raw",
               "raw": "{\n  \"tipoAnimal\": \"cachorro\",\n  \"quantidade\": 4\n}"
             },
-            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/1"
+            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/{{relatorioAnimalId}}"
           }
         },
         {
           "name": "Remover Relatorio Animal",
           "request": {
             "method": "DELETE",
-            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/1"
+            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/{{relatorioAnimalId}}"
           }
         }
       ]
@@ -515,13 +667,30 @@
               "raw": "{\n  \"titulo\": \"Campanha de arrecadacao\",\n  \"link\": \"https://exemplo.com/noticia\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia.jpg\"\n}"
             },
             "url": "{{msNoticias}}/api/noticias"
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData && jsonData.id) {",
+                  "    pm.collectionVariables.set(\"msNoticiaId\", String(jsonData.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Buscar Noticia por ID",
           "request": {
             "method": "GET",
-            "url": "{{msNoticias}}/api/noticias/1"
+            "url": "{{msNoticias}}/api/noticias/{{msNoticiaId}}"
           }
         },
         {
@@ -538,14 +707,14 @@
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"Campanha atualizada\",\n  \"link\": \"https://exemplo.com/noticia-atualizada\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia-atualizada.jpg\"\n}"
             },
-            "url": "{{msNoticias}}/api/noticias/1"
+            "url": "{{msNoticias}}/api/noticias/{{msNoticiaId}}"
           }
         },
         {
           "name": "Remover Noticia",
           "request": {
             "method": "DELETE",
-            "url": "{{msNoticias}}/api/noticias/1"
+            "url": "{{msNoticias}}/api/noticias/{{msNoticiaId}}"
           }
         }
       ]
@@ -575,13 +744,30 @@
               "raw": "{\n  \"data\": \"2026-04-07\",\n  \"quantidadeKg\": 12.5\n}"
             },
             "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas"
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData && jsonData.id) {",
+                  "    pm.collectionVariables.set(\"relatorioTampinhasId\", String(jsonData.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Buscar Relatorio Tampinhas por ID",
           "request": {
             "method": "GET",
-            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/1"
+            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/{{relatorioTampinhasId}}"
           }
         },
         {
@@ -598,14 +784,14 @@
               "mode": "raw",
               "raw": "{\n  \"quantidadeKg\": 15\n}"
             },
-            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/1"
+            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/{{relatorioTampinhasId}}"
           }
         },
         {
           "name": "Remover Relatorio Tampinhas",
           "request": {
             "method": "DELETE",
-            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/1"
+            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/{{relatorioTampinhasId}}"
           }
         }
       ]
