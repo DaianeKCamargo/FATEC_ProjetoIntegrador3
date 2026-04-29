@@ -1,8 +1,0 @@
-# Use this workspace to collaborate
-workspace:
-  id: 811d7efe-f831-46fe-87ba-c7a2d3a537c2
-
-localResources:
-  collections:
-    - ..\Tampets.postman_collection.json
-    - ..\microsservicos\ponto-coleta\ponto-coleta.postman_collection.json

@@ -1,3 +1,3 @@
-const app = require("../microsservicos/autenticacao/app");
+const app = require("./autenticacao/app");
 
 module.exports = app;
