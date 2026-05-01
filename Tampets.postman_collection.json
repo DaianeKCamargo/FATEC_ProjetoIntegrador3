@@ -109,6 +109,13 @@
             "method": "GET",
             "url": "{{msRelatorioTampinhas}}/health"
           }
+        },
+        {
+          "name": "MS Noticias - Health",
+          "request": {
+            "method": "GET",
+            "url": "{{msNoticias}}/health"
+          }
         }
       ]
     },

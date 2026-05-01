@@ -13,6 +13,10 @@ app.set('views', path.join(__dirname, 'views'));
 const noticiasRoutes = require('./routes/NoticiasRoutes');
 app.use('/api/noticias', noticiasRoutes);
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', service: 'ms-noticias' });
+});
+
 // Simple view routes to preview templates
 app.get('/noticias', (req, res) => res.render('noticias', { noticias: [] }));
 app.get('/noticias/novo', (req, res) => res.render('formnews', { errors: null, values: {} }));

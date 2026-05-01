@@ -121,6 +121,7 @@ F9: Cadastro de notícias (imagem, título e link);
 <code>npm run start:ms:autenticacao</code> - autenticação login <br>
 <code>npm run start:ms:relatorio-animais</code> - relatorio animais <br>
 <code>npm run start:ms:relatorio-tampinhas</code> - relatório tampinhas <br>
+<code>npm run start:ms:noticias</code> - relatório notícias <br>
 
 ## Documentacao Postman
 
