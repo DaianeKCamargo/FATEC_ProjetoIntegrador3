@@ -51,12 +51,16 @@
       "value": "2"
     },
     {
-      "key": "credencialId",
+      "key": "idAdmin",
       "value": "1"
     },
     {
-      "key": "credencialUsuario",
-      "value": "admin.exemplo"
+      "key": "adminUsername",
+      "value": "admin"
+    },
+    {
+      "key": "adminEmail",
+      "value": "admin@tampets.com"
     },
     {
       "key": "relatorioAnimalId",
@@ -472,14 +476,14 @@
       "name": "MS Autenticacao",
       "item": [
         {
-          "name": "Listar Credenciais",
+          "name": "Listar Administradores",
           "request": {
             "method": "GET",
             "url": "{{msAutenticacao}}/api/credenciais"
           }
         },
         {
-          "name": "Criar Credencial",
+          "name": "Registrar Novo Administrador",
           "request": {
             "method": "POST",
             "header": [
@@ -490,7 +494,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"usuario\": \"{{credencialUsuario}}\",\n  \"senha\": \"123456\",\n  \"ativo\": true\n}"
+              "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"emailUser\": \"{{adminEmail}}\",\n  \"senha\": \"senha123\"\n}"
             },
             "url": "{{msAutenticacao}}/api/credenciais"
           },
@@ -500,8 +504,9 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "var generatedUser = 'admin.exemplo.' + Date.now();",
-                  "pm.collectionVariables.set('credencialUsuario', generatedUser);"
+                  "var timestamp = Date.now();",
+                  "pm.collectionVariables.set('adminUsername', 'admin.' + timestamp);",
+                  "pm.collectionVariables.set('adminEmail', 'admin.' + timestamp + '@tampets.com');"
                 ]
               }
             },
@@ -514,8 +519,8 @@
                   "    pm.response.to.have.status(201);",
                   "});",
                   "var jsonData = pm.response.json();",
-                  "if (jsonData && jsonData.id) {",
-                  "    pm.collectionVariables.set(\"credencialId\", String(jsonData.id));",
+                  "if (jsonData && jsonData.idAdmin) {",
+                  "    pm.collectionVariables.set('idAdmin', String(jsonData.idAdmin));",
                   "}"
                 ]
               }
@@ -523,14 +528,14 @@
           ]
         },
         {
-          "name": "Buscar Credencial por ID",
+          "name": "Buscar Administrador por ID",
           "request": {
             "method": "GET",
-            "url": "{{msAutenticacao}}/api/credenciais/{{credencialId}}"
+            "url": "{{msAutenticacao}}/api/credenciais/{{idAdmin}}"
           }
         },
         {
-          "name": "Atualizar Credencial",
+          "name": "Atualizar Administrador",
           "request": {
             "method": "PUT",
             "header": [
@@ -543,11 +548,18 @@
               "mode": "raw",
               "raw": "{\n  \"senha\": \"novaSenha123\"\n}"
             },
-            "url": "{{msAutenticacao}}/api/credenciais/{{credencialId}}"
+            "url": "{{msAutenticacao}}/api/credenciais/{{idAdmin}}"
           }
         },
         {
-          "name": "Login",
+          "name": "Remover Administrador",
+          "request": {
+            "method": "DELETE",
+            "url": "{{msAutenticacao}}/api/credenciais/{{idAdmin}}"
+          }
+        },
+        {
+          "name": "LOGIN - Autenticar Admin",
           "request": {
             "method": "POST",
             "header": [
@@ -558,16 +570,67 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"usuario\": \"{{credencialUsuario}}\",\n  \"senha\": \"novaSenha123\"\n}"
+              "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"senha\": \"senha123\"\n}"
             },
-            "url": "{{msAutenticacao}}/api/credenciais/login"
+            "url": "{{msAutenticacao}}/login"
           }
         },
         {
-          "name": "Remover Credencial",
+          "name": "LOGOUT - Encerrar Sessão",
           "request": {
-            "method": "DELETE",
-            "url": "{{msAutenticacao}}/api/credenciais/{{credencialId}}"
+            "method": "GET",
+            "url": "{{msAutenticacao}}/logout"
+          }
+        },
+        {
+          "name": "Solicitar Recuperação de Senha",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emailUser\": \"{{adminEmail}}\"\n}"
+            },
+            "url": "{{msAutenticacao}}/api/credenciais/recuperacao/solicitar"
+          }
+        },
+        {
+          "name": "Validar Token de Recuperação",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emailUser\": \"{{adminEmail}}\",\n  \"resetToken\": \"seu_token_aqui\"\n}"
+            },
+            "url": "{{msAutenticacao}}/api/credenciais/recuperacao/validar"
+          }
+        },
+        {
+          "name": "Redefinir Senha com Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emailUser\": \"{{adminEmail}}\",\n  \"resetToken\": \"seu_token_aqui\",\n  \"novaSenha\": \"novaSenha123\"\n}"
+            },
+            "url": "{{msAutenticacao}}/api/credenciais/recuperacao/redefinir"
           }
         }
       ]

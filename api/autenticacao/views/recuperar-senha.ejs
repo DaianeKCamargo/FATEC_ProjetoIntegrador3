@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recuperar Senha - Tampets Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .recovery-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .recovery-card .card-body {
+            padding: 2.5rem;
+        }
+
+        .recovery-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .recovery-header h1 {
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.6rem;
+        }
+
+        .recovery-header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .form-label {
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #65398a 100%);
+            color: white;
+        }
+
+        .btn-back {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .btn-back:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .alert {
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+            gap: 10px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .step.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .hidden-step {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5 col-lg-4">
+                <div class="card recovery-card">
+                    <div class="card-body">
+                        <div class="recovery-header">
+                            <h1>Recuperar Senha</h1>
+                            <p>Redefinir sua senha de acesso</p>
+                        </div>
+
+                        <% if (error) { %>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <%= error %>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            <% } %>
+
+                                <% if (message) { %>
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <%= message %>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                    <% } %>
+
+                                        <!-- Passo 1: Solicitar Recuperação -->
+                                        <form id="solicitarForm" method="POST" action="/recuperacao/solicitar">
+                                            <div class="step-indicator">
+                                                <div class="step active">1. Email</div>
+                                                <div class="step">2. Token</div>
+                                                <div class="step">3. Nova Senha</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="emailUser" class="form-label">Email da Conta</label>
+                                                <input type="email" id="emailUser" name="emailUser" class="form-control"
+                                                    placeholder="seu@email.com"
+                                                    value="<%= (typeof values !== 'undefined' && values.emailUser) ? values.emailUser : '' %>"
+                                                    required />
+                                                <small class="form-text text-muted">
+                                                    Enviaremos um token para este email
+                                                </small>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-submit">Solicitar Recuperação</button>
+                                        </form>
+
+                                        <!-- Passo 2: Validar Token -->
+                                        <form id="validarForm" method="POST" action="/recuperacao/validar"
+                                            class="hidden-step">
+                                            <div class="step-indicator">
+                                                <div class="step">1. Email</div>
+                                                <div class="step active">2. Token</div>
+                                                <div class="step">3. Nova Senha</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="emailUserToken" class="form-label">Email</label>
+                                                <input type="email" id="emailUserToken" name="emailUser"
+                                                    class="form-control" placeholder="seu@email.com" required
+                                                    readonly />
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="resetToken" class="form-label">Token de Recuperação</label>
+                                                <input type="text" id="resetToken" name="resetToken"
+                                                    class="form-control" placeholder="Cole o token recebido no email"
+                                                    required />
+                                                <small class="form-text text-muted">
+                                                    Token recebido por email
+                                                </small>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-submit">Validar Token</button>
+                                        </form>
+
+                                        <!-- Passo 3: Redefinir Senha -->
+                                        <form id="redefinirForm" method="POST" action="/recuperacao/redefinir"
+                                            class="hidden-step">
+                                            <div class="step-indicator">
+                                                <div class="step">1. Email</div>
+                                                <div class="step">2. Token</div>
+                                                <div class="step active">3. Nova Senha</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="emailUserSenha" class="form-label">Email</label>
+                                                <input type="email" id="emailUserSenha" name="emailUser"
+                                                    class="form-control" placeholder="seu@email.com" required
+                                                    readonly />
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="resetTokenSenha" class="form-label">Token</label>
+                                                <input type="text" id="resetTokenSenha" name="resetToken"
+                                                    class="form-control" required readonly />
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="novaSenha" class="form-label">Nova Senha</label>
+                                                <input type="password" id="novaSenha" name="novaSenha"
+                                                    class="form-control" placeholder="Digite uma nova senha" required
+                                                    minlength="6" />
+                                                <small class="form-text text-muted">Mínimo 6 caracteres</small>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="confirmaNovaS" class="form-label">Confirmar Senha</label>
+                                                <input type="password" id="confirmaNovaS" name="confirmaNovaS"
+                                                    class="form-control" placeholder="Confirme a nova senha" required />
+                                            </div>
+
+                                            <button type="submit" class="btn btn-submit">Redefinir Senha</button>
+                                        </form>
+
+                                        <div class="footer-links">
+                                            <a href="/login" class="btn-back">← Voltar ao login</a>
+                                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Fluxo de recuperação de senha
+        let recuperacaoData = {
+            emailUser: '',
+            resetToken: ''
+        };
+
+        document.getElementById('solicitarForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('emailUser').value.trim();
+
+            if (!email) {
+                alert('Por favor, digite seu email');
+                return;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Por favor, digite um email válido');
+                return;
+            }
+
+            recuperacaoData.emailUser = email;
+
+            // Simular sucesso (em produção, seria uma chamada AJAX)
+            document.getElementById('emailUserToken').value = email;
+            document.getElementById('emailUserSenha').value = email;
+
+            document.getElementById('solicitarForm').closest('form').classList.add('hidden-step');
+            document.getElementById('validarForm').classList.remove('hidden-step');
+
+            alert('Código enviado! Cole o token que você recebeu no email.');
+        });
+
+        document.getElementById('validarForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const token = document.getElementById('resetToken').value.trim();
+
+            if (!token) {
+                alert('Por favor, digite o token');
+                return;
+            }
+
+            recuperacaoData.resetToken = token;
+
+            document.getElementById('resetTokenSenha').value = token;
+
+            document.getElementById('validarForm').classList.add('hidden-step');
+            document.getElementById('redefinirForm').classList.remove('hidden-step');
+        });
+
+        document.getElementById('redefinirForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const novaSenha = document.getElementById('novaSenha').value.trim();
+            const confirma = document.getElementById('confirmaNovaS').value.trim();
+
+            if (!novaSenha || !confirma) {
+                alert('Por favor, digite a senha em ambos os campos');
+                return;
+            }
+
+            if (novaSenha.length < 6) {
+                alert('Senha deve ter pelo menos 6 caracteres');
+                return;
+            }
+
+            if (novaSenha !== confirma) {
+                alert('As senhas não coincidem');
+                return;
+            }
+
+            // Submeter formulário
+            this.submit();
+        });
+    </script>
+</body>
+
+</html>

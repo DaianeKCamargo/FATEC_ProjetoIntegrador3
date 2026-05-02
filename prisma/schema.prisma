@@ -98,6 +98,19 @@ model PointCollectionApproved {
   @@map("point_collection_approved")
 }
 
+model AdminUser {
+  idAdmin           Int     @id @default(autoincrement()) @map("id_admin")
+  username          String  @unique
+  passHash          String  @map("pass_hash")
+  emailUser         String  @unique @map("email_user")
+  resetToken        String? @map("reset_token")
+  resetTokenExpiry  DateTime? @map("reset_token_expiry")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("admin_user")
+}
+
 model RelatorioAnimais {
   id           Int      @id @default(autoincrement())
   data         DateTime @db.Date

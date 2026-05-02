@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const session = require("express-session");
 const autenticacaoRoutes = require("./routes/autenticacaoRoutes");
 const autenticacaoViewRoutes = require("./routes/autenticacaoViewRoutes");
 
@@ -9,31 +10,55 @@ const PORT = process.env.AUTENTICACAO_PORT || 5502;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Configurar sessão
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET || "sua_chave_secreta_aqui",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // true em produção
+            sameSite: "strict",
+            maxAge: 1000 * 60 * 60 * 24, // 24 horas
+        },
+    })
+);
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
+// Health check
 app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok", service: "ms-autenticacao" });
 });
 
+// Rota raiz - redirecionar para login se não autenticado
 app.get("/", (req, res) => {
-    res.render("login", { message: null });
+    if (req.session.logado) {
+        return res.redirect("/menu");
+    }
+    res.render("login", { message: null, error: null, values: {} });
 });
 
+// Rotas da API
 app.use("/api/credenciais", autenticacaoRoutes);
+
+// Rotas de visualização
 app.use("/", autenticacaoViewRoutes);
 
+// Tratamento de erro 404
 app.use((req, res) => {
     if (req.accepts("html")) {
         return res.status(404).render("404", { url: req.originalUrl });
     }
-    return res.status(404).json({ message: "Rota nao encontrada" });
+    return res.status(404).json({ message: "Rota não encontrada" });
 });
 
 if (require.main === module) {
     app.listen(PORT, () => {
-        console.log(`Microservico autenticacao em execucao na porta ${PORT}`);
+        console.log(`Microserviço autenticação em execução na porta ${PORT}`);
     });
 }
 

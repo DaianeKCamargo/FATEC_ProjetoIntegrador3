@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Relatórios</title>
+</head>
+
+<body>
+    <h1>Relatórios de Animais</h1>
+
+    <a href="/relatorios-animais/novo">Novo Relatório</a>
+
+    <ul>
+        <% relatorios.forEach(r=> { %>
+            <li>
+                <strong>Data:</strong>
+                <%= r.data %> |
+                    <strong>Tipo:</strong>
+                    <%= r.tipoAnimal %> |
+                        <strong>Quantidade:</strong>
+                        <%= r.quantidade %>
+                            <br>
+
+                            <a href="/relatorios-animais/<%= r.id %>">Ver</a> |
+                            <a href="/relatorios-animais/<%= r.id %>/editar">Editar</a>
+
+                            <form action="/relatorios-animais/<%= r.id %>?_method=DELETE" method="POST"
+                                style="display:inline;">
+                                <button type="submit">Excluir</button>
+                            </form>
+            </li>
+            <% }) %>
+    </ul>
+</body>
+
+</html>

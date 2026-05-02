@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Novo Ponto de Coleta</title>
+</head>
+
+<body>
+    <h1>Criar Solicitação de Ponto de Coleta</h1>
+
+    <form action="/pontos" method="POST">
+        <label>Nome:</label>
+        <input type="text" name="nome" value="<%= values && values.nome ? values.nome : '' %>" required>
+
+        <label>Status:</label>
+        <input type="text" name="status" value="<%= values && values.status ? values.status : '' %>">
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <div style="margin-top: 16px;">
+        <a href="/menu">Voltar ao menu</a>
+    </div>
+</body>
+
+</html>

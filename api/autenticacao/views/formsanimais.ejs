@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Novo Relatório de Animais</title>
+</head>
+
+<body>
+    <h1>Criar Relatório de Animais</h1>
+
+    <form action="/relatorios-animais" method="POST">
+        <label>Data:</label>
+        <input type="date" name="data" required>
+
+        <label>Tipo do animal:</label>
+        <input type="text" name="tipoAnimal" required>
+
+        <label>Quantidade:</label>
+        <input type="number" name="quantidade" min="0" required>
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <div style="margin-top: 16px;">
+        <a href="/relatorios-animais">Voltar</a>
+    </div>
+</body>
+
+</html>
