@@ -1,247 +1,411 @@
 const express = require("express");
 const app = express();
+const prisma = require("./lib/prismaClient");
 
 app.use(express.json());
-
-const allowedStatus = ["PENDENTE", "APROVADO", "RECUSADO"];
-let nextRequestId = 1;
-let nextApprovedId = 1;
-let requests = [];
-let approvedPoints = [];
-
-function normalizeAddress(address = {}) {
-    return {
-        street: address.street || "",
-        number: address.number || "",
-        complement: address.complement || null,
-        district: address.district || "",
-        city: address.city || "",
-        postCode: address.postCode || "",
-    };
-}
-
-function buildApprovedFromRequest(request) {
-    return {
-        idPcApproved: nextApprovedId++,
-        sourceRequestId: request.idPc,
-        approvedAt: new Date().toISOString(),
-        opensPc: request.opensPc,
-        nameUser: request.nameUser,
-        linkPhoto: request.linkPhoto,
-        cpfUser: request.cpfUser,
-        cpnjPoint: request.cpnjPoint,
-        emailUser: request.emailUser,
-        celUser: request.celUser,
-        namePoint: request.namePoint,
-        hourInit: request.hourInit,
-        hour: request.hour,
-        address: request.address,
-    };
-}
 
 app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok", service: "ms-ponto-coleta" });
 });
 
-app.post("/api/pontos-coleta/requests", (req, res) => {
-    const payload = req.body || {};
-
-    const created = {
-        idPc: nextRequestId++,
-        status: "PENDENTE",
-        createdAt: new Date().toISOString(),
-        reviewedAt: null,
-        reviewReason: null,
-        approvedPointId: null,
-        opensPc: payload.opensPc,
-        nameUser: payload.nameUser,
-        linkPhoto: payload.linkPhoto,
-        cpfUser: payload.cpfUser,
-        cpnjPoint: payload.cpnjPoint,
-        emailUser: payload.emailUser,
-        celUser: payload.celUser,
-        namePoint: payload.namePoint,
-        hourInit: payload.hourInit,
-        hour: payload.hour,
-        address: normalizeAddress(payload.address),
-        approvedPoint: null,
-    };
-
-    requests.push(created);
-    return res.status(201).json(created);
-});
-
-app.get("/api/pontos-coleta/requests", (req, res) => {
+app.get("/api/pontos-coleta", async (req, res) => {
     const { status } = req.query;
+    const where = status ? { status } : undefined;
 
-    if (status && !allowedStatus.includes(status)) {
-        return res
-            .status(400)
-            .json({ message: "status deve ser PENDENTE, APROVADO ou RECUSADO" });
-    }
-
-    const result = status
-        ? requests.filter((item) => item.status === status)
-        : requests;
-
-    return res.status(200).json(result);
-});
-
-app.get("/api/pontos-coleta/requests/:id", (req, res) => {
-    const id = Number(req.params.id);
-    const item = requests.find((request) => request.idPc === id);
-
-    if (!item) {
-        return res
-            .status(404)
-            .json({ message: "Solicitacao de ponto de coleta nao encontrada" });
-    }
-
-    return res.status(200).json(item);
-});
-
-app.patch("/api/pontos-coleta/requests/:id", (req, res) => {
-    const id = Number(req.params.id);
-    const item = requests.find((request) => request.idPc === id);
-
-    if (!item) {
-        return res
-            .status(404)
-            .json({ message: "Solicitacao de ponto de coleta nao encontrada" });
-    }
-
-    if (item.status !== "PENDENTE") {
-        return res.status(409).json({
-            message: "Somente solicitacoes com status PENDENTE podem ser editadas",
-        });
-    }
-
-    const updates = req.body || {};
-    const hasData = Object.keys(updates).length > 0;
-    if (!hasData) {
-        return res.status(400).json({ message: "Informe ao menos um campo para atualizar" });
-    }
-
-    Object.assign(item, {
-        opensPc: updates.opensPc ?? item.opensPc,
-        nameUser: updates.nameUser ?? item.nameUser,
-        linkPhoto: updates.linkPhoto ?? item.linkPhoto,
-        cpfUser: updates.cpfUser ?? item.cpfUser,
-        cpnjPoint: updates.cpnjPoint ?? item.cpnjPoint,
-        emailUser: updates.emailUser ?? item.emailUser,
-        celUser: updates.celUser ?? item.celUser,
-        namePoint: updates.namePoint ?? item.namePoint,
-        hourInit: updates.hourInit ?? item.hourInit,
-        hour: updates.hour ?? item.hour,
-        address: updates.address
-            ? {
-                ...item.address,
-                ...normalizeAddress({ ...item.address, ...updates.address }),
-            }
-            : item.address,
+    const points = await prisma.pointCollection.findMany({
+        where,
+        include: { address: true },
+        orderBy: { createdAt: "desc" },
     });
 
-    return res.status(200).json(item);
+    return res.status(200).json(points);
 });
 
-app.patch("/api/pontos-coleta/requests/:id/review", (req, res) => {
+app.get("/api/pontos-coleta/approved", async (req, res) => {
+    const points = await prisma.pointCollection.findMany({
+        where: { status: "APROVADO" },
+        include: { address: true },
+        orderBy: { createdAt: "desc" },
+    });
+
+    return res.status(200).json(points);
+});
+
+app.patch("/api/pontos-coleta/:id/status", async (req, res) => {
     const id = Number(req.params.id);
-    const { decision, reason } = req.body || {};
-    const item = requests.find((request) => request.idPc === id);
+    const { status } = req.body || {};
+    const reason = req.body?.reason ?? req.body?.rejectionReason;
 
-    if (!item) {
-        return res
-            .status(404)
-            .json({ message: "Solicitacao de ponto de coleta nao encontrada" });
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({ message: "ID invalido" });
     }
 
-    if (item.status !== "PENDENTE") {
-        return res
-            .status(409)
-            .json({ message: "Solicitacao ja revisada anteriormente" });
+    if (!["APROVADO", "REJEITADO"].includes(status)) {
+        return res.status(400).json({ message: "status deve ser APROVADO ou REJEITADO" });
     }
 
-    if (!["APPROVE", "REJECT"].includes(decision)) {
-        return res
-            .status(400)
-            .json({ message: "decision deve ser APPROVE ou REJECT" });
+    if (status === "REJEITADO" && !reason) {
+        return res.status(400).json({ message: "reason e obrigatorio quando o status for REJEITADO" });
     }
 
-    item.reviewedAt = new Date().toISOString();
-    item.reviewReason = reason || null;
-
-    if (decision === "APPROVE") {
-        const approved = buildApprovedFromRequest(item);
-        approvedPoints.push(approved);
-        item.status = "APROVADO";
-        item.approvedPointId = approved.idPcApproved;
-        item.approvedPoint = approved;
-        return res.status(200).json({ reviewed: item, approved });
+    const current = await prisma.pointCollection.findUnique({ where: { idPc: id } });
+    if (!current) {
+        return res.status(404).json({ message: "Ponto de coleta nao encontrado" });
     }
 
-    item.status = "RECUSADO";
-    item.approvedPoint = null;
-    return res.status(200).json({ reviewed: item, approved: null });
+    const updated = await prisma.pointCollection.update({
+        where: { idPc: id },
+        data: { status },
+        include: { address: true },
+    });
+
+    return res.status(200).json({
+        message: `Status atualizado para ${status}`,
+        reason: reason || null,
+        data: updated,
+    });
 });
 
-app.get("/api/pontos-coleta/approved", (req, res) => {
-    return res.status(200).json(approvedPoints);
-});
-
-app.get("/admin/pontos-pendentes", (req, res) => {
-    const pendentes = requests.filter((item) => item.status === "PENDENTE");
-    res.json(pendentes);
-});
-
-
-app.put("/admin/aprovar/:id", (req, res) => {
-    const id = parseInt(req.params.id);
-
-    const request = requests.find((item) => item.idPc === id);
-
-    if (!request) {
-        return res.status(404).json({ erro: "Ponto não encontrado" });
-    }
-
-    if (request.status !== "PENDENTE") {
-        return res.status(409).json({ erro: "Solicitacao ja revisada" });
-    }
-
-    const approved = buildApprovedFromRequest(request);
-    request.status = "APROVADO";
-    request.reviewedAt = new Date().toISOString();
-    request.reviewReason = req.body?.reason || null;
-    request.approvedPointId = approved.idPcApproved;
-    request.approvedPoint = approved;
-
-    approvedPoints.push(approved);
-
-    return res.json({ mensagem: "Ponto aprovado com sucesso", ponto: request });
-});
-
-app.get("/pontos-coleta", (req, res) => {
-    res.json(approvedPoints);
-});
-
-
-app.get("/pontos-coleta/proximos", (req, res) => {
-
+app.get("/api/pontos-coleta/proximos", async (req, res) => {
     const cidade = req.query.cidade;
     if (!cidade) {
         return res.status(400).json({ message: "cidade e obrigatoria" });
     }
 
-    const resultados = approvedPoints.filter(
-        (point) => String(point.address?.city || "").toLowerCase() === cidade.toLowerCase()
-    );
+    const resultados = await prisma.pointCollection.findMany({
+        where: {
+            status: "APROVADO",
+            address: {
+                city: {
+                    equals: String(cidade),
+                    mode: "insensitive",
+                },
+            },
+        },
+        include: { address: true },
+        orderBy: { namePoint: "asc" },
+    });
 
     res.json(resultados);
-
 });
 
+app.post("/api/pontos-coleta", async (req, res) => {
+    const payload = req.body || {};
+    try {
+        const created = await prisma.pointCollection.create({
+            data: {
+                status: "PENDENTE",
+                nameUser: payload.nameUser,
+                cpfUser: payload.cpfUser,
+                celUser: payload.celUser,
+                emailUser: payload.emailUser,
+                linkPhoto: payload.linkPhoto,
+                namePoint: payload.namePoint,
+                cnpjPoint: payload.cnpjPoint,
+                opensDay: payload.opensDay,
+                hourInit: payload.hourInit,
+                hourFinal: payload.hourFinal,
+                address: payload.address
+                    ? {
+                        create: {
+                            street: payload.address.street,
+                            number: payload.address.number,
+                            complement: payload.address.complement || null,
+                            district: payload.address.district,
+                            city: payload.address.city,
+                            postCode: payload.address.postCode,
+                        },
+                    }
+                    : undefined,
+            },
+            include: { address: true },
+        });
+
+        return res.status(201).json(created);
+    } catch (error) {
+        if (error && error.code === 'P2002' && error.meta && error.meta.target) {
+            const field = Array.isArray(error.meta.target) ? error.meta.target.join(', ') : error.meta.target;
+            return res.status(409).json({ message: `Valor duplicado em campo unico: ${field}` });
+        }
+        console.error('Erro ao criar ponto de coleta:', error);
+        return res.status(500).json({ message: 'Erro interno ao criar ponto de coleta' });
+    }
+});
+
+
+// GET by ID (buscar um ponto específico)
+app.get("/api/pontos-coleta/:id", async (req, res) => {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({ message: "ID invalido" });
+    }
+
+    const point = await prisma.pointCollection.findUnique({
+        where: { idPc: id },
+        include: { address: true }
+    });
+
+    if (!point) {
+        return res.status(404).json({ message: "Ponto de coleta nao encontrado" });
+    }
+
+    return res.status(200).json(point);
+});
+
+// PATCH by ID (atualizar dados do ponto)
+app.patch("/api/pontos-coleta/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    const payload = req.body || {};
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({ message: "ID invalido" });
+    }
+
+    const current = await prisma.pointCollection.findUnique({ where: { idPc: id } });
+    if (!current) {
+        return res.status(404).json({ message: "Ponto de coleta nao encontrado" });
+    }
+
+    try {
+        const updated = await prisma.pointCollection.update({
+            where: { idPc: id },
+            data: {
+                nameUser: payload.nameUser ?? current.nameUser,
+                cpfUser: payload.cpfUser ?? current.cpfUser,
+                celUser: payload.celUser ?? current.celUser,
+                emailUser: payload.emailUser ?? current.emailUser,
+                linkPhoto: payload.linkPhoto ?? current.linkPhoto,
+                namePoint: payload.namePoint ?? current.namePoint,
+                cnpjPoint: payload.cnpjPoint ?? current.cnpjPoint,
+                opensDay: payload.opensDay ?? current.opensDay,
+                hourInit: payload.hourInit ?? current.hourInit,
+                hourFinal: payload.hourFinal ?? current.hourFinal,
+                address: payload.address
+                    ? {
+                        update: {
+                            street: payload.address.street ?? undefined,
+                            number: payload.address.number ?? undefined,
+                            complement: payload.address.complement ?? undefined,
+                            district: payload.address.district ?? undefined,
+                            city: payload.address.city ?? undefined,
+                            postCode: payload.address.postCode ?? undefined,
+                        }
+                    }
+                    : undefined,
+            },
+            include: { address: true }
+        });
+
+        return res.status(200).json({
+            message: "Ponto de coleta atualizado com sucesso",
+            data: updated
+        });
+    } catch (error) {
+        console.error('Erro ao atualizar ponto de coleta:', error);
+        return res.status(500).json({ message: 'Erro interno ao atualizar ponto de coleta' });
+    }
+});
 
 const PORT = process.env.MS_PONTO_COLETA_PORT || 5501;
 
 app.listen(PORT, () => {
     console.log(`Microservico rodando na porta ${PORT}`);
+});
+
+// Compatibility aliases (singular path) for older clients
+app.get("/api/ponto-coleta", async (req, res) => {
+    const { status } = req.query;
+    const where = status ? { status } : undefined;
+
+    const points = await prisma.pointCollection.findMany({
+        where,
+        include: { address: true },
+        orderBy: { createdAt: "desc" },
+    });
+
+    return res.status(200).json(points);
+});
+
+app.get("/api/ponto-coleta/approved", async (req, res) => {
+    const points = await prisma.pointCollection.findMany({
+        where: { status: "APROVADO" },
+        include: { address: true },
+        orderBy: { createdAt: "desc" },
+    });
+
+    return res.status(200).json(points);
+});
+
+app.patch("/api/ponto-coleta/:id/status", async (req, res) => {
+    const id = Number(req.params.id);
+    const { status } = req.body || {};
+    const reason = req.body?.reason ?? req.body?.rejectionReason;
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({ message: "ID invalido" });
+    }
+
+    if (!["APROVADO", "REJEITADO"].includes(status)) {
+        return res.status(400).json({ message: "status deve ser APROVADO ou REJEITADO" });
+    }
+
+    if (status === "REJEITADO" && !reason) {
+        return res.status(400).json({ message: "reason e obrigatorio quando o status for REJEITADO" });
+    }
+
+    const current = await prisma.pointCollection.findUnique({ where: { idPc: id } });
+    if (!current) {
+        return res.status(404).json({ message: "Ponto de coleta nao encontrado" });
+    }
+
+    const updated = await prisma.pointCollection.update({
+        where: { idPc: id },
+        data: { status },
+        include: { address: true },
+    });
+
+    return res.status(200).json({
+        message: `Status atualizado para ${status}`,
+        reason: reason || null,
+        data: updated,
+    });
+});
+
+app.get("/api/ponto-coleta/proximos", async (req, res) => {
+    const cidade = req.query.cidade;
+    if (!cidade) {
+        return res.status(400).json({ message: "cidade e obrigatoria" });
+    }
+
+    const resultados = await prisma.pointCollection.findMany({
+        where: {
+            status: "APROVADO",
+            address: {
+                city: {
+                    equals: String(cidade),
+                    mode: "insensitive",
+                },
+            },
+        },
+        include: { address: true },
+        orderBy: { namePoint: "asc" },
+    });
+
+    res.json(resultados);
+});
+
+app.get("/api/ponto-coleta/:id", async (req, res) => {
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({ message: "ID invalido" });
+    }
+
+    const point = await prisma.pointCollection.findUnique({
+        where: { idPc: id },
+        include: { address: true }
+    });
+
+    if (!point) {
+        return res.status(404).json({ message: "Ponto de coleta nao encontrado" });
+    }
+
+    return res.status(200).json(point);
+});
+
+app.patch("/api/ponto-coleta/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    const payload = req.body || {};
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return res.status(400).json({ message: "ID invalido" });
+    }
+
+    const current = await prisma.pointCollection.findUnique({ where: { idPc: id } });
+    if (!current) {
+        return res.status(404).json({ message: "Ponto de coleta nao encontrado" });
+    }
+
+    try {
+        const updated = await prisma.pointCollection.update({
+            where: { idPc: id },
+            data: {
+                nameUser: payload.nameUser ?? current.nameUser,
+                cpfUser: payload.cpfUser ?? current.cpfUser,
+                celUser: payload.celUser ?? current.celUser,
+                emailUser: payload.emailUser ?? current.emailUser,
+                linkPhoto: payload.linkPhoto ?? current.linkPhoto,
+                namePoint: payload.namePoint ?? current.namePoint,
+                cnpjPoint: payload.cnpjPoint ?? current.cnpjPoint,
+                opensDay: payload.opensDay ?? current.opensDay,
+                hourInit: payload.hourInit ?? current.hourInit,
+                hourFinal: payload.hourFinal ?? current.hourFinal,
+                address: payload.address
+                    ? {
+                        update: {
+                            street: payload.address.street ?? undefined,
+                            number: payload.address.number ?? undefined,
+                            complement: payload.address.complement ?? undefined,
+                            district: payload.address.district ?? undefined,
+                            city: payload.address.city ?? undefined,
+                            postCode: payload.address.postCode ?? undefined,
+                        }
+                    }
+                    : undefined,
+            },
+            include: { address: true }
+        });
+
+        return res.status(200).json({
+            message: "Ponto de coleta atualizado com sucesso",
+            data: updated
+        });
+    } catch (error) {
+        console.error('Erro ao atualizar ponto de coleta:', error);
+        return res.status(500).json({ message: 'Erro interno ao atualizar ponto de coleta' });
+    }
+});
+
+app.post("/api/ponto-coleta", async (req, res) => {
+    const payload = req.body || {};
+    try {
+        const created = await prisma.pointCollection.create({
+            data: {
+                status: "PENDENTE",
+                nameUser: payload.nameUser,
+                cpfUser: payload.cpfUser,
+                celUser: payload.celUser,
+                emailUser: payload.emailUser,
+                linkPhoto: payload.linkPhoto,
+                namePoint: payload.namePoint,
+                cnpjPoint: payload.cnpjPoint,
+                opensDay: payload.opensDay,
+                hourInit: payload.hourInit,
+                hourFinal: payload.hourFinal,
+                address: payload.address
+                    ? {
+                        create: {
+                            street: payload.address.street,
+                            number: payload.address.number,
+                            complement: payload.address.complement || null,
+                            district: payload.address.district,
+                            city: payload.address.city,
+                            postCode: payload.address.postCode,
+                        },
+                    }
+                    : undefined,
+            },
+            include: { address: true },
+        });
+
+        return res.status(201).json(created);
+    } catch (error) {
+        if (error && error.code === 'P2002' && error.meta && error.meta.target) {
+            const field = Array.isArray(error.meta.target) ? error.meta.target.join(', ') : error.meta.target;
+            return res.status(409).json({ message: `Valor duplicado em campo unico: ${field}` });
+        }
+        console.error('Erro ao criar ponto de coleta (singular):', error);
+        return res.status(500).json({ message: 'Erro interno ao criar ponto de coleta' });
+    }
 });

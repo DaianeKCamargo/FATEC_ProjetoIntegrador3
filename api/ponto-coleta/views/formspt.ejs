@@ -1,21 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
-    <title>Nova Solicitação</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Novo Ponto de Coleta</title>
 </head>
+
 <body>
-    <h1>Criar Solicitação</h1>
+    <h1>Cadastrar ponto de coleta</h1>
+    <form action="/pontos" method="POST">
+        <label>Nome do responsável:</label>
+        <input type="text" name="nameUser" value="<%= values && values.nameUser ? values.nameUser : '' %>" required>
 
-    <form action="/solicitacoes" method="POST">
-        <label>Nome:</label>
-        <input type="text" name="nome" required>
+        <label>CPF:</label>
+        <input type="text" name="cpfUser" value="<%= values && values.cpfUser ? values.cpfUser : '' %>" required>
 
-        <label>Status:</label>
-        <input type="text" name="status">
+        <label>Celular:</label>
+        <input type="text" name="celUser" value="<%= values && values.celUser ? values.celUser : '' %>" required>
+
+        <label>E-mail:</label>
+        <input type="email" name="emailUser" value="<%= values && values.emailUser ? values.emailUser : '' %>" required>
+
+        <label>Link da foto:</label>
+        <input type="url" name="linkPhoto" value="<%= values && values.linkPhoto ? values.linkPhoto : '' %>" required>
+
+        <label>Nome do ponto:</label>
+        <input type="text" name="namePoint" value="<%= values && values.namePoint ? values.namePoint : '' %>" required>
+
+        <label>CNPJ:</label>
+        <input type="text" name="cnpjPoint" value="<%= values && values.cnpjPoint ? values.cnpjPoint : '' %>" required>
+
+        <label>Dias de funcionamento:</label>
+        <input type="text" name="opensDay" value="<%= values && values.opensDay ? values.opensDay : '' %>" required>
+
+        <label>Horário inicial:</label>
+        <input type="time" name="hourInit" value="<%= values && values.hourInit ? values.hourInit : '' %>" required>
+
+        <label>Horário final:</label>
+        <input type="time" name="hourFinal" value="<%= values && values.hourFinal ? values.hourFinal : '' %>" required>
+
+        <label>Rua:</label>
+        <input type="text" name="address[street]"
+            value="<%= values && values.address && values.address.street ? values.address.street : '' %>" required>
+
+        <label>Número:</label>
+        <input type="text" name="address[number]"
+            value="<%= values && values.address && values.address.number ? values.address.number : '' %>" required>
+
+        <label>Complemento:</label>
+        <input type="text" name="address[complement]"
+            value="<%= values && values.address && values.address.complement ? values.address.complement : '' %>">
+
+        <label>Bairro:</label>
+        <input type="text" name="address[district]"
+            value="<%= values && values.address && values.address.district ? values.address.district : '' %>" required>
+
+        <label>Cidade:</label>
+        <input type="text" name="address[city]"
+            value="<%= values && values.address && values.address.city ? values.address.city : '' %>" required>
+
+        <label>CEP:</label>
+        <input type="text" name="address[postCode]"
+            value="<%= values && values.address && values.address.postCode ? values.address.postCode : '' %>" required>
 
         <button type="submit">Salvar</button>
     </form>
 
-    <a href="/solicitacoes">Voltar</a>
+    <% if (errors && errors.length) { %>
+        <ul>
+            <% errors.forEach(function(error) { %>
+                <li>
+                    <%= error %>
+                </li>
+                <% }) %>
+        </ul>
+        <% } %>
+
+            <a href="/pontos/solicitacao">Ver pontos aprovados</a>
 </body>
+
 </html>

@@ -16,8 +16,10 @@ app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok", service: "app-principal" });
 });
 
+app.use("/api/points", pontoColetaRoutes);
 app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/pontos-coleta", pontoColetaRoutes);
+app.use("/api/ponto-coleta", pontoColetaRoutes);
 app.use("/api/noticias", noticiaRoutes);
 
 app.use((req, res) => {

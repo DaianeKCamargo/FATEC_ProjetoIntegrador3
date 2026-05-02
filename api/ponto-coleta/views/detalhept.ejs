@@ -1,15 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
-    <title>Detalhe</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Detalhe do Ponto</title>
 </head>
+
 <body>
-    <h1>Detalhe da Solicitação</h1>
+    <% if (typeof error !=='undefined' && error) { %>
+        <p>
+            <%= error %>
+        </p>
+        <% } else { %>
+            <% const item=ponto || solicitacao; %>
+                <h1>Detalhe do Ponto de Coleta</h1>
+                <p><strong>ID:</strong>
+                    <%= item.idPc || item.id || '' %>
+                </p>
+                <p><strong>Nome do ponto:</strong>
+                    <%= item.namePoint || item.nome || '' %>
+                </p>
+                <p><strong>Status:</strong>
+                    <%= item.status || 'PENDENTE' %>
+                </p>
+                <p><strong>Responsável:</strong>
+                    <%= item.nameUser || item.nome || '' %>
+                </p>
+                <p><strong>Cidade:</strong>
+                    <%= item.address ? item.address.city : '' %>
+                </p>
+                <% } %>
 
-    <p><strong>ID:</strong> <%= solicitacao.id %></p>
-    <p><strong>Nome:</strong> <%= solicitacao.nome %></p>
-    <p><strong>Status:</strong> <%= solicitacao.status %></p>
-
-    <a href="/solicitacoes">Voltar</a>
+                    <a href="/pontos/solicitacao">Voltar</a>
 </body>
+
 </html>

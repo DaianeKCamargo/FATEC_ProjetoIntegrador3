@@ -21,7 +21,8 @@ app.get("/health", (req, res) => {
     });
 });
 
-app.use("/api/pontos-coleta", pontoColetaRoutes);
+app.use("/api/points", pontoColetaRoutes);
+app.use("/api/ponto-coleta", pontoColetaRoutes);
 
 app.get('/menu', (req, res) => res.render('menu'));
 

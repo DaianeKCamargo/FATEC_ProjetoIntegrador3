@@ -2,8 +2,38 @@ const express = require("express");
 const model = require("../models/autenticacaoModels");
 
 const router = express.Router();
+const pontoColetaBaseUrl = (
+    process.env.PONTO_COLETA_API_URL ||
+    process.env.MS_PONTO_COLETA_URL ||
+    "http://localhost:5501"
+).replace(/\/$/, "");
 
-        // ===== ROTAS DE AUTENTICAÇÃO =====
+async function fetchPontoColeta(path, options = {}) {
+    const response = await fetch(`${pontoColetaBaseUrl}${path}`, {
+        ...options,
+        headers: {
+            "Content-Type": "application/json",
+            ...(options.headers || {}),
+        },
+    });
+
+    const contentType = response.headers.get("content-type") || "";
+    const body = contentType.includes("application/json")
+        ? await response.json()
+        : await response.text();
+
+    if (!response.ok) {
+        const error = new Error(
+            (body && body.message) || "Erro ao comunicar com o servico de ponto de coleta"
+        );
+        error.statusCode = response.status;
+        throw error;
+    }
+
+    return body;
+}
+
+// ===== ROTAS DE AUTENTICAÇÃO =====
 
 // GET /login - Mostrar página de login
 router.get("/login", (req, res) => {
@@ -49,7 +79,7 @@ router.get("/logout", (req, res) => {
     });
 });
 
-        // ===== ROTAS DE REGISTRO =====
+// ===== ROTAS DE REGISTRO =====
 
 // GET /credenciais/novo - Mostrar formulário de registro
 router.get("/credenciais/novo", (req, res) => {
@@ -106,7 +136,7 @@ router.post("/credenciais/novo", async (req, res) => {
     }
 });
 
-        // ===== ROTAS DE RECUPERAÇÃO DE SENHA =====
+// ===== ROTAS DE RECUPERAÇÃO DE SENHA =====
 
 // GET /recuperar-senha - Mostrar formulário de recuperação
 router.get("/recuperar-senha", (req, res) => {
@@ -199,7 +229,7 @@ router.post("/recuperacao/redefinir", async (req, res) => {
     }
 });
 
-        // ===== ROTAS DO MENU =====
+// ===== ROTAS DO MENU =====
 
 // GET /menu - Menu principal do administrador
 router.get("/menu", (req, res) => {
@@ -211,7 +241,7 @@ router.get("/menu", (req, res) => {
     });
 });
 
-        // ===== ROTAS DE NOTÍCIAS =====
+// ===== ROTAS DE NOTÍCIAS =====
 
 router.get("/noticias", (req, res) => {
     res.render("noticias", { noticias: [] });
@@ -231,34 +261,47 @@ router.get("/pontos", (req, res) => {
     res.render("formspt", { errors: null, values: {} });
 });
 
-router.post("/pontos", (req, res) => {
-    const { nome, status } = req.body;
+router.post("/pontos", async (req, res) => {
+    try {
+        const created = await fetchPontoColeta("/api/points", {
+            method: "POST",
+            body: JSON.stringify(req.body),
+        });
 
-    if (!nome) {
-        return res.status(400).render("formspt", {
-            errors: ["Nome é obrigatório"],
+        return res.render("detalhept", {
+            ponto: created,
+        });
+    } catch (error) {
+        const errors = [error.message || "Erro ao cadastrar ponto de coleta"];
+        return res.status(error.statusCode || 400).render("formspt", {
+            errors,
             values: req.body,
         });
     }
-
-    res.render("detalhept", {
-        solicitacao: {
-            id: Date.now(),
-            nome,
-            status: status || "PENDENTE",
-        },
-    });
 });
 
-router.get("/pontos/solicitacao", (req, res) => {
-    res.render("Solicitacaopt", {});
+router.get("/pontos/solicitacao", async (req, res) => {
+    try {
+        const pontos = await fetchPontoColeta("/api/points?status=APROVADO");
+        res.render("Solicitacaopt", { pontos });
+    } catch (error) {
+        res.status(error.statusCode || 500).render("Solicitacaopt", { pontos: [], error: error.message });
+    }
 });
 
-router.get("/pontos/:id", (req, res) => {
-    res.render("detalhept", { solicitacao: { id: req.params.id, nome: "Solicitação", status: "PENDENTE" } });
+router.get("/pontos/:id", async (req, res) => {
+    try {
+        const ponto = await fetchPontoColeta(`/api/points/${req.params.id}`);
+        res.render("detalhept", { ponto });
+    } catch (error) {
+        res.status(error.statusCode || 404).render("detalhept", {
+            ponto: null,
+            error: error.message,
+        });
+    }
 });
 
-        // ===== ROTAS DE RELATÓRIOS =====
+// ===== ROTAS DE RELATÓRIOS =====
 
 router.get("/relatorio", (req, res) => {
     res.render("relatorio-menu", {

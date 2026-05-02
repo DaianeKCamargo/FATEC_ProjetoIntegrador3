@@ -207,7 +207,7 @@
           "name": "Listar Pontos de Coleta",
           "request": {
             "method": "GET",
-            "url": "{{app}}/api/pontos-coleta"
+            "url": "{{app}}/api/ponto-coleta"
           }
         },
         {
@@ -222,9 +222,9 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nomeEmpresa\": \"Empresa Verde\",\n  \"endereco\": \"Rua das Flores, 100\",\n  \"aprovado\": true\n}"
+              "raw": "{\n  \"nameUser\": \"Daiane Camargo\",\n  \"cpfUser\": \"11144477735\",\n  \"celUser\": \"11988887777\",\n  \"emailUser\": \"daiane@example.com\",\n  \"linkPhoto\": \"https://example.com/photo.jpg\",\n  \"namePoint\": \"Ponto Centro\",\n  \"cnpjPoint\": \"11222333000181\",\n  \"opensDay\": \"Segunda a Sexta\",\n  \"hourInit\": \"08:00\",\n  \"hourFinal\": \"18:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"100\",\n    \"district\": \"Centro\",\n    \"city\": \"Sao Paulo\",\n    \"postCode\": \"01001000\"\n  }\n}"
             },
-            "url": "{{app}}/api/pontos-coleta"
+            "url": "{{app}}/api/ponto-coleta"
           },
           "event": [
             {
@@ -248,7 +248,7 @@
           "name": "Buscar Ponto de Coleta por ID",
           "request": {
             "method": "GET",
-            "url": "{{app}}/api/pontos-coleta/{{pontoColetaId}}"
+            "url": "{{app}}/api/ponto-coleta/{{pontoColetaId}}"
           }
         },
         {
@@ -263,16 +263,16 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nomeEmpresa\": \"Empresa Verde Atualizada\",\n  \"endereco\": \"Rua das Flores, 120\",\n  \"aprovado\": true\n}"
+              "raw": "{\n  \"namePoint\": \"Ponto Centro Atualizado\",\n  \"hourInit\": \"09:00\",\n  \"address\": {\n    \"number\": \"120\"\n  }\n}"
             },
-            "url": "{{app}}/api/pontos-coleta/{{pontoColetaId}}"
+            "url": "{{app}}/api/ponto-coleta/{{pontoColetaId}}"
           }
         },
         {
           "name": "Remover Ponto de Coleta",
           "request": {
             "method": "DELETE",
-            "url": "{{app}}/api/pontos-coleta/{{pontoColetaId}}"
+            "url": "{{app}}/api/ponto-coleta/{{pontoColetaId}}"
           }
         }
       ]
@@ -369,9 +369,9 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"opensPc\": true,\n  \"nameUser\": \"Daiane Camargo\",\n  \"linkPhoto\": \"https://images.example.com/ponto-centro.jpg\",\n  \"cpfUser\": \"11144477735\",\n  \"cpnjPoint\": \"11222333000181\",\n  \"emailUser\": \"daiane@email.com\",\n  \"celUser\": \"11988887777\",\n  \"namePoint\": \"Ponto Centro\",\n  \"hourInit\": \"08:00\",\n  \"hour\": \"18:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"100\",\n    \"complement\": \"Sala 2\",\n    \"district\": \"Centro\",\n    \"city\": \"Sao Paulo\",\n    \"postCode\": \"01001000\"\n  }\n}"
+              "raw": "{\n  \"nameUser\": \"Daiane Camargo\",\n  \"cpfUser\": \"11144477735\",\n  \"celUser\": \"11988887777\",\n  \"emailUser\": \"daiane@example.com\",\n  \"linkPhoto\": \"https://images.example.com/ponto-centro.jpg\",\n  \"namePoint\": \"Ponto Centro\",\n  \"cnpjPoint\": \"11222333000181\",\n  \"opensDay\": \"Segunda a Sexta\",\n  \"hourInit\": \"08:00\",\n  \"hourFinal\": \"18:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"100\",\n    \"complement\": \"Sala 2\",\n    \"district\": \"Centro\",\n    \"city\": \"Sao Paulo\",\n    \"postCode\": \"01001000\"\n  }\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests"
+            "url": "{{msPontoColeta}}/api/ponto-coleta"
           },
           "event": [
             {
@@ -395,21 +395,21 @@
           "name": "Listar Solicitacoes",
           "request": {
             "method": "GET",
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests"
+            "url": "{{msPontoColeta}}/api/pontos-coleta"
           }
         },
         {
           "name": "Listar Solicitacoes por Status",
           "request": {
             "method": "GET",
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests?status=PENDENTE"
+            "url": "{{msPontoColeta}}/api/pontos-coleta?status=PENDENTE"
           }
         },
         {
           "name": "Buscar Solicitacao por ID",
           "request": {
             "method": "GET",
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/{{solicitacaoId}}"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/{{solicitacaoId}}"
           }
         },
         {
@@ -424,9 +424,9 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"hourInit\": \"09:00\",\n  \"hour\": \"19:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"120\",\n    \"complement\": \"Sala 2\",\n    \"district\": \"Centro\",\n    \"city\": \"Sao Paulo\",\n    \"postCode\": \"01001000\"\n  }\n}"
+              "raw": "{\n  \"hourInit\": \"09:00\",\n  \"hourFinal\": \"19:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"120\"\n  }\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/{{solicitacaoId}}"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/{{solicitacaoId}}"
           }
         },
         {
@@ -441,9 +441,9 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"decision\": \"APPROVE\",\n  \"reason\": \"Documentacao validada\"\n}"
+              "raw": "{\n  \"status\": \"APROVADO\",\n  \"reason\": \"Documentacao validada\"\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/{{solicitacaoId}}/review"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/{{solicitacaoId}}/status"
           }
         },
         {
@@ -458,9 +458,9 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"decision\": \"REJECT\",\n  \"reason\": \"Endereco inconsistente\"\n}"
+              "raw": "{\n  \"status\": \"REJEITADO\",\n  \"reason\": \"Endereco inconsistente\"\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/requests/{{solicitacaoIdReject}}/review"
+            "url": "{{msPontoColeta}}/api/pontos-coleta/{{solicitacaoIdReject}}/status"
           }
         },
         {

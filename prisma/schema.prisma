@@ -10,17 +10,7 @@ datasource db {
 enum PointCollectionStatus {
   PENDENTE
   APROVADO
-  RECUSADO
-}
-
-model User {
-  id        Int     @id @default(autoincrement())
-  nome      String
-  email     String  @unique
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("users")
+  REJEITADO
 }
 
 model Noticia {
@@ -34,68 +24,43 @@ model Noticia {
   @@map("noticias")
 }
 
-model AddressPoint {
-  idAdress       Int                       @id @default(autoincrement()) @map("id_adress")
-  street         String
-  number         String
-  complement     String?
-  district       String
-  city           String
-  postCode       String                    @map("post_code")
-  createdAt      DateTime                  @default(now()) @map("created_at")
-  updatedAt      DateTime                  @updatedAt @map("updated_at")
-  tempPoints     PointCollectionRequest[]
-  approvedPoints PointCollectionApproved[]
-
-  @@map("adress_point")
-}
-
-model PointCollectionRequest {
-  idPc            Int                       @id @default(autoincrement()) @map("id_pc")
-  opensPc         Boolean                   @default(false) @map("opens_pc")
-  nameUser        String                    @map("name_user")
-  linkPhoto       String                    @map("link_photo")
-  cpfUser         String                    @map("cpf_user")
-  cpnjPoint       String                    @map("cpnj_point")
-  emailUser       String                    @map("email_user")
-  celUser         String                    @map("cel_user")
-  namePoint       String                    @map("name_point")
-  hourInit        String                    @map("hour_init")
-  hour            String
-  status          PointCollectionStatus     @default(PENDENTE)
-  reviewReason    String?                   @map("review_reason")
-  reviewedAt      DateTime?                 @map("reviewed_at")
-  approvedPointId Int?                      @unique @map("approved_point_id")
-  idAdress        Int                       @map("id_adress")
-  createdAt       DateTime                  @default(now()) @map("created_at")
-  updatedAt       DateTime                  @updatedAt @map("updated_at")
-  address         AddressPoint              @relation(fields: [idAdress], references: [idAdress])
-  approvedPoint   PointCollectionApproved?  @relation("RequestToApproved", fields: [approvedPointId], references: [idPcApproved])
+model PointCollection {
+  idPc            Int                   @id @default(autoincrement()) @map("id_pc")
+  status          PointCollectionStatus @default(PENDENTE)
+  nameUser        String                @map("name_user")
+  cpfUser         String                @unique @map("cpf_user")
+  celUser         String                @map("cel_user")
+  emailUser       String                @map("email_user")
+  linkPhoto       String                @map("link_photo")
+  namePoint       String                @map("name_point")
+  cnpjPoint       String                @unique @map("cnpj_point")
+  opensDay        String                @map("opens_day")
+  hourInit        String                @map("hour_init")
+  hourFinal       String                @map("hour_final")
+  createdAt       DateTime              @default(now()) @map("created_at")
+  updatedAt       DateTime              @updatedAt @map("updated_at")
+  address         AddressPoint?
 
   @@index([status])
-  @@index([idAdress])
-  @@map("point_collection")
+  @@index([namePoint])
+  @@map("point_collections")
 }
 
-model PointCollectionApproved {
-  idPcApproved Int                     @id @default(autoincrement()) @map("id_pc_approved")
-  opensPc      Boolean                 @default(false) @map("opens_pc")
-  nameUser     String                  @map("name_user")
-  linkPhoto    String                  @map("link_photo")
-  cpfUser      String                  @map("cpf_user")
-  cpnjPoint    String                  @map("cpnj_point")
-  emailUser    String                  @map("email_user")
-  celUser      String                  @map("cel_user")
-  namePoint    String                  @map("name_point")
-  hourInit     String                  @map("hour_init")
-  hour         String
-  approvedAt   DateTime                @default(now()) @map("approved_at")
-  idAdress     Int                     @map("id_adress")
-  address      AddressPoint            @relation(fields: [idAdress], references: [idAdress])
-  sourceRequest PointCollectionRequest? @relation("RequestToApproved")
+model AddressPoint {
+  idAddress         Int             @id @default(autoincrement()) @map("id_address")
+  street            String
+  number            String
+  complement        String?
+  district          String
+  city              String
+  postCode          String          @map("post_code")
+  fkPointCollections Int             @unique @map("fk_point_collections")
+  pointCollection    PointCollection @relation(fields: [fkPointCollections], references: [idPc], onDelete: Cascade)
+  createdAt         DateTime        @default(now()) @map("created_at")
+  updatedAt         DateTime        @updatedAt @map("updated_at")
 
-  @@index([idAdress])
-  @@map("point_collection_approved")
+  @@index([city])
+  @@map("address_point")
 }
 
 model AdminUser {
@@ -132,13 +97,3 @@ model RelatorioTampinhas {
   @@map("relatorio_tampinhas")
 }
 
-model Credencial {
-  id        Int     @id @default(autoincrement())
-  usuario   String  @unique
-  senha     String
-  ativo     Boolean @default(true)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("credenciais")
-}

@@ -1,24 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 
 <head>
-    <title>Detalhe</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Detalhe do Ponto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .card {
+            max-width: 860px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .meta {
+            color: #334155;
+            line-height: 1.7;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: #d1fae5;
+            color: #065f46;
+            font-weight: 700;
+        }
+
+        a {
+            color: #0f766e;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .empty {
+            padding: 16px;
+            border-radius: 10px;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Detalhe da Solicitação</h1>
+    <main class="card">
+        <% if (typeof error !=='undefined' && error) { %>
+            <div class="empty">
+                <%= error %>
+            </div>
+            <% } else if (ponto || solicitacao) { %>
+                <% const item=ponto || solicitacao; %>
+                    <h1>
+                        <%= item.namePoint || item.nome || 'Ponto de coleta' %>
+                    </h1>
+                    <p><span class="badge">
+                            <%= item.status || 'PENDENTE' %>
+                        </span></p>
+                    <div class="meta">
+                        <strong>ID:</strong>
+                        <%= item.idPc || item.id || '-' %><br>
+                            <strong>Responsável:</strong>
+                            <%= item.nameUser || item.nome || '-' %><br>
+                                <strong>E-mail:</strong>
+                                <%= item.emailUser || '-' %><br>
+                                    <strong>Telefone:</strong>
+                                    <%= item.celUser || '-' %><br>
+                                        <strong>CNPJ:</strong>
+                                        <%= item.cnpjPoint || '-' %><br>
+                                            <strong>Funcionamento:</strong>
+                                            <%= item.opensDay || '-' %><br>
+                                                <strong>Horário:</strong>
+                                                <%= item.hourInit || '-' %> - <%= item.hourFinal || item.hour || '-' %>
+                                                        <br>
+                                                        <strong>Cidade:</strong>
+                                                        <%= item.address && item.address.city ? item.address.city : '-'
+                                                            %><br>
+                                                            <strong>Endereço:</strong>
+                                                            <%= item.address ? `${item.address.street || '' },
+                                                                ${item.address.number || '' }` : '-' %>
+                    </div>
+                    <% } else { %>
+                        <div class="empty">Nenhum ponto foi encontrado.</div>
+                        <% } %>
 
-    <p><strong>ID:</strong>
-        <%= solicitacao.id %>
-    </p>
-    <p><strong>Nome:</strong>
-        <%= solicitacao.nome %>
-    </p>
-    <p><strong>Status:</strong>
-        <%= solicitacao.status %>
-    </p>
-
-    <a href="/solicitacoes">Voltar</a>
+                            <div style="margin-top: 18px;">
+                                <a href="/pontos/solicitacao">Voltar para aprovados</a>
+                            </div>
+    </main>
 </body>
 
 </html>

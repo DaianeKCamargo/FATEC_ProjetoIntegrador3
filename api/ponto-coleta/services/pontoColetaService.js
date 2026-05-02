@@ -1,14 +1,14 @@
-const { notifyAdmin, notifyUser } = require("./notificacaoService");
 const {
     validateCreate,
     validateUpdate,
-    validateReview,
+    validateStatus,
 } = require("../validators/pontoColetaValidator");
+const repository = require("../models/pontoColetaModel");
 
-const allowedStatus = ["PENDENTE", "APROVADO", "RECUSADO"];
-const baseUrl = (
-    process.env.MS_PONTO_COLETA_URL || "http://localhost:5501"
-).replace(/\/$/, "");
+const baseUrl = (process.env.MS_PONTO_COLETA_URL || "http://localhost:5501").replace(
+    /\/$/,
+    ""
+);
 
 class HttpError extends Error {
     constructor(statusCode, message) {
@@ -32,9 +32,7 @@ async function parseResponse(response) {
 
     if (!response.ok) {
         const message =
-            (isJson && body && body.message) ||
-            response.statusText ||
-            "Erro ao comunicar com o microservico";
+            (isJson && body && body.message) || response.statusText || "Erro no microsservico";
         throw new HttpError(response.status, message);
     }
 
@@ -57,97 +55,96 @@ async function requestMs(path, options = {}) {
             throw error;
         }
 
-        throw new HttpError(
-            503,
-            "Nao foi possivel conectar ao microservico de ponto de coleta"
-        );
+        throw new HttpError(503, "Nao foi possivel conectar ao microsservico de status");
     }
 }
 
-async function criarSolicitacao(payload) {
+async function criarPontoColeta(payload) {
     const data = validateCreate(payload);
-    const created = await requestMs("/api/pontos-coleta/requests", {
-        method: "POST",
-        body: JSON.stringify(data),
-    });
 
-    notifyAdmin("POINT_COLLECTION_CREATED", created);
-    notifyUser(
-        created.emailUser,
-        "Sua solicitacao de ponto de coleta foi recebida com status PENDENTE."
-    );
-
-    return created;
-}
-
-async function listarSolicitacoes(status) {
-    if (status && !allowedStatus.includes(status)) {
-        throw new HttpError(400, "status deve ser PENDENTE, APROVADO ou RECUSADO");
+    const duplicateCpf = await repository.findPointByCpf(data.cpfUser);
+    if (duplicateCpf) {
+        throw new HttpError(409, "cpfUser ja cadastrado");
     }
 
-    const query = status ? `?status=${encodeURIComponent(status)}` : "";
-    return requestMs(`/api/pontos-coleta/requests${query}`);
+    const duplicateCnpj = await repository.findPointByCnpj(data.cnpjPoint);
+    if (duplicateCnpj) {
+        throw new HttpError(409, "cnpjPoint ja cadastrado");
+    }
+
+    return repository.createPoint(data);
 }
 
-async function buscarSolicitacaoPorId(rawId) {
+async function listarPontosColeta(filters = {}) {
+    return repository.listPoints(filters);
+}
+
+async function buscarPontoColetaPorId(rawId) {
     const id = toIntId(rawId);
-    return requestMs(`/api/pontos-coleta/requests/${id}`);
+    const point = await repository.findPointById(id);
+
+    if (!point) {
+        throw new HttpError(404, "Ponto de coleta nao encontrado");
+    }
+
+    return point;
 }
 
-async function atualizarSolicitacao(rawId, payload) {
+async function atualizarPontoColeta(rawId, payload) {
     const id = toIntId(rawId);
     const data = validateUpdate(payload);
+    const current = await repository.findPointById(id);
 
-    return requestMs(`/api/pontos-coleta/requests/${id}`, {
+    if (!current) {
+        throw new HttpError(404, "Ponto de coleta nao encontrado");
+    }
+
+    if (current.status !== "PENDENTE") {
+        throw new HttpError(409, "Somente pontos com status PENDENTE podem ser editados");
+    }
+
+    return repository.updatePoint(id, data);
+}
+
+async function removerPontoColeta(rawId) {
+    const id = toIntId(rawId);
+    const current = await repository.findPointById(id);
+
+    if (!current) {
+        throw new HttpError(404, "Ponto de coleta nao encontrado");
+    }
+
+    await repository.deletePoint(id);
+    return { message: "Ponto de coleta removido com sucesso" };
+}
+
+async function atualizarStatusPontoColeta(rawId, payload) {
+    const id = toIntId(rawId);
+    const data = validateStatus({
+        status: payload.status,
+        reason: payload.reason ?? payload.rejectionReason,
+    });
+
+    return requestMs(`/api/pontos-coleta/${id}/status`, {
         method: "PATCH",
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+            status: data.status,
+            reason: data.reason,
+        }),
     });
 }
 
-async function revisarSolicitacao(rawId, payload) {
-    const id = toIntId(rawId);
-    const review = validateReview(payload);
-    const reviewedPayload = await requestMs(
-        `/api/pontos-coleta/requests/${id}/review`,
-        {
-            method: "PATCH",
-            body: JSON.stringify(review),
-        }
-    );
-
-    if (review.decision === "APPROVE") {
-        const approvedPayload = reviewedPayload;
-
-        notifyAdmin("POINT_COLLECTION_APPROVED", approvedPayload.reviewed);
-        notifyUser(
-            approvedPayload.reviewed.emailUser,
-            "Sua solicitacao foi APROVADA e movida para a base definitiva."
-        );
-
-        return approvedPayload;
-    }
-
-    const rejected = reviewedPayload.reviewed;
-
-    notifyAdmin("POINT_COLLECTION_REJECTED", rejected);
-    notifyUser(
-        rejected.emailUser,
-        `Sua solicitacao foi RECUSADA. Motivo: ${review.reason || "Nao informado"}`
-    );
-
-    return { reviewed: rejected, approved: null };
-}
-
-async function listarAprovados() {
-    return requestMs("/api/pontos-coleta/approved");
+async function listarPontosAprovados(filters = {}) {
+    return repository.listApprovedPoints(filters);
 }
 
 module.exports = {
     HttpError,
-    criarSolicitacao,
-    listarSolicitacoes,
-    buscarSolicitacaoPorId,
-    atualizarSolicitacao,
-    revisarSolicitacao,
-    listarAprovados,
+    criarPontoColeta,
+    listarPontosColeta,
+    buscarPontoColetaPorId,
+    atualizarPontoColeta,
+    removerPontoColeta,
+    atualizarStatusPontoColeta,
+    listarPontosAprovados,
 };

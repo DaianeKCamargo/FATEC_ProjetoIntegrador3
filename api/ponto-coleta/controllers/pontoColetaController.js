@@ -1,7 +1,6 @@
 const { ZodError } = require("zod");
 const service = require("../services/pontoColetaService");
 
-// Função auxiliar para tratamento de erros
 function handleError(res, error) {
     if (error instanceof ZodError) {
         return res.status(400).json({
@@ -21,54 +20,63 @@ function handleError(res, error) {
     return res.status(500).json({ message: "Erro interno do servidor" });
 }
 
-async function criarSolicitacao(req, res) {
+async function criarPontoColeta(req, res) {
     try {
-        const created = await service.criarSolicitacao(req.body);
+        const created = await service.criarPontoColeta(req.body);
         return res.status(201).json(created);
     } catch (error) {
         return handleError(res, error);
     }
 }
 
-async function listarSolicitacoes(req, res) {
+async function listarPontosColeta(req, res) {
     try {
-        const items = await service.listarSolicitacoes(req.query.status);
+        const items = await service.listarPontosColeta(req.query);
         return res.status(200).json(items);
     } catch (error) {
         return handleError(res, error);
     }
 }
 
-async function buscarSolicitacaoPorId(req, res) {
+async function buscarPontoColetaPorId(req, res) {
     try {
-        const item = await service.buscarSolicitacaoPorId(req.params.id);
+        const item = await service.buscarPontoColetaPorId(req.params.id);
         return res.status(200).json(item);
     } catch (error) {
         return handleError(res, error);
     }
 }
 
-async function atualizarSolicitacao(req, res) {
+async function atualizarPontoColeta(req, res) {
     try {
-        const updated = await service.atualizarSolicitacao(req.params.id, req.body);
+        const updated = await service.atualizarPontoColeta(req.params.id, req.body);
         return res.status(200).json(updated);
     } catch (error) {
         return handleError(res, error);
     }
 }
 
-async function revisarSolicitacao(req, res) {
+async function removerPontoColeta(req, res) {
     try {
-        const result = await service.revisarSolicitacao(req.params.id, req.body);
+        const result = await service.removerPontoColeta(req.params.id);
         return res.status(200).json(result);
     } catch (error) {
         return handleError(res, error);
     }
 }
 
-async function listarAprovados(req, res) {
+async function atualizarStatusPontoColeta(req, res) {
     try {
-        const items = await service.listarAprovados();
+        const result = await service.atualizarStatusPontoColeta(req.params.id, req.body);
+        return res.status(200).json(result);
+    } catch (error) {
+        return handleError(res, error);
+    }
+}
+
+async function listarPontosAprovados(req, res) {
+    try {
+        const items = await service.listarPontosAprovados(req.query);
         return res.status(200).json(items);
     } catch (error) {
         return handleError(res, error);
@@ -76,10 +84,11 @@ async function listarAprovados(req, res) {
 }
 
 module.exports = {
-    criarSolicitacao,
-    listarSolicitacoes,
-    buscarSolicitacaoPorId,
-    atualizarSolicitacao,
-    revisarSolicitacao,
-    listarAprovados,
+    criarPontoColeta,
+    listarPontosColeta,
+    buscarPontoColetaPorId,
+    atualizarPontoColeta,
+    removerPontoColeta,
+    atualizarStatusPontoColeta,
+    listarPontosAprovados,
 };

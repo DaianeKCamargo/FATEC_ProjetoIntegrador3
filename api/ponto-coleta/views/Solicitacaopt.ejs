@@ -1,21 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
-    <title>Solicitações</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pontos Aprovados</title>
 </head>
+
 <body>
-    <h1>Lista de Solicitações</h1>
+    <h1>Pontos aprovados</h1>
+    <a href="/pontos">Novo cadastro</a>
 
-    <a href="/solicitacoes/nova">Nova Solicitação</a>
+    <% if (typeof error !=='undefined' && error) { %>
+        <p>
+            <%= error %>
+        </p>
+        <% } %>
 
-    <ul>
-        <% solicitacoes.forEach(s => { %>
-            <li>
-                <a href="/solicitacoes/<%= s.id %>">
-                    <%= s.nome || "Sem nome" %> - <%= s.status %>
-                </a>
-            </li>
-        <% }) %>
-    </ul>
+            <% if (!pontos || pontos.length===0) { %>
+                <p>Nenhum ponto aprovado encontrado.</p>
+                <% } else { %>
+                    <ul>
+                        <% pontos.forEach(function(ponto) { %>
+                            <li>
+                                <a href="/pontos/<%= ponto.idPc %>">
+                                    <%= ponto.namePoint %> - <%= ponto.address ? ponto.address.city : '' %>
+                                </a>
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <% } %>
 </body>
+
 </html>

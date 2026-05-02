@@ -1,24 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 
 <head>
-    <title>Solicitações</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pontos Aprovados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .card {
+            max-width: 980px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #0f172a;
+        }
+
+        .topbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .grid {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            margin-top: 18px;
+        }
+
+        .item {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            background: #f8fafc;
+        }
+
+        .item h3 {
+            margin: 0 0 8px;
+        }
+
+        .meta {
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.45;
+        }
+
+        .empty {
+            padding: 20px;
+            border: 1px dashed #94a3b8;
+            border-radius: 12px;
+            color: #475569;
+        }
+
+        a {
+            color: #0f766e;
+            text-decoration: none;
+            font-weight: 700;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Lista de Solicitações</h1>
+    <main class="card">
+        <div class="topbar">
+            <div>
+                <h1>Pontos de coleta aprovados</h1>
+                <p>Lista consumida diretamente do banco de dados via Prisma.</p>
+            </div>
+            <a href="/pontos">Cadastrar novo ponto</a>
+        </div>
 
-    <a href="/solicitacoes/nova">Nova Solicitação</a>
+        <% if (typeof error !=='undefined' && error) { %>
+            <div class="empty">
+                <%= error %>
+            </div>
+            <% } %>
 
-    <ul>
-        <% solicitacoes.forEach(s=> { %>
-            <li>
-                <a href="/solicitacoes/<%= s.id %>">
-                    <%= s.nome || "Sem nome" %> - <%= s.status %>
-                </a>
-            </li>
-            <% }) %>
-    </ul>
+                <% if (!pontos || pontos.length===0) { %>
+                    <div class="empty">Nenhum ponto aprovado encontrado no momento.</div>
+                    <% } else { %>
+                        <section class="grid">
+                            <% pontos.forEach(function(ponto) { %>
+                                <article class="item">
+                                    <h3>
+                                        <%= ponto.namePoint %>
+                                    </h3>
+                                    <div class="meta">
+                                        <strong>Responsável:</strong>
+                                        <%= ponto.nameUser %><br>
+                                            <strong>E-mail:</strong>
+                                            <%= ponto.emailUser %><br>
+                                                <strong>Telefone:</strong>
+                                                <%= ponto.celUser %><br>
+                                                    <strong>Cidade:</strong>
+                                                    <%= ponto.address ? ponto.address.city : '' %><br>
+                                                        <strong>Endereço:</strong>
+                                                        <%= ponto.address ? `${ponto.address.street},
+                                                            ${ponto.address.number}` : '' %><br>
+                                                            <strong>Funcionamento:</strong>
+                                                            <%= ponto.opensDay %><br>
+                                                                <strong>Horário:</strong>
+                                                                <%= ponto.hourInit %> - <%= ponto.hourFinal %>
+                                    </div>
+                                </article>
+                                <% }) %>
+                        </section>
+                        <% } %>
+    </main>
 </body>
 
 </html>

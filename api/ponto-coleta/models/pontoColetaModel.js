@@ -1,23 +1,22 @@
 const prisma = require("../lib/prismaClient");
 
-const includeRequestRelations = {
+const includePointRelations = {
     address: true,
-    approvedPoint: true,
 };
 
-function createRequest(data) {
-    return prisma.pointCollectionRequest.create({
+async function createPoint(data) {
+    return prisma.pointCollection.create({
         data: {
-            opensPc: data.opensPc,
             nameUser: data.nameUser,
-            linkPhoto: data.linkPhoto,
             cpfUser: data.cpfUser,
-            cpnjPoint: data.cpnjPoint,
-            emailUser: data.emailUser,
             celUser: data.celUser,
+            emailUser: data.emailUser,
+            linkPhoto: data.linkPhoto,
             namePoint: data.namePoint,
+            cnpjPoint: data.cnpjPoint,
+            opensDay: data.opensDay,
             hourInit: data.hourInit,
-            hour: data.hour,
+            hourFinal: data.hourFinal,
             address: {
                 create: {
                     street: data.address.street,
@@ -29,29 +28,73 @@ function createRequest(data) {
                 },
             },
         },
-        include: includeRequestRelations,
+        include: includePointRelations,
     });
 }
 
-function listRequests(status) {
-    return prisma.pointCollectionRequest.findMany({
-        where: status ? { status } : undefined,
-        include: includeRequestRelations,
+async function listPoints(filters = {}) {
+    const where = {};
+
+    if (filters.status) {
+        where.status = filters.status;
+    }
+
+    if (filters.namePoint) {
+        where.namePoint = {
+            contains: filters.namePoint,
+            mode: "insensitive",
+        };
+    }
+
+    if (filters.city) {
+        where.address = {
+            city: {
+                contains: filters.city,
+                mode: "insensitive",
+            },
+        };
+    }
+
+    return prisma.pointCollection.findMany({
+        where,
+        include: includePointRelations,
         orderBy: { createdAt: "desc" },
     });
 }
 
-function findRequestById(id) {
-    return prisma.pointCollectionRequest.findUnique({
+async function findPointById(id) {
+    return prisma.pointCollection.findUnique({
         where: { idPc: id },
-        include: includeRequestRelations,
+        include: includePointRelations,
     });
 }
 
-function updateRequest(id, data) {
-    const { address, ...rest } = data;
+async function findPointByCpf(cpfUser) {
+    return prisma.pointCollection.findUnique({
+        where: { cpfUser },
+        include: includePointRelations,
+    });
+}
 
-    return prisma.pointCollectionRequest.update({
+async function findPointByCnpj(cnpjPoint) {
+    return prisma.pointCollection.findUnique({
+        where: { cnpjPoint },
+        include: includePointRelations,
+    });
+}
+
+async function updatePoint(id, data) {
+    const { address, ...rest } = data;
+    const current = await prisma.pointCollection.findUnique({
+        where: { idPc: id },
+        include: { address: true },
+    });
+
+    if (!current) {
+        return null;
+    }
+
+    return prisma.pointCollection.update({
         where: { idPc: id },
         data: {
             ...rest,
@@ -59,88 +102,50 @@ function updateRequest(id, data) {
                 ? {
                     address: {
                         update: {
-                            street: address.street,
-                            number: address.number,
-                            complement: address.complement || null,
-                            district: address.district,
-                            city: address.city,
-                            postCode: address.postCode,
+                            street: address.street ?? current.address.street,
+                            number: address.number ?? current.address.number,
+                            complement: address.complement ?? current.address.complement,
+                            district: address.district ?? current.address.district,
+                            city: address.city ?? current.address.city,
+                            postCode: address.postCode ?? current.address.postCode,
                         },
                     },
                 }
                 : {}),
         },
-        include: includeRequestRelations,
+        include: includePointRelations,
     });
 }
 
-function listApprovedPoints() {
-    return prisma.pointCollectionApproved.findMany({
-        include: { address: true, sourceRequest: true },
-        orderBy: { approvedAt: "desc" },
+async function deletePoint(id) {
+    return prisma.pointCollection.delete({
+        where: { idPc: id },
+        include: includePointRelations,
     });
 }
 
-function approveRequestTransaction(id, reason) {
-    return prisma.$transaction(async (tx) => {
-        const request = await tx.pointCollectionRequest.findUnique({
-            where: { idPc: id },
-            include: { address: true },
-        });
-
-        if (!request) {
-            return null;
-        }
-
-        const approved = await tx.pointCollectionApproved.create({
-            data: {
-                opensPc: request.opensPc,
-                nameUser: request.nameUser,
-                linkPhoto: request.linkPhoto,
-                cpfUser: request.cpfUser,
-                cpnjPoint: request.cpnjPoint,
-                emailUser: request.emailUser,
-                celUser: request.celUser,
-                namePoint: request.namePoint,
-                hourInit: request.hourInit,
-                hour: request.hour,
-                idAdress: request.idAdress,
-            },
-        });
-
-        const reviewed = await tx.pointCollectionRequest.update({
-            where: { idPc: id },
-            data: {
-                status: "APROVADO",
-                reviewedAt: new Date(),
-                reviewReason: reason || null,
-                approvedPointId: approved.idPcApproved,
-            },
-            include: includeRequestRelations,
-        });
-
-        return { reviewed, approved };
-    });
-}
-
-function rejectRequestTransaction(id, reason) {
-    return prisma.pointCollectionRequest.update({
+async function updatePointStatus(id, status) {
+    return prisma.pointCollection.update({
         where: { idPc: id },
         data: {
-            status: "RECUSADO",
-            reviewedAt: new Date(),
-            reviewReason: reason || null,
+            status,
         },
-        include: includeRequestRelations,
+        include: includePointRelations,
     });
+}
+
+async function listApprovedPoints(filters = {}) {
+    return listPoints({ ...filters, status: "APROVADO" });
 }
 
 module.exports = {
-    createRequest,
-    listRequests,
-    findRequestById,
-    updateRequest,
+    createPoint,
+    listPoints,
+    findPointById,
+    findPointByCpf,
+    findPointByCnpj,
+    updatePoint,
+    deletePoint,
+    updatePointStatus,
     listApprovedPoints,
-    approveRequestTransaction,
-    rejectRequestTransaction,
 };
