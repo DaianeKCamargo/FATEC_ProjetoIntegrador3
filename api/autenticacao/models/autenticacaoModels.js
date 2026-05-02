@@ -1,12 +1,10 @@
 const { PrismaClient } = require("@prisma/client");
-const bcrypt = require("bcrypt");
-const crypto = require("crypto");
+const bcrypt = require("bcrypt"); // Para hashing de senhas
+const crypto = require("crypto"); // Para geração de tokens de recuperação de senha
 
 const prisma = new PrismaClient();
 
-/**
- * Registrar novo usuário administrador
- */
+
 async function criar(dados) {
     const { username, senha, emailUser } = dados;
 
@@ -50,9 +48,6 @@ async function criar(dados) {
     return admin;
 }
 
-/**
- * Fazer login
- */
 async function login(username, senha) {
     if (!username || !senha) {
         throw new Error("Username e senha são obrigatórios");
@@ -78,9 +73,6 @@ async function login(username, senha) {
     return adminSeguro;
 }
 
-/**
- * Buscar por ID
- */
 async function buscarPorId(idAdmin) {
     const admin = await prisma.adminUser.findUnique({
         where: { idAdmin }
@@ -92,9 +84,6 @@ async function buscarPorId(idAdmin) {
     return adminSeguro;
 }
 
-/**
- * Buscar por username
- */
 async function buscarPorUsername(username) {
     const admin = await prisma.adminUser.findUnique({
         where: { username }
@@ -106,9 +95,6 @@ async function buscarPorUsername(username) {
     return adminSeguro;
 }
 
-/**
- * Listar todos
- */
 async function listar() {
     const admins = await prisma.adminUser.findMany();
 
@@ -116,9 +102,6 @@ async function listar() {
     return admins.map(({ passHash: _, ...admin }) => admin);
 }
 
-/**
- * Gerar token de recuperação de senha
- */
 async function gerarTokenRecuperacao(emailUser) {
     const admin = await prisma.adminUser.findUnique({
         where: { emailUser }
@@ -146,9 +129,6 @@ async function gerarTokenRecuperacao(emailUser) {
     return resetToken;
 }
 
-/**
- * Validar token de recuperação
- */
 async function validarTokenRecuperacao(emailUser, resetToken) {
     const admin = await prisma.adminUser.findUnique({
         where: { emailUser }
@@ -169,9 +149,6 @@ async function validarTokenRecuperacao(emailUser, resetToken) {
     return true;
 }
 
-/**
- * Redefinir senha com token
- */
 async function redefinirSenha(emailUser, resetToken, novaSenha) {
     // Validar token
     await validarTokenRecuperacao(emailUser, resetToken);
@@ -193,9 +170,6 @@ async function redefinirSenha(emailUser, resetToken, novaSenha) {
     return adminSeguro;
 }
 
-/**
- * Atualizar usuário
- */
 async function atualizar(idAdmin, dados) {
     const admin = await prisma.adminUser.findUnique({
         where: { idAdmin }
@@ -244,9 +218,6 @@ async function atualizar(idAdmin, dados) {
     return adminSeguro;
 }
 
-/**
- * Remover usuário
- */
 async function remover(idAdmin) {
     const admin = await prisma.adminUser.findUnique({
         where: { idAdmin }

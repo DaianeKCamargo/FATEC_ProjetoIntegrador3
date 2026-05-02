@@ -1,8 +1,6 @@
 const model = require("../models/autenticacaoModels");
 
-/**
- * Listar todos os administradores
- */
+
 async function listar(req, res) {
     try {
         const admins = await model.listar();
@@ -12,9 +10,7 @@ async function listar(req, res) {
     }
 }
 
-/**
- * Buscar administrador por ID
- */
+
 async function buscarPorId(req, res) {
     try {
         const idAdmin = Number(req.params.idAdmin);
@@ -30,9 +26,6 @@ async function buscarPorId(req, res) {
     }
 }
 
-/**
- * Registrar novo administrador
- */
 async function criar(req, res) {
     try {
         const { username, senha, emailUser } = req.body;
@@ -52,9 +45,6 @@ async function criar(req, res) {
     }
 }
 
-/**
- * Atualizar administrador
- */
 async function atualizar(req, res) {
     try {
         const idAdmin = Number(req.params.idAdmin);
@@ -69,9 +59,7 @@ async function atualizar(req, res) {
     }
 }
 
-/**
- * Remover administrador
- */
+
 async function remover(req, res) {
     try {
         const idAdmin = Number(req.params.idAdmin);
@@ -86,9 +74,6 @@ async function remover(req, res) {
     }
 }
 
-/**
- * Fazer login
- */
 async function login(req, res) {
     try {
         const { username, senha } = req.body;
@@ -108,9 +93,6 @@ async function login(req, res) {
     }
 }
 
-/**
- * Fazer logout
- */
 async function logout(req, res) {
     req.session.destroy((erro) => {
         if (erro) {
@@ -120,9 +102,6 @@ async function logout(req, res) {
     });
 }
 
-/**
- * Solicitar recuperação de senha
- */
 async function solicitarRecuperacao(req, res) {
     try {
         const { emailUser } = req.body;
@@ -146,9 +125,6 @@ async function solicitarRecuperacao(req, res) {
     }
 }
 
-/**
- * Validar token de recuperação
- */
 async function validarToken(req, res) {
     try {
         const { emailUser, resetToken } = req.body;
@@ -165,9 +141,6 @@ async function validarToken(req, res) {
     }
 }
 
-/**
- * Redefinir senha
- */
 async function redefinirSenha(req, res) {
     try {
         const { emailUser, resetToken, novaSenha } = req.body;

@@ -1,6 +1,7 @@
 const { ZodError } = require("zod");
 const service = require("../services/pontoColetaService");
 
+// Função auxiliar para tratamento de erros
 function handleError(res, error) {
     if (error instanceof ZodError) {
         return res.status(400).json({

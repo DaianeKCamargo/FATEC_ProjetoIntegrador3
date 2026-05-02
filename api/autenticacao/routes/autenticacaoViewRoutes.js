@@ -3,18 +3,14 @@ const model = require("../models/autenticacaoModels");
 
 const router = express.Router();
 
-// ===== ROTAS DE AUTENTICAÇÃO =====
+        // ===== ROTAS DE AUTENTICAÇÃO =====
 
-/**
- * GET /login - Mostrar página de login
- */
+// GET /login - Mostrar página de login
 router.get("/login", (req, res) => {
     res.render("login", { message: null, error: null, values: {} });
 });
 
-/**
- * POST /login - Processar login
- */
+// POST /login - Processar login
 router.post("/login", async (req, res) => {
     try {
         const { username, senha } = req.body;
@@ -43,9 +39,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-/**
- * GET /logout - Fazer logout
- */
+// GET /logout - Fazer logout
 router.get("/logout", (req, res) => {
     req.session.destroy((erro) => {
         if (erro) {
@@ -55,18 +49,14 @@ router.get("/logout", (req, res) => {
     });
 });
 
-// ===== ROTAS DE REGISTRO =====
+        // ===== ROTAS DE REGISTRO =====
 
-/**
- * GET /credenciais/novo - Mostrar formulário de registro
- */
+// GET /credenciais/novo - Mostrar formulário de registro
 router.get("/credenciais/novo", (req, res) => {
     res.render("novo", { errors: null, message: null, values: {} });
 });
 
-/**
- * POST /credenciais/novo - Criar novo administrador
- */
+// POST /credenciais/novo - Criar novo administrador
 router.post("/credenciais/novo", async (req, res) => {
     try {
         const { username, emailUser, senha, confirmaSenha } = req.body;
@@ -116,11 +106,9 @@ router.post("/credenciais/novo", async (req, res) => {
     }
 });
 
-// ===== ROTAS DE RECUPERAÇÃO DE SENHA =====
+        // ===== ROTAS DE RECUPERAÇÃO DE SENHA =====
 
-/**
- * GET /recuperar-senha - Mostrar formulário de recuperação
- */
+// GET /recuperar-senha - Mostrar formulário de recuperação
 router.get("/recuperar-senha", (req, res) => {
     res.render("recuperar-senha", {
         error: null,
@@ -129,9 +117,7 @@ router.get("/recuperar-senha", (req, res) => {
     });
 });
 
-/**
- * POST /recuperacao/solicitar - Solicitar token de recuperação
- */
+// POST /recuperacao/solicitar - Solicitar token de recuperação
 router.post("/recuperacao/solicitar", async (req, res) => {
     try {
         const { emailUser } = req.body;
@@ -163,9 +149,7 @@ router.post("/recuperacao/solicitar", async (req, res) => {
     }
 });
 
-/**
- * POST /recuperacao/validar - Validar token
- */
+// POST /recuperacao/validar - Validar token
 router.post("/recuperacao/validar", async (req, res) => {
     try {
         const { emailUser, resetToken } = req.body;
@@ -186,9 +170,7 @@ router.post("/recuperacao/validar", async (req, res) => {
     }
 });
 
-/**
- * POST /recuperacao/redefinir - Redefinir senha
- */
+// POST /recuperacao/redefinir - Redefinir senha
 router.post("/recuperacao/redefinir", async (req, res) => {
     try {
         const { emailUser, resetToken, novaSenha } = req.body;
@@ -217,11 +199,9 @@ router.post("/recuperacao/redefinir", async (req, res) => {
     }
 });
 
-// ===== ROTAS DO MENU =====
+        // ===== ROTAS DO MENU =====
 
-/**
- * GET /menu - Menu principal do administrador
- */
+// GET /menu - Menu principal do administrador
 router.get("/menu", (req, res) => {
     res.render("menu", {
         noticiasUrl: "/noticias",
@@ -231,7 +211,7 @@ router.get("/menu", (req, res) => {
     });
 });
 
-// ===== ROTAS DE NOTÍCIAS =====
+        // ===== ROTAS DE NOTÍCIAS =====
 
 router.get("/noticias", (req, res) => {
     res.render("noticias", { noticias: [] });
@@ -278,7 +258,7 @@ router.get("/pontos/:id", (req, res) => {
     res.render("detalhept", { solicitacao: { id: req.params.id, nome: "Solicitação", status: "PENDENTE" } });
 });
 
-// ===== ROTAS DE RELATÓRIOS =====
+        // ===== ROTAS DE RELATÓRIOS =====
 
 router.get("/relatorio", (req, res) => {
     res.render("relatorio-menu", {
