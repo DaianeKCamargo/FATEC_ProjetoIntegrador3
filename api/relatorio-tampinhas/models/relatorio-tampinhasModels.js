@@ -1,51 +1,60 @@
-const relatoriosTampinhas = [];
-let nextId = 1;
+// api/relatorio-tampinhas/models/relatorioTampinhasModel.js
 
-function listar() {
-    return relatoriosTampinhas;
-}
+const prisma = require('../../ponto-coleta/lib/prismaClient');
 
-function buscarPorId(id) {
-    return relatoriosTampinhas.find((item) => item.id === id);
-}
-
-function criar(dados) {
-    const quantidade = Number(dados.quantidadeKg);
-
-    const novo = {
-        id: nextId++,
-        data: dados.data || new Date().toISOString().split("T")[0],
-        quantidadeKg: isNaN(quantidade) ? 0 : quantidade,
-    };
-
-    relatoriosTampinhas.push(novo);
-    return novo;
-}
-
-function atualizar(id, dados) {
-    const item = buscarPorId(id);
-    if (!item) return null;
-
-    if (dados.data !== undefined) {
-        item.data = dados.data;
-    }
-
-    if (dados.quantidadeKg !== undefined) {
-        const novoValor = Number(dados.quantidadeKg);
-        if (!isNaN(novoValor)) {
-            item.quantidadeKg = novoValor;
+// LISTAR
+async function listar() {
+    return await prisma.relatorioTampinhas.findMany({
+        orderBy: {
+            id: 'asc'
         }
-    }
-
-    return item;
+    });
 }
 
-function remover(id) {
-    const indice = relatoriosTampinhas.findIndex((item) => item.id === id);
-    if (indice === -1) return false;
+// BUSCAR POR ID
+async function buscarPorId(id) {
+    return await prisma.relatorioTampinhas.findUnique({
+        where: { id: Number(id) }
+    });
+}
 
-    relatoriosTampinhas.splice(indice, 1);
-    return true;
+// CRIAR
+async function criar(dados) {
+    return await prisma.relatorioTampinhas.create({
+        data: {
+            data: dados.data ? new Date(dados.data) : new Date(),
+            quantidadeKg: Number(dados.quantidadeKg) || 0
+        }
+    });
+}
+
+// ATUALIZAR
+async function atualizar(id, dados) {
+    try {
+        return await prisma.relatorioTampinhas.update({
+            where: { id: Number(id) },
+            data: {
+                ...(dados.data && { data: new Date(dados.data) }),
+                ...(dados.quantidadeKg !== undefined && {
+                    quantidadeKg: Number(dados.quantidadeKg)
+                })
+            }
+        });
+    } catch (error) {
+        return null;
+    }
+}
+
+// REMOVER
+async function remover(id) {
+    try {
+        await prisma.relatorioTampinhas.delete({
+            where: { id: Number(id) }
+        });
+        return true;
+    } catch (error) {
+        return false;
+    }
 }
 
 module.exports = {

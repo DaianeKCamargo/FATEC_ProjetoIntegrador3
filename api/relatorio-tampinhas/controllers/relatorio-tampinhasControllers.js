@@ -1,10 +1,10 @@
 const model = require("../models/relatorio-tampinhasModels");
 
-// regra de negócio (pode virar config depois)
 const FATOR_TAMPINHAS_POR_KG = 160;
 
-function listar(req, res) {
-    const lista = model.listar();
+// LISTAR
+async function listar(req, res) {
+    const lista = await model.listar();
 
     const convertida = lista.map(item => ({
         ...item,
@@ -15,14 +15,15 @@ function listar(req, res) {
     return res.status(200).json(convertida);
 }
 
-function buscarPorId(req, res) {
+// BUSCAR POR ID
+async function buscarPorId(req, res) {
     const id = Number(req.params.id);
-    const item = model.buscarPorId(id);
+    const item = await model.buscarPorId(id);
 
     if (!item) {
-        return res
-            .status(404)
-            .json({ message: "Relatorio de tampinhas nao encontrado" });
+        return res.status(404).json({
+            message: "Relatorio de tampinhas nao encontrado"
+        });
     }
 
     const convertido = {
@@ -34,7 +35,8 @@ function buscarPorId(req, res) {
     return res.status(200).json(convertido);
 }
 
-function criar(req, res) {
+// CRIAR
+async function criar(req, res) {
     const { data, quantidadeKg } = req.body;
 
     if (!data || quantidadeKg === undefined || quantidadeKg <= 0) {
@@ -43,11 +45,12 @@ function criar(req, res) {
         });
     }
 
-    const novo = model.criar(req.body);
+    const novo = await model.criar(req.body);
     return res.status(201).json(novo);
 }
 
-function atualizar(req, res) {
+// ATUALIZAR
+async function atualizar(req, res) {
     const id = Number(req.params.id);
     const { quantidadeKg } = req.body;
 
@@ -57,25 +60,26 @@ function atualizar(req, res) {
         });
     }
 
-    const atualizado = model.atualizar(id, req.body);
+    const atualizado = await model.atualizar(id, req.body);
 
     if (!atualizado) {
-        return res
-            .status(404)
-            .json({ message: "Relatorio de tampinhas nao encontrado" });
+        return res.status(404).json({
+            message: "Relatorio de tampinhas nao encontrado"
+        });
     }
 
     return res.status(200).json(atualizado);
 }
 
-function remover(req, res) {
+// REMOVER
+async function remover(req, res) {
     const id = Number(req.params.id);
-    const removido = model.remover(id);
+    const removido = await model.remover(id);
 
     if (!removido) {
-        return res
-            .status(404)
-            .json({ message: "Relatorio de tampinhas nao encontrado" });
+        return res.status(404).json({
+            message: "Relatorio de tampinhas nao encontrado"
+        });
     }
 
     return res.status(204).send();
