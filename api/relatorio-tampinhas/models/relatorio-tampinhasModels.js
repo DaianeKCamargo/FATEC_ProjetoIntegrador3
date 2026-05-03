@@ -1,6 +1,6 @@
 // api/relatorio-tampinhas/models/relatorioTampinhasModel.js
 
-const prisma = require('../../ponto-coleta/lib/prismaClient');
+const prisma = require('../lib/prismaClient');
 
 // LISTAR
 async function listar() {
