@@ -1,18 +1,34 @@
 const model = require("../models/relatorio-tampinhasModels");
-
+const axios = require("axios");
+const MICROSERVICO_URL = "http://localhost:4000/converter";
 const FATOR_TAMPINHAS_POR_KG = 160;
 
 // LISTAR
 async function listar(req, res) {
     const lista = await model.listar();
 
-    const convertida = lista.map(item => ({
-        ...item,
-        peso_gramas: item.quantidadeKg * 1000,
-        quantidade_tampinhas: Math.round(item.quantidadeKg * FATOR_TAMPINHAS_POR_KG)
-    }));
+    const convertida = await Promise.all(
+        lista.map(async (item) => {
+            try {
+                const response = await axios.post(MICROSERVICO_URL, {
+                    kg: item.quantidadeKg
+                });
 
-    return res.status(200).json(convertida);
+                return {
+                    ...item,
+                    quantidade_tampinhas: response.data.quantidade_tampinhas
+                };
+            } catch (error) {
+                // fallback (se microserviço cair)
+                return {
+                    ...item,
+                    quantidade_tampinhas: Math.round(item.quantidadeKg * 160)
+                };
+            }
+        })
+    );
+
+    return res.json(convertida);
 }
 
 // BUSCAR POR ID
