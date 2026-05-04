@@ -1,81 +1,86 @@
-const client = require('../../../lib/db');
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
 // LISTAR
 async function listar() {
-    const result = await client.query(
-        `SELECT id, data, quantidade_kg AS "quantidadeKg"
-         FROM relatorio_tampinhas
-         ORDER BY id ASC`
-    );
-    return result.rows;
+    return await prisma.relatorioTampinhas.findMany({
+        orderBy: { id: "asc" },
+        select: {
+            id: true,
+            data: true,
+            quantidadeKg: true
+        }
+    });
 }
 
 // BUSCAR POR ID
 async function buscarPorId(id) {
-    const result = await client.query(
-        `SELECT id, data, quantidade_kg AS "quantidadeKg"
-         FROM relatorio_tampinhas
-         WHERE id = $1`,
-        [id]
-    );
-    return result.rows[0] || null;
+    const item = await prisma.relatorioTampinhas.findUnique({
+        where: { id },
+        select: {
+            id: true,
+            data: true,
+            quantidadeKg: true
+        }
+    });
+
+    return item || null; // ✅ faltava isso
 }
 
 // CRIAR
 async function criar(dados) {
-    try {
-        const result = await client.query(
-            `INSERT INTO relatorio_tampinhas 
-            (data, quantidade_kg, created_at, updated_at)
-            VALUES ($1, $2, NOW(), NOW())
-            RETURNING 
-                id, 
-                data, 
-                quantidade_kg AS "quantidadeKg", 
-                created_at, 
-                updated_at`,
-            [
-                dados.data ? new Date(dados.data) : new Date(),
-                Number(dados.quantidadeKg) || 0
-            ]
-        );
+    const novo = await prisma.relatorioTampinhas.create({
+        data: {
+            data: dados.data ? new Date(dados.data) : new Date(),
+            quantidadeKg: Number(dados.quantidadeKg) // ✅ corrigido
+        },
+        select: {
+            id: true,
+            data: true,
+            quantidadeKg: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    });
 
-        return result.rows[0];
-
-    } catch (error) {
-        console.error("💥 ERRO NO MODEL:", error);
-        throw error;
-    }
+    return novo; // ✅ sem gambiarra
 }
-
 
 // ATUALIZAR
 async function atualizar(id, dados) {
-    const result = await client.query(
-        `UPDATE relatorio_tampinhas
-         SET 
-            data = COALESCE($1, data),
-            quantidade_kg = COALESCE($2, quantidade_kg)
-         WHERE id = $3
-         RETURNING id, data, quantidade_kg AS "quantidadeKg"`,
-        [
-            dados.data ? new Date(dados.data) : null,
-            dados.quantidadeKg !== undefined ? Number(dados.quantidadeKg) : null,
-            id
-        ]
-    );
+    try {
+        const atualizado = await prisma.relatorioTampinhas.update({
+            where: { id },
+            data: {
+                data: dados.data ? new Date(dados.data) : undefined,
+                quantidadeKg: dados.quantidadeKg !== undefined
+                    ? Number(dados.quantidadeKg)
+                    : undefined
+            },
+            select: {
+                id: true,
+                data: true,
+                quantidadeKg: true
+            }
+        });
 
-    return result.rows[0] || null;
+        return atualizado;
+
+    } catch (error) {
+        return null;
+    }
 }
 
 // REMOVER
 async function remover(id) {
-    const result = await client.query(
-        'DELETE FROM relatorio_tampinhas WHERE id = $1',
-        [id]
-    );
-
-    return result.rowCount > 0;
+    try {
+        await prisma.relatorioTampinhas.delete({
+            where: { id }
+        });
+        return true;
+    } catch {
+        return false;
+    }
 }
 
 module.exports = {

@@ -19,6 +19,6 @@ app.post('/converter', (req, res) => {
     });
 });
 
-app.listen(4000, () => {
-    console.log("Microserviço rodando na porta 4000");
+app.listen(5504, () => {
+    console.log("Microserviço rodando na porta 5504");
 });
