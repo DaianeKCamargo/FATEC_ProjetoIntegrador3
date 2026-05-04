@@ -23,17 +23,31 @@ async function buscarPorId(id) {
 
 // CRIAR
 async function criar(dados) {
-    const result = await client.query(
-        `INSERT INTO relatorio_tampinhas (data, quantidade_kg)
-         VALUES ($1, $2)
-         RETURNING id, data, quantidade_kg AS "quantidadeKg"`,
-        [
-            dados.data ? new Date(dados.data) : new Date(),
-            Number(dados.quantidadeKg) || 0
-        ]
-    );
-    return result.rows[0];
+    try {
+        const result = await client.query(
+            `INSERT INTO relatorio_tampinhas 
+            (data, quantidade_kg, created_at, updated_at)
+            VALUES ($1, $2, NOW(), NOW())
+            RETURNING 
+                id, 
+                data, 
+                quantidade_kg AS "quantidadeKg", 
+                created_at, 
+                updated_at`,
+            [
+                dados.data ? new Date(dados.data) : new Date(),
+                Number(dados.quantidadeKg) || 0
+            ]
+        );
+
+        return result.rows[0];
+
+    } catch (error) {
+        console.error("💥 ERRO NO MODEL:", error);
+        throw error;
+    }
 }
+
 
 // ATUALIZAR
 async function atualizar(id, dados) {

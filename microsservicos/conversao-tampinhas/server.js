@@ -8,7 +8,7 @@ const FATOR = 160;
 app.post('/converter', (req, res) => {
     const { kg } = req.body;
 
-    if (!kg || kg <= 0) {
+    if (kg === undefined || kg <= 0) {
         return res.status(400).json({
             message: "Valor inválido"
         });

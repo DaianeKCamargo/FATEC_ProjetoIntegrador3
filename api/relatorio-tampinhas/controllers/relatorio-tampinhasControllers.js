@@ -53,16 +53,24 @@ async function buscarPorId(req, res) {
 
 // CRIAR
 async function criar(req, res) {
-    const { data, quantidadeKg } = req.body;
+    try {
+        const { data, quantidadeKg } = req.body;
 
-    if (!data || quantidadeKg === undefined || quantidadeKg <= 0) {
-        return res.status(400).json({
-            message: "data e quantidadeKg válidos são obrigatórios"
+        if (quantidadeKg === undefined || quantidadeKg <= 0) {
+            return res.status(400).json({
+                message: "quantidadeKg válida é obrigatória"
+            });
+        }
+
+        const novo = await model.criar(req.body);
+        return res.status(201).json(novo);
+
+    } catch (error) {
+        console.error("💥 ERRO NO CONTROLLER:", error);
+        return res.status(500).json({
+            message: "Erro interno ao criar relatório"
         });
     }
-
-    const novo = await model.criar(req.body);
-    return res.status(201).json(novo);
 }
 
 // ATUALIZAR
