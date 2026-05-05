@@ -1,50 +1,85 @@
 const noticiaModel = require("../models/noticiaModels");
 
-function listarNoticias(req, res) {
-    res.status(200).json(noticiaModel.listar());
+async function listarNoticias(req, res) {
+    try {
+        const noticias = await noticiaModel.listar();
+        res.status(200).json(noticias);
+    } catch (error) {
+        res.status(500).json({ message: "Erro ao listar noticias", error });
+    }
 }
 
-function buscarNoticiaPorId(req, res) {
-    const id = Number(req.params.id);
-    const noticia = noticiaModel.buscarPorId(id);
+async function buscarNoticiaPorId(req, res) {
+    try {
+        const id = Number(req.params.id);
+        const noticia = await noticiaModel.buscarPorId(id);
 
-    if (!noticia) {
-        return res.status(404).json({ message: "Noticia nao encontrada" });
+        if (!noticia) {
+            return res.status(404).json({ message: "Noticia nao encontrada" });
+        }
+
+        return res.status(200).json(noticia);
+    } catch (error) {
+        res.status(500).json({ message: "Erro ao buscar noticia", error });
     }
-
-    return res.status(200).json(noticia);
 }
 
-function criarNoticia(req, res) {
-    const { titulo, link } = req.body;
-    if (!titulo || !link) {
-        return res.status(400).json({ message: "titulo e link sao obrigatorios" });
-    }
+async function criarNoticia(req, res) {
+    try {
+        const { titulo, link, imagem } = req.body;
 
-    const novaNoticia = noticiaModel.criar(req.body);
-    return res.status(201).json(novaNoticia);
+        if (!titulo || !link || !imagem) {
+            return res.status(400).json({
+                message: "titulo, link e imagem sao obrigatorios",
+            });
+        }
+
+        const novaNoticia = await noticiaModel.criar({
+            titulo,
+            link,
+            imagem,
+        });
+
+        return res.status(201).json(novaNoticia);
+    } catch (error) {
+        res.status(500).json({ message: "Erro ao criar noticia", error });
+    }
 }
 
-function atualizarNoticia(req, res) {
-    const id = Number(req.params.id);
-    const noticiaAtualizada = noticiaModel.atualizar(id, req.body);
+async function atualizarNoticia(req, res) {
+    try {
+        const id = Number(req.params.id);
+        const { titulo, link, imagem } = req.body;
 
-    if (!noticiaAtualizada) {
-        return res.status(404).json({ message: "Noticia nao encontrada" });
+        const noticiaAtualizada = await noticiaModel.atualizar(id, {
+            titulo,
+            link,
+            imagem,
+        });
+
+        if (!noticiaAtualizada) {
+            return res.status(404).json({ message: "Noticia nao encontrada" });
+        }
+
+        return res.status(200).json(noticiaAtualizada);
+    } catch (error) {
+        res.status(500).json({ message: "Erro ao atualizar noticia", error });
     }
-
-    return res.status(200).json(noticiaAtualizada);
 }
 
-function removerNoticia(req, res) {
-    const id = Number(req.params.id);
-    const removido = noticiaModel.remover(id);
+async function removerNoticia(req, res) {
+    try {
+        const id = Number(req.params.id);
+        const removido = await noticiaModel.remover(id);
 
-    if (!removido) {
-        return res.status(404).json({ message: "Noticia nao encontrada" });
+        if (!removido) {
+            return res.status(404).json({ message: "Noticia nao encontrada" });
+        }
+
+        return res.status(204).send();
+    } catch (error) {
+        res.status(500).json({ message: "Erro ao remover noticia", error });
     }
-
-    return res.status(204).send();
 }
 
 module.exports = {

@@ -1,41 +1,45 @@
-const noticias = [];
-let nextId = 1;
+const db = require("../../lib/db");
 
-function listar() {
-    return noticias;
+async function listar() {
+    const result = await db.query("SELECT * FROM noticias ORDER BY id");
+    return result.rows;
 }
 
-function buscarPorId(id) {
-    return noticias.find((item) => item.id === id);
+async function buscarPorId(id) {
+    const result = await db.query(
+        "SELECT * FROM noticias WHERE id = $1",
+        [id]
+    );
+    return result.rows[0];
 }
 
-function criar(dados) {
-    const novaNoticia = {
-        id: nextId++,
-        titulo: dados.titulo || "",
-        link: dados.link || "",
-        imagem: dados.imagem || "",
-    };
-    noticias.push(novaNoticia);
-    return novaNoticia;
+async function criar(dados) {
+    const result = await db.query(
+        "INSERT INTO noticias (titulo, link, imagem) VALUES ($1, $2, $3) RETURNING *",
+        [dados.titulo, dados.link, dados.imagem]
+    );
+    return result.rows[0];
 }
 
-function atualizar(id, dados) {
-    const noticia = buscarPorId(id);
-    if (!noticia) return null;
+async function atualizar(id, dados) {
+    const result = await db.query(
+        `UPDATE noticias 
+         SET titulo = $1, link = $2, imagem = $3
+         WHERE id = $4
+         RETURNING *`,
+        [dados.titulo, dados.link, dados.imagem, id]
+    );
 
-    noticia.titulo = dados.titulo ?? noticia.titulo;
-    noticia.link = dados.link ?? noticia.link;
-    noticia.imagem = dados.imagem ?? noticia.imagem;
-    return noticia;
+    return result.rows[0];
 }
 
-function remover(id) {
-    const indice = noticias.findIndex((item) => item.id === id);
-    if (indice === -1) return false;
+async function remover(id) {
+    const result = await db.query(
+        "DELETE FROM noticias WHERE id = $1 RETURNING *",
+        [id]
+    );
 
-    noticias.splice(indice, 1);
-    return true;
+    return result.rowCount > 0;
 }
 
 module.exports = {
