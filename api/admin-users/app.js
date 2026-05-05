@@ -1,11 +1,11 @@
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
-const autenticacaoRoutes = require("./routes/autenticacaoRoutes");
-const autenticacaoViewRoutes = require("./routes/autenticacaoViewRoutes");
+const adminUsersRoutes = require("./routes/admin-usersRoutes");
+const adminUsersViewRoutes = require("./routes/admin-usersViewRoutes");
 
 const app = express();
-const PORT = process.env.AUTENTICACAO_PORT || 5502;
+const PORT = process.env.ADMIN_USERS_PORT || 5502;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Health check
 app.get("/health", (req, res) => {
-    res.status(200).json({ status: "ok", service: "ms-autenticacao" });
+    res.status(200).json({ status: "ok", service: "ms-admin-users" });
 });
 
 // Rota raiz - redirecionar para login se não autenticado
@@ -43,10 +43,10 @@ app.get("/", (req, res) => {
 });
 
 // Rotas da API
-app.use("/api/credenciais", autenticacaoRoutes);
+app.use("/api/credenciais", adminUsersRoutes);
 
 // Rotas de visualização
-app.use("/", autenticacaoViewRoutes);
+app.use("/", adminUsersViewRoutes);
 
 // Tratamento de erro 404
 app.use((req, res) => {

@@ -1,6 +1,5 @@
 const express = require("express");
 
-const usuarioRoutes = require("./routes/usuarioRoutes");
 const pontoColetaRoutes = require("./routes/pontoColetaRoutes");
 const noticiaRoutes = require("./routes/noticiaRoutes");
 const relatorioTampinhasRoutes = require("../api/relatorio-tampinhas/routes/relatorio-tampinhasRoutes.js");
@@ -19,7 +18,6 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/api/points", pontoColetaRoutes);
-app.use("/api/usuarios", usuarioRoutes);
 app.use("/api/pontos-coleta", pontoColetaRoutes);
 app.use("/api/ponto-coleta", pontoColetaRoutes);
 app.use("/api/noticias", noticiaRoutes);

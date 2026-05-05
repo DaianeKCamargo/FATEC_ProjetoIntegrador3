@@ -1,4 +1,4 @@
-const model = require("../models/autenticacaoModels");
+const model = require("../models/admin-usersModels");
 
 
 async function listar(req, res) {

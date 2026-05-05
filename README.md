@@ -125,7 +125,7 @@ F9: Cadastro de notícias (imagem, título e link);
 <code>npm run start:ms:conversao-tampinhas</code> - microsserviço conversão tampinhas (porta 5506) <br>
 
 **APIs que não são microsserviços (rodam como parte da app principal):**
-<code>npm run start:ms:autenticacao</code> - autenticação/login (porta 5502) <br>
+<code>npm run start:ms:admin-users</code> - gerenciamento de usuários admin (porta 5502) <br>
 <code>npm run start:ms:relatorio-animais</code> - relatório animais (porta 5503) <br>
 <code>npm run start:ms:relatorio-tampinhas</code> - relatório tampinhas (porta 5504) <br>
 <code>npm run start:ms:noticias</code> - notícias (porta 5505) <br>
@@ -144,7 +144,7 @@ Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Post
 
 - `app`: `http://localhost:5500` (app principal)
 - `msPontoColeta`: `http://localhost:5501` (microsserviço ponto de coleta)
-- `msAutenticacao`: `http://localhost:5502` (microsserviço autenticação)
+- `msAdminUsers`: `http://localhost:5502` (microsserviço gerenciamento de usuários admin)
 - `msRelatorioAnimais`: `http://localhost:5503` (microsserviço relatório animais)
 - `msRelatorioTampinhas`: `http://localhost:5504` (microsserviço relatório tampinhas)
 - `msNoticias`: `http://localhost:5505` (microsserviço notícias)
@@ -162,7 +162,7 @@ Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Post
 - Healthchecks dos servicos ativos
 - CRUD da app principal: usuarios, pontos de coleta e noticias
 - Fluxo do ms ponto-coleta: requests, review e approved
-- CRUD do ms autenticacao
+- CRUD do ms admin-users
 - CRUD do ms relatorio-animais
 - CRUD do ms relatorio-tampinhas
 - CRUD do ms noticias

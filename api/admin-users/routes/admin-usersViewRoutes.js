@@ -1,5 +1,5 @@
 const express = require("express");
-const model = require("../models/autenticacaoModels");
+const model = require("../models/admin-usersModels");
 
 const router = express.Router();
 const pontoColetaBaseUrl = (

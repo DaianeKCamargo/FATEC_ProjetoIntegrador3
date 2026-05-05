@@ -15,7 +15,7 @@
       "value": "http://localhost:5501"
     },
     {
-      "key": "msAutenticacao",
+      "key": "msAdminUsers",
       "value": "http://localhost:5502"
     },
     {
@@ -98,10 +98,10 @@
           }
         },
         {
-          "name": "MS Autenticacao - Health",
+          "name": "MS Admin Users - Health",
           "request": {
             "method": "GET",
-            "url": "{{msAutenticacao}}/health"
+            "url": "{{msAdminUsers}}/health"
           }
         },
         {
@@ -477,13 +477,13 @@
       ]
     },
     {
-      "name": "MS Autenticacao",
+      "name": "MS Admin Users",
       "item": [
         {
           "name": "Listar Administradores",
           "request": {
             "method": "GET",
-            "url": "{{msAutenticacao}}/api/credenciais"
+            "url": "{{msAdminUsers}}/api/credenciais"
           }
         },
         {
@@ -500,7 +500,7 @@
               "mode": "raw",
               "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"emailUser\": \"{{adminEmail}}\",\n  \"senha\": \"senha123\"\n}"
             },
-            "url": "{{msAutenticacao}}/api/credenciais"
+            "url": "{{msAdminUsers}}/api/credenciais"
           },
           "event": [
             {
@@ -535,7 +535,7 @@
           "name": "Buscar Administrador por ID",
           "request": {
             "method": "GET",
-            "url": "{{msAutenticacao}}/api/credenciais/{{idAdmin}}"
+            "url": "{{msAdminUsers}}/api/credenciais/{{idAdmin}}"
           }
         },
         {
@@ -552,14 +552,14 @@
               "mode": "raw",
               "raw": "{\n  \"senha\": \"novaSenha123\"\n}"
             },
-            "url": "{{msAutenticacao}}/api/credenciais/{{idAdmin}}"
+            "url": "{{msAdminUsers}}/api/credenciais/{{idAdmin}}"
           }
         },
         {
           "name": "Remover Administrador",
           "request": {
             "method": "DELETE",
-            "url": "{{msAutenticacao}}/api/credenciais/{{idAdmin}}"
+            "url": "{{msAdminUsers}}/api/credenciais/{{idAdmin}}"
           }
         },
         {
@@ -576,7 +576,7 @@
               "mode": "raw",
               "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"senha\": \"senha123\"\n}"
             },
-            "url": "{{msAutenticacao}}/api/credenciais/login"
+            "url": "{{msAdminUsers}}/api/credenciais/login"
           }
         },
         {
@@ -589,7 +589,7 @@
                 "value": "application/json"
               }
             ],
-            "url": "{{msAutenticacao}}/api/credenciais/logout"
+            "url": "{{msAdminUsers}}/api/credenciais/logout"
           }
         },
         {
@@ -606,7 +606,7 @@
               "mode": "raw",
               "raw": "{\n  \"emailUser\": \"{{adminEmail}}\"\n}"
             },
-            "url": "{{msAutenticacao}}/api/credenciais/recuperacao/solicitar"
+            "url": "{{msAdminUsers}}/api/credenciais/recuperacao/solicitar"
           }
         },
         {
@@ -623,7 +623,7 @@
               "mode": "raw",
               "raw": "{\n  \"emailUser\": \"{{adminEmail}}\",\n  \"resetToken\": \"seu_token_aqui\"\n}"
             },
-            "url": "{{msAutenticacao}}/api/credenciais/recuperacao/validar"
+            "url": "{{msAdminUsers}}/api/credenciais/recuperacao/validar"
           }
         },
         {
@@ -640,7 +640,7 @@
               "mode": "raw",
               "raw": "{\n  \"emailUser\": \"{{adminEmail}}\",\n  \"resetToken\": \"seu_token_aqui\",\n  \"novaSenha\": \"novaSenha123\"\n}"
             },
-            "url": "{{msAutenticacao}}/api/credenciais/recuperacao/redefinir"
+            "url": "{{msAdminUsers}}/api/credenciais/recuperacao/redefinir"
           }
         }
       ]
