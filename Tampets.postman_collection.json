@@ -31,6 +31,10 @@
       "value": "http://localhost:5505"
     },
     {
+      "key": "msConversaoTampinhas",
+      "value": "http://localhost:5506"
+    },
+    {
       "key": "usuarioId",
       "value": "1"
     },
@@ -868,6 +872,28 @@
           "request": {
             "method": "DELETE",
             "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/{{relatorioTampinhasId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "MS Conversao Tampinhas",
+      "item": [
+        {
+          "name": "Converter KG em Tampinhas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kg\": 5\n}"
+            },
+            "url": "{{msConversaoTampinhas}}/converter"
           }
         }
       ]

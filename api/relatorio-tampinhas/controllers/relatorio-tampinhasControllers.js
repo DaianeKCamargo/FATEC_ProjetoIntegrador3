@@ -1,6 +1,6 @@
 const model = require("../models/relatorio-tampinhasModels");
 const axios = require("axios");
-const MICROSERVICO_URL = "http://localhost:5504/converter";
+const MICROSERVICO_URL = "http://localhost:5506/converter";
 const FATOR_TAMPINHAS_POR_KG = 160;
 
 // LISTAR

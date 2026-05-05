@@ -100,8 +100,8 @@ F9: Cadastro de notícias (imagem, título e link);
 
 
 ## Como Executar o Produto
-- [Ex: Node.js / Python / Java instalado]
-- Gerenciador de pacotes (npm, pip, etc.)
+- Node.js instalado
+- Gerenciador de pacotes (npm)
 
 
 ## Instalação
@@ -116,12 +116,20 @@ F9: Cadastro de notícias (imagem, título e link);
 <code>npm install</code>
 
 ### Rodar aplicação
-<code>npm start </code> - app principal <br>
-<code>npm run start:ms:ponto-coleta</code> - ponto de coleta <br>
-<code>npm run start:ms:autenticacao</code> - autenticação login <br>
-<code>npm run start:ms:relatorio-animais</code> - relatorio animais <br>
-<code>npm run start:ms:relatorio-tampinhas</code> - relatório tampinhas <br>
-<code>npm run start:ms:noticias</code> - relatório notícias <br>
+
+**App Principal:**
+<code>npm start</code> - app principal na porta 5500 <br>
+
+**Microsserviços independentes** (cada um em sua própria porta):
+<code>npm run start:ms:ponto-coleta</code> - microsserviço ponto de coleta (porta 5501) <br>
+<code>npm run start:ms:conversao-tampinhas</code> - microsserviço conversão tampinhas (porta 5506) <br>
+
+**APIs que não são microsserviços (rodam como parte da app principal):**
+<code>npm run start:ms:autenticacao</code> - autenticação/login (porta 5502) <br>
+<code>npm run start:ms:relatorio-animais</code> - relatório animais (porta 5503) <br>
+<code>npm run start:ms:relatorio-tampinhas</code> - relatório tampinhas (porta 5504) <br>
+<code>npm run start:ms:noticias</code> - notícias (porta 5505) <br>
+<code>npm run start:ms:conversao-tampinhas</code> - conversão de kg em tampinhas <br>
 
 ## Documentacao Postman
 
@@ -134,12 +142,13 @@ Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Post
 
 ### Variaveis usadas na colecao principal
 
-- `app`: `http://localhost:5500`
-- `msPontoColeta`: `http://localhost:5501`
-- `msAutenticacao`: `http://localhost:5502`
-- `msRelatorioAnimais`: `http://localhost:5503`
-- `msRelatorioTampinhas`: `http://localhost:5504`
-- `msNoticias`: `http://localhost:5505`
+- `app`: `http://localhost:5500` (app principal)
+- `msPontoColeta`: `http://localhost:5501` (microsserviço ponto de coleta)
+- `msAutenticacao`: `http://localhost:5502` (microsserviço autenticação)
+- `msRelatorioAnimais`: `http://localhost:5503` (microsserviço relatório animais)
+- `msRelatorioTampinhas`: `http://localhost:5504` (microsserviço relatório tampinhas)
+- `msNoticias`: `http://localhost:5505` (microsserviço notícias)
+- `msConversaoTampinhas`: `http://localhost:5506` (microsserviço conversão tampinhas)
 
 ### Como importar no Postman
 
@@ -157,7 +166,4 @@ Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Post
 - CRUD do ms relatorio-animais
 - CRUD do ms relatorio-tampinhas
 - CRUD do ms noticias
-
-### Roteiro completo com exemplos
-
-- Consulte `postman/README_POSTMAN.md` para executar testes completos com payloads de exemplo, status esperados e casos de erro.
+- Conversão de kg em tampinhas (ms conversao-tampinhas)

@@ -6,11 +6,12 @@
   "scripts": {
     "start": "node app/app.js",
     "start:app": "node app/app.js",
+    "start:ms:ponto-coleta": "node microsservicos/ponto-coleta/server.js",
     "start:ms:noticias": "node api/noticias/app.js",
-    "start:ms:ponto-coleta": "node microsservicos/pontoColeta/server.js",
     "start:ms:autenticacao": "node api/autenticacao/app.js",
     "start:ms:relatorio-animais": "node api/relatorio-animais/app.js",
     "start:ms:relatorio-tampinhas": "node api/relatorio-tampinhas/app.js",
+    "start:ms:conversao-tampinhas": "node microsservicos/conversao-tampinhas/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:migrate:dev": "prisma migrate dev",
