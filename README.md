@@ -52,8 +52,8 @@ O sistema será dividido em:
 ## Documentação do Projeto
 
 - Link do [Confluence](https://projetointegradortampets.atlassian.net/wiki/spaces/PIT/overview)
-- Link do Jira: [Adicionar]
-- Link para o documento de requisitos: [Adicionar]
+- Link do [Jira](https://meupi2026.atlassian.net/jira/software/projects/TP/summary)
+- Link para [Figma](https://www.figma.com/proto/mtIcD2QxLWZ79KkHnIds0n/Site?node-id=0-1&t=xRFWEgf0wMYKvXt2-1)
 
 
 
@@ -131,16 +131,16 @@ F9: Cadastro de notícias (imagem, título e link);
 <code>npm run start:ms:noticias</code> - notícias (porta 5505) <br>
 <code>npm run start:ms:conversao-tampinhas</code> - conversão de kg em tampinhas <br>
 
-## Documentacao Postman
+## Documentação Postman
 
 Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Postman do repositorio.
 
-### Arquivos de colecao
+### Arquivos de coleção
 
 - `Tampets.postman_collection.json` (colecao consolidada da app principal + microservicos)
 - `microsservicos/ponto-coleta/ponto-coleta.postman_collection.json` (colecao dedicada do microservico de ponto de coleta)
 
-### Variaveis usadas na colecao principal
+### Variaveis usadas na coleção principal
 
 - `app`: `http://localhost:5500` (app principal)
 - `msPontoColeta`: `http://localhost:5501` (microsserviço ponto de coleta)
