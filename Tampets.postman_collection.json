@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Tampets API Collection",
-    "description": "Colecao Postman da API principal e microservicos do projeto Tampets. Inclui healthchecks, operacoes CRUD e captura automatica de IDs para facilitar testes sequenciais com exemplos.",
+    "description": "Colecao Postman da API principal e dos microservicos ativos do projeto Tampets. Inclui healthchecks, operacoes CRUD e capturas automáticas de IDs para testes sequenciais.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_postman_id": "f4f8b1d7-2a5c-4d95-9230-0a9e2cfbd141"
   },
@@ -559,7 +559,7 @@
           }
         },
         {
-          "name": "LOGIN - Autenticar Admin",
+          "name": "API - Autenticar Admin",
           "request": {
             "method": "POST",
             "header": [
@@ -572,14 +572,20 @@
               "mode": "raw",
               "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"senha\": \"senha123\"\n}"
             },
-            "url": "{{msAutenticacao}}/login"
+            "url": "{{msAutenticacao}}/api/credenciais/login"
           }
         },
         {
-          "name": "LOGOUT - Encerrar Sessão",
+          "name": "API - Encerrar Sessão",
           "request": {
-            "method": "GET",
-            "url": "{{msAutenticacao}}/logout"
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{msAutenticacao}}/api/credenciais/logout"
           }
         },
         {
