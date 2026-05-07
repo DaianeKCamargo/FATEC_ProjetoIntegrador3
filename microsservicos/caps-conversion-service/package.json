@@ -1,0 +1,24 @@
+{
+  "name": "conversaotampinhas",
+  "version": "1.0.0",
+  "description": "conversao de quantidade em kg de tampinha para quantidade em unidade",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "FATEC_PROJETOINTEGRADOR3"
+  },
+  "author": "Equipe Tampets",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.16.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "conversao-gas-carbonico",
+  "version": "1.0.0",
+  "description": "calculo de reducao de gas carbonico com base nas arrecadacoes de tampinhas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "FATEC_PROJETOINTEGRADOR3"
+  },
+  "author": "Equipe Tampets",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

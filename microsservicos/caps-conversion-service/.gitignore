@@ -1,0 +1,4 @@
+# Arquivos a srem ignorados pelo Git
+
+# pastas
+/node_modules
