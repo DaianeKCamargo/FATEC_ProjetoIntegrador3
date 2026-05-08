@@ -3,7 +3,7 @@ const app = express();
 
 app.use(express.json());
 
-const FATOR = 160;
+const FATOR = 500; // 1 kg de tampinhas equivale a 500 tampinhas
 
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok', service: 'ms-conversao-tampinhas' });
