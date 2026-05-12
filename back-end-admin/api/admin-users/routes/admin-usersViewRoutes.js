@@ -2,6 +2,7 @@ const express = require("express");
 const model = require("../models/admin-usersModels");
 
 const router = express.Router();
+
 const pontoColetaBaseUrl = (
     process.env.PONTO_COLETA_API_URL ||
     process.env.MS_PONTO_COLETA_URL ||

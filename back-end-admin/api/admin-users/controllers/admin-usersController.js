@@ -59,7 +59,6 @@ async function atualizar(req, res) {
     }
 }
 
-
 async function remover(req, res) {
     try {
         const idAdmin = Number(req.params.idAdmin);
