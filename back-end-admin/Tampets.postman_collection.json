@@ -23,7 +23,7 @@
       "value": "http://localhost:5503"
     },
     {
-      "key": "msRelatorioTampinhas",
+      "key": "msCapsRegistration",
       "value": "http://localhost:5504"
     },
     {
@@ -75,7 +75,7 @@
       "value": "1"
     },
     {
-      "key": "relatorioTampinhasId",
+      "key": "capsRegistrationId",
       "value": "1"
     }
   ],
@@ -112,10 +112,10 @@
           }
         },
         {
-          "name": "MS Relatorio Tampinhas - Health",
+          "name": "MS Caps Registration - Health",
           "request": {
             "method": "GET",
-            "url": "{{msRelatorioTampinhas}}/health"
+            "url": "{{msCapsRegistration}}/health"
           }
         },
         {
@@ -723,17 +723,17 @@
       ]
     },
     {
-      "name": "MS Relatorio Tampinhas",
+      "name": "MS Caps Registration",
       "item": [
         {
-          "name": "Listar Relatorios Tampinhas",
+          "name": "Listar Caps Registration",
           "request": {
             "method": "GET",
-            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas"
+            "url": "{{msCapsRegistration}}/api/caps-registration"
           }
         },
         {
-          "name": "Criar Relatorio Tampinhas",
+          "name": "Criar Caps Registration",
           "request": {
             "method": "POST",
             "header": [
@@ -746,7 +746,7 @@
               "mode": "raw",
               "raw": "{\n  \"data\": \"2026-04-07\",\n  \"quantidadeKg\": 12.5\n}"
             },
-            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas"
+            "url": "{{msCapsRegistration}}/api/caps-registration"
           },
           "event": [
             {
@@ -759,7 +759,7 @@
                   "});",
                   "var jsonData = pm.response.json();",
                   "if (jsonData && jsonData.id) {",
-                  "    pm.collectionVariables.set(\"relatorioTampinhasId\", String(jsonData.id));",
+                  "    pm.collectionVariables.set(\"capsRegistrationId\", String(jsonData.id));",
                   "}"
                 ]
               }
@@ -767,14 +767,14 @@
           ]
         },
         {
-          "name": "Buscar Relatorio Tampinhas por ID",
+          "name": "Buscar Caps Registration por ID",
           "request": {
             "method": "GET",
-            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/{{relatorioTampinhasId}}"
+            "url": "{{msCapsRegistration}}/api/caps-registration/{{capsRegistrationId}}"
           }
         },
         {
-          "name": "Atualizar Relatorio Tampinhas",
+          "name": "Atualizar Caps Registration",
           "request": {
             "method": "PUT",
             "header": [
@@ -787,14 +787,14 @@
               "mode": "raw",
               "raw": "{\n  \"quantidadeKg\": 15\n}"
             },
-            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/{{relatorioTampinhasId}}"
+            "url": "{{msCapsRegistration}}/api/caps-registration/{{capsRegistrationId}}"
           }
         },
         {
-          "name": "Remover Relatorio Tampinhas",
+          "name": "Remover Caps Registration",
           "request": {
             "method": "DELETE",
-            "url": "{{msRelatorioTampinhas}}/api/relatorios-tampinhas/{{relatorioTampinhasId}}"
+            "url": "{{msCapsRegistration}}/api/caps-registration/{{capsRegistrationId}}"
           }
         }
       ]

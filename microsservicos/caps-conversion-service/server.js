@@ -10,17 +10,41 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/converter', (req, res) => {
-    const { kg } = req.body;
+    try {
+        const { kg } = req.body;
 
-    if (kg === undefined || kg <= 0) {
-        return res.status(400).json({
-            message: "Valor inválido"
+        // Validação melhorada
+        if (typeof kg !== 'number' || kg === undefined) {
+            return res.status(400).json({
+                message: "Valor inválido - kg deve ser um número"
+            });
+        }
+
+        if (kg <= 0) {
+            return res.status(400).json({
+                message: "Valor inválido - kg deve ser maior que 0"
+            });
+        }
+
+        const quantidade_tampinhas = Math.round(kg * FATOR);
+
+        return res.json({
+            quantidade_tampinhas,
+            kg_entrada: kg,
+            fator_conversao: FATOR
+        });
+    } catch (error) {
+        console.error('Erro na conversão:', error);
+        return res.status(500).json({
+            message: "Erro interno do servidor"
         });
     }
+});
 
-    return res.json({
-        quantidade_tampinhas: Math.round(kg * FATOR)
-    });
+// Tratamento global de erros
+app.use((err, req, res, next) => {
+    console.error('Erro não tratado:', err);
+    res.status(500).json({ message: "Erro interno do servidor" });
 });
 
 const PORT = process.env.CONVERSAO_TAMPINHAS_PORT || 5506;

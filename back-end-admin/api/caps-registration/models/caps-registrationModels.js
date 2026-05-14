@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 // LISTAR
 async function listar() {
-    return await prisma.relatorioTampinhas.findMany({
+    return await prisma.capsRegistration.findMany({
         orderBy: { id: "asc" },
         select: {
             id: true,
@@ -15,7 +15,7 @@ async function listar() {
 
 // BUSCAR POR ID
 async function buscarPorId(id) {
-    const item = await prisma.relatorioTampinhas.findUnique({
+    const item = await prisma.capsRegistration.findUnique({
         where: { id },
         select: {
             id: true,
@@ -29,7 +29,7 @@ async function buscarPorId(id) {
 
 // CRIAR
 async function criar(dados) {
-    const novo = await prisma.relatorioTampinhas.create({
+    const novo = await prisma.capsRegistration.create({
         data: {
             data: dados.data ? new Date(dados.data) : new Date(),
             quantidadeKg: Number(dados.quantidadeKg) // ✅ corrigido
@@ -49,7 +49,7 @@ async function criar(dados) {
 // ATUALIZAR
 async function atualizar(id, dados) {
     try {
-        const atualizado = await prisma.relatorioTampinhas.update({
+        const atualizado = await prisma.capsRegistration.update({
             where: { id },
             data: {
                 data: dados.data ? new Date(dados.data) : undefined,
@@ -74,7 +74,7 @@ async function atualizar(id, dados) {
 // REMOVER
 async function remover(id) {
     try {
-        await prisma.relatorioTampinhas.delete({
+        await prisma.capsRegistration.delete({
             where: { id }
         });
         return true;

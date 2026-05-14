@@ -2,7 +2,7 @@ const express = require("express");
 
 const pontoColetaRoutes = require("./routes/pontoColetaRoutes");
 const noticiaRoutes = require("./routes/noticiaRoutes");
-const relatorioTampinhasRoutes = require("../api/relatorio-tampinhas/routes/relatorio-tampinhasRoutes.js");
+const capsRegistrationRoutes = require("../api/caps-registration/routes/caps-registrationRoutes.js");
 const relatorioAnimaisRoutes = require("../api/relatorio-animais/routes/relatorio-animaisRoutes.js")
 
 const app = express();
@@ -21,7 +21,7 @@ app.use("/api/points", pontoColetaRoutes);
 app.use("/api/pontos-coleta", pontoColetaRoutes);
 app.use("/api/ponto-coleta", pontoColetaRoutes);
 app.use("/api/noticias", noticiaRoutes);
-app.use("/api/relatorio-tampinhas", relatorioTampinhasRoutes);
+app.use("/api/caps-registration", capsRegistrationRoutes);
 app.use("/api/relatorio-animais", relatorioAnimaisRoutes)
 
 app.use((req, res) => {

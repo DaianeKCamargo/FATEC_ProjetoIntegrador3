@@ -87,13 +87,13 @@ model RelatorioAnimais {
   @@map("relatorio_animais")
 }
 
-model RelatorioTampinhas {
+model CapsRegistration {
   id            Int      @id @default(autoincrement())
   data          DateTime @db.Date
   quantidadeKg  Float    @map("quantidade_kg")
   createdAt     DateTime @default(now()) @map("created_at")
   updatedAt     DateTime @updatedAt @map("updated_at")
 
-  @@map("relatorio_tampinhas")
+  @@map("caps-registration")
 }
 

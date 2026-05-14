@@ -120,16 +120,31 @@ F9: Cadastro de notícias (imagem, título e link);
 **App Principal:**
 <code>npm start</code> - app principal na porta 5500 <br>
 
-**Microsserviços independentes** (cada um em sua própria porta):
-<code>npm run start:ms:ponto-coleta</code> - microsserviço ponto de coleta (porta 5501) <br>
-<code>npm run start:ms:conversao-tampinhas</code> - microsserviço conversão tampinhas (porta 5506) <br>
+**Microsserviços independentes** (execute cada um em um terminal separado para testes):
 
-**APIs que não são microsserviços (rodam como parte da app principal):**
+```bash
+# Terminal 1 - Microsserviço de Conversão de Tampinhas
+cd microsservicos/caps-conversion-service
+npm install
+npm start
+# Rodará na porta 5506
+# Teste: GET http://localhost:5506/health
+```
+
+```bash
+# Terminal 2 - Microsserviço de Ponto de Coleta
+cd microsservicos/collection-point-review-service
+npm install
+npm start
+# Rodará na porta 5505
+# Teste: GET http://localhost:5505/health
+```
+
+**APIs que são parte da aplicação** (use npm scripts a partir da pasta back-end-admin):
 <code>npm run start:ms:admin-users</code> - gerenciamento de usuários admin (porta 5502) <br>
 <code>npm run start:ms:relatorio-animais</code> - relatório animais (porta 5503) <br>
-<code>npm run start:ms:relatorio-tampinhas</code> - relatório tampinhas (porta 5504) <br>
+<code>npm run start:ms:caps-registration</code> - caps-registration (porta 5504) <br>
 <code>npm run start:ms:noticias</code> - notícias (porta 5505) <br>
-<code>npm run start:ms:conversao-tampinhas</code> - conversão de kg em tampinhas <br>
 
 ## Documentação Postman
 
@@ -146,7 +161,7 @@ Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Post
 - `msPontoColeta`: `http://localhost:5501` (microsserviço ponto de coleta)
 - `msAdminUsers`: `http://localhost:5502` (microsserviço gerenciamento de usuários admin)
 - `msRelatorioAnimais`: `http://localhost:5503` (microsserviço relatório animais)
-- `msRelatorioTampinhas`: `http://localhost:5504` (microsserviço relatório tampinhas)
+- `msCapsRegistration`: `http://localhost:5504` (microsserviço caps-registration)
 - `msNoticias`: `http://localhost:5505` (microsserviço notícias)
 - `msConversaoTampinhas`: `http://localhost:5506` (microsserviço conversão tampinhas)
 
@@ -164,6 +179,6 @@ Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Post
 - Fluxo do ms ponto-coleta: requests, review e approved
 - CRUD do ms admin-users
 - CRUD do ms relatorio-animais
-- CRUD do ms relatorio-tampinhas
+- CRUD do ms caps-registration
 - CRUD do ms noticias
 - Conversão de kg em tampinhas (ms conversao-tampinhas)
