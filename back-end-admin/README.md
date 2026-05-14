@@ -142,9 +142,9 @@ npm start
 
 **APIs que são parte da aplicação** (use npm scripts a partir da pasta back-end-admin):
 <code>npm run start:ms:admin-users</code> - gerenciamento de usuários admin (porta 5502) <br>
-<code>npm run start:ms:relatorio-animais</code> - relatório animais (porta 5503) <br>
-<code>npm run start:ms:caps-registration</code> - caps-registration (porta 5504) <br>
-<code>npm run start:ms:noticias</code> - notícias (porta 5505) <br>
+<code>npm run start:ms:animal-registration</code> - registro de animais (porta 5503) <br>
+<code>npm run start:ms:caps-registration</code> - cadastro de tampinhas (porta 5504) <br>
+<code>npm run start:ms:news</code> - notícias (porta 5505) <br>
 
 ## Documentação Postman
 
