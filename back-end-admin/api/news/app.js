@@ -10,8 +10,8 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-const noticiasRoutes = require('./routes/NoticiasRoutes');
-app.use('/api/noticias', noticiasRoutes);
+const newsRoutes = require('./routes/newsRoutes');
+app.use('/api/noticias', newsRoutes);
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', service: 'ms-noticias' });
