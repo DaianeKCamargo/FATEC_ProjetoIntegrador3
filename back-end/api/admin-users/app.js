@@ -1,19 +1,20 @@
+require("dotenv").config();
+
 const express = require("express");
-const path = require("path");
 const session = require("express-session");
 const adminUsersRoutes = require("./routes/admin-usersRoutes");
-const adminUsersViewRoutes = require("./routes/admin-usersViewRoutes");
 
 const app = express();
 const PORT = process.env.ADMIN_USERS_PORT || 5502;
+const SESSION_SECRET = process.env.SESSION_SECRET || "sua_chave_secreta_aqui";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Configurar sessão
+// Configurar sessão com opções de segurança
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || "sua_chave_secreta_aqui",
+        secret: SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -25,34 +26,24 @@ app.use(
     })
 );
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-app.use(express.static(path.join(__dirname, "public")));
 
 // Health check
 app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok", service: "ms-admin-users" });
 });
 
-// Rota raiz - redirecionar para login se não autenticado
+// Rota raiz - simples health/placeholder
 app.get("/", (req, res) => {
-    if (req.session.logado) {
-        return res.redirect("/menu");
-    }
-    res.render("login", { message: null, error: null, values: {} });
+    return res.status(200).json({ message: "ms-admin-users root", service: "ms-admin-users" });
 });
 
 // Rotas da API
-app.use("/api/credenciais", adminUsersRoutes);
+app.use("/api/credentials", adminUsersRoutes);
 
-// Rotas de visualização
-app.use("/", adminUsersViewRoutes);
+// Sem rotas de visualização neste microserviço
 
 // Tratamento de erro 404
 app.use((req, res) => {
-    if (req.accepts("html")) {
-        return res.status(404).render("404", { url: req.originalUrl });
-    }
     return res.status(404).json({ message: "Rota não encontrada" });
 });
 
