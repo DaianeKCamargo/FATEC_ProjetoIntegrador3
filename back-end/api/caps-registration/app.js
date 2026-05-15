@@ -34,5 +34,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Microservico caps-registration em execucao na porta ${PORT}`);
+    console.log(`API caps-registration em execucao na porta ${PORT}`);
 });

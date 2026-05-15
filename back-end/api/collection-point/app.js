@@ -23,5 +23,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Microservico ponto-coleta em execucao na porta ${PORT}`);
+    console.log(`API ponto-coleta em execucao na porta ${PORT}`);
 });

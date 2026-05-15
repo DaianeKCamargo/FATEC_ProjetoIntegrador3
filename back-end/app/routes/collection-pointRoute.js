@@ -1,1 +1,1 @@
-module.exports = require("../../api/collection-point/routes/collection-pointRoutes");
+module.exports = require("../../api/collection-point/routes/collection-pointRoute");

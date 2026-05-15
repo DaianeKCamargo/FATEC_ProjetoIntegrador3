@@ -1,7 +1,7 @@
 const express = require("express");
 
-const CollectionPointRoute = require("./routes/collection-pointRoutes");
-const newsRoute = require("./routes/newsRoute");
+const CollectionPointRoute = require("./routes/collection-pointRoute.js");
+const newsRoute = require("./routes/newsRoute.js");
 const capsRegistrationRoute = require("../api/caps-registration/routes/caps-registrationRoute.js");
 const registrosAnimaisRoute = require("../api/animals-registration/routes/animals-registrationRoute.js")
 

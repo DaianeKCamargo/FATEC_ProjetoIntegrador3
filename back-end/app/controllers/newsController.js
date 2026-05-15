@@ -2,7 +2,7 @@ const noticiaModel = require("../models/newsModel");
 
 async function listarNoticias(req, res) {
     try {
-        const noticias = await noticiaModel.listar();
+        const noticias = await noticiaModel.listarNoticias();
         res.status(200).json(noticias);
     } catch (error) {
         res.status(500).json({ message: "Erro ao listar noticias", error });
@@ -34,11 +34,11 @@ async function criarNoticia(req, res) {
             });
         }
 
-        const novaNoticia = await noticiaModel.criar({
+        const novaNoticia = await noticiaModel.criarNoticia(
             titulo,
             link,
-            imagem,
-        });
+            imagem
+        );
 
         return res.status(201).json(novaNoticia);
     } catch (error) {
@@ -51,7 +51,7 @@ async function atualizarNoticia(req, res) {
         const id = Number(req.params.id);
         const { titulo, link, imagem } = req.body;
 
-        const noticiaAtualizada = await noticiaModel.atualizar(id, {
+        const noticiaAtualizada = await noticiaModel.atualizarNoticia(id, {
             titulo,
             link,
             imagem,
@@ -70,7 +70,7 @@ async function atualizarNoticia(req, res) {
 async function removerNoticia(req, res) {
     try {
         const id = Number(req.params.id);
-        const removido = await noticiaModel.remover(id);
+        const removido = await noticiaModel.removerNoticia(id);
 
         if (!removido) {
             return res.status(404).json({ message: "Noticia nao encontrada" });

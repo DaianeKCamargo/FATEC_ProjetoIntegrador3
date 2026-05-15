@@ -12,10 +12,8 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', service: 'ms-noticias' });
 });
 
-// Views removed: service now responds JSON only
-
 const PORT = process.env.PORT || 5505;
 
 app.listen(PORT, () => {
-  console.log(`Microsserviço de notícias rodando na porta ${PORT}`);
+  console.log(`API de notícias rodando na porta ${PORT}`);
 });

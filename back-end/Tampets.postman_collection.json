@@ -27,6 +27,10 @@
       "value": "http://localhost:5504"
     },
     {
+      "key": "msConversaoCO2",
+      "value": "http://localhost:5508"
+    },
+    {
       "key": "msNoticias",
       "value": "http://localhost:5505"
     },
@@ -124,6 +128,20 @@
             "method": "GET",
             "url": "{{msNoticias}}/health"
           }
+        },
+        {
+          "name": "MS Conversao Tampinhas - Health",
+          "request": {
+            "method": "GET",
+            "url": "{{msConversaoTampinhas}}/health"
+          }
+        },
+        {
+          "name": "MS Conversao CO2 - Health",
+          "request": {
+            "method": "GET",
+            "url": "{{msConversaoCO2}}/health"
+          }
         }
       ]
     },
@@ -134,7 +152,7 @@
           "name": "Listar Pontos de Coleta",
           "request": {
             "method": "GET",
-            "url": "{{app}}/api/ponto-coleta"
+            "url": "{{app}}/api/collection-point"
           }
         },
         {
@@ -151,7 +169,7 @@
               "mode": "raw",
               "raw": "{\n  \"nameUser\": \"Daiane Camargo\",\n  \"cpfUser\": \"11144477735\",\n  \"celUser\": \"11988887777\",\n  \"emailUser\": \"daiane@example.com\",\n  \"linkPhoto\": \"https://example.com/photo.jpg\",\n  \"namePoint\": \"Ponto Centro\",\n  \"cnpjPoint\": \"11222333000181\",\n  \"opensDay\": \"Segunda a Sexta\",\n  \"hourInit\": \"08:00\",\n  \"hourFinal\": \"18:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"100\",\n    \"district\": \"Centro\",\n    \"city\": \"Sao Paulo\",\n    \"postCode\": \"01001000\"\n  }\n}"
             },
-            "url": "{{app}}/api/ponto-coleta"
+            "url": "{{app}}/api/collection-point"
           },
           "event": [
             {
@@ -163,8 +181,9 @@
                   "    pm.response.to.have.status(201);",
                   "});",
                   "var jsonData = pm.response.json();",
-                  "if (jsonData && jsonData.id) {",
-                  "    pm.collectionVariables.set(\"pontoColetaId\", String(jsonData.id));",
+                  "if (jsonData && jsonData.idPc) {",
+                  "    pm.collectionVariables.set(\"pontoColetaId\", String(jsonData.idPc));",
+                  "    pm.collectionVariables.set(\"solicitacaoId\", String(jsonData.idPc));",
                   "}"
                 ]
               }
@@ -175,7 +194,31 @@
           "name": "Buscar Ponto de Coleta por ID",
           "request": {
             "method": "GET",
-            "url": "{{app}}/api/ponto-coleta/{{pontoColetaId}}"
+            "url": "{{app}}/api/collection-point/{{pontoColetaId}}"
+          }
+        },
+        {
+          "name": "Listar Pontos Aprovados",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/collection-point/approved"
+          }
+        },
+        {
+          "name": "Atualizar Status do Ponto de Coleta",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"APROVADO\",\n  \"reason\": \"Documentacao validada\"\n}"
+            },
+            "url": "{{app}}/api/collection-point/{{pontoColetaId}}/status"
           }
         },
         {
@@ -192,14 +235,14 @@
               "mode": "raw",
               "raw": "{\n  \"namePoint\": \"Ponto Centro Atualizado\",\n  \"hourInit\": \"09:00\",\n  \"address\": {\n    \"number\": \"120\"\n  }\n}"
             },
-            "url": "{{app}}/api/ponto-coleta/{{pontoColetaId}}"
+            "url": "{{app}}/api/collection-point/{{pontoColetaId}}"
           }
         },
         {
           "name": "Remover Ponto de Coleta",
           "request": {
             "method": "DELETE",
-            "url": "{{app}}/api/ponto-coleta/{{pontoColetaId}}"
+            "url": "{{app}}/api/collection-point/{{pontoColetaId}}"
           }
         }
       ]
@@ -211,7 +254,7 @@
           "name": "Listar Noticias",
           "request": {
             "method": "GET",
-            "url": "{{app}}/api/noticias"
+            "url": "{{app}}/api/news"
           }
         },
         {
@@ -228,7 +271,7 @@
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"Nova campanha de castracao\",\n  \"link\": \"https://exemplo.com/noticia-campanha\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia.jpg\"\n}"
             },
-            "url": "{{app}}/api/noticias"
+            "url": "{{app}}/api/news"
           },
           "event": [
             {
@@ -252,7 +295,7 @@
           "name": "Buscar Noticia por ID",
           "request": {
             "method": "GET",
-            "url": "{{app}}/api/noticias/{{noticiaId}}"
+            "url": "{{app}}/api/news/{{noticiaId}}"
           }
         },
         {
@@ -269,23 +312,30 @@
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"Campanha atualizada\",\n  \"link\": \"https://exemplo.com/noticia-campanha-atualizada\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia-atualizada.jpg\"\n}"
             },
-            "url": "{{app}}/api/noticias/{{noticiaId}}"
+            "url": "{{app}}/api/news/{{noticiaId}}"
           }
         },
         {
           "name": "Remover Noticia",
           "request": {
             "method": "DELETE",
-            "url": "{{app}}/api/noticias/{{noticiaId}}"
+            "url": "{{app}}/api/news/{{noticiaId}}"
           }
         }
       ]
     },
     {
-      "name": "MS Ponto Coleta",
+      "name": "App Principal - Caps Registration",
       "item": [
         {
-          "name": "Criar Solicitacao de Ponto",
+          "name": "Listar Caps Registration",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/caps-registration"
+          }
+        },
+        {
+          "name": "Criar Caps Registration",
           "request": {
             "method": "POST",
             "header": [
@@ -296,53 +346,22 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nameUser\": \"Daiane Camargo\",\n  \"cpfUser\": \"11144477735\",\n  \"celUser\": \"11988887777\",\n  \"emailUser\": \"daiane@example.com\",\n  \"linkPhoto\": \"https://images.example.com/ponto-centro.jpg\",\n  \"namePoint\": \"Ponto Centro\",\n  \"cnpjPoint\": \"11222333000181\",\n  \"opensDay\": \"Segunda a Sexta\",\n  \"hourInit\": \"08:00\",\n  \"hourFinal\": \"18:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"100\",\n    \"complement\": \"Sala 2\",\n    \"district\": \"Centro\",\n    \"city\": \"Sao Paulo\",\n    \"postCode\": \"01001000\"\n  }\n}"
+              "raw": "{\n  \"data\": \"2026-04-07\",\n  \"quantidadeKg\": 12.5\n}"
             },
-            "url": "{{msPontoColeta}}/api/ponto-coleta"
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status 201\", function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});",
-                  "var jsonData = pm.response.json();",
-                  "if (jsonData && jsonData.idPc) {",
-                  "    pm.collectionVariables.set(\"solicitacaoId\", String(jsonData.idPc));",
-                  "}"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Listar Solicitacoes",
-          "request": {
-            "method": "GET",
-            "url": "{{msPontoColeta}}/api/pontos-coleta"
+            "url": "{{app}}/api/caps-registration"
           }
         },
         {
-          "name": "Listar Solicitacoes por Status",
+          "name": "Buscar Caps Registration por ID",
           "request": {
             "method": "GET",
-            "url": "{{msPontoColeta}}/api/pontos-coleta?status=PENDENTE"
+            "url": "{{app}}/api/caps-registration/{{capsRegistrationId}}"
           }
         },
         {
-          "name": "Buscar Solicitacao por ID",
+          "name": "Atualizar Caps Registration",
           "request": {
-            "method": "GET",
-            "url": "{{msPontoColeta}}/api/pontos-coleta/{{solicitacaoId}}"
-          }
-        },
-        {
-          "name": "Atualizar Solicitacao",
-          "request": {
-            "method": "PATCH",
+            "method": "PUT",
             "header": [
               {
                 "key": "Content-Type",
@@ -351,13 +370,93 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"hourInit\": \"09:00\",\n  \"hourFinal\": \"19:00\",\n  \"address\": {\n    \"street\": \"Rua das Flores\",\n    \"number\": \"120\"\n  }\n}"
+              "raw": "{\n  \"quantidadeKg\": 15\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/{{solicitacaoId}}"
+            "url": "{{app}}/api/caps-registration/{{capsRegistrationId}}"
           }
         },
         {
-          "name": "Aprovar Solicitacao",
+          "name": "Remover Caps Registration",
+          "request": {
+            "method": "DELETE",
+            "url": "{{app}}/api/caps-registration/{{capsRegistrationId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "App Principal - Animals Registration",
+      "item": [
+        {
+          "name": "Listar Registros de Animais",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/animals-registration"
+          }
+        },
+        {
+          "name": "Criar Registro de Animal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": \"2026-04-07\",\n  \"tipoAnimal\": \"gato\",\n  \"quantidade\": 3\n}"
+            },
+            "url": "{{app}}/api/animals-registration"
+          }
+        },
+        {
+          "name": "Buscar Registro de Animal por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{app}}/api/animals-registration/{{relatorioAnimalId}}"
+          }
+        },
+        {
+          "name": "Atualizar Registro de Animal",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipoAnimal\": \"cachorro\",\n  \"quantidade\": 4\n}"
+            },
+            "url": "{{app}}/api/animals-registration/{{relatorioAnimalId}}"
+          }
+        },
+        {
+          "name": "Remover Registro de Animal",
+          "request": {
+            "method": "DELETE",
+            "url": "{{app}}/api/animals-registration/{{relatorioAnimalId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "MS Ponto Coleta - Review Service",
+      "item": [
+        {
+          "name": "Listar Pontos Aprovados",
+          "request": {
+            "method": "GET",
+            "url": "{{msPontoColeta}}/api/collection-point/approved"
+          }
+        },
+        {
+          "name": "Aprovar/Rejeitar Solicitacao",
+          "description": "Approve or Reject a collection point. Requires existing ID and status=APROVADO or REJEITADO",
           "request": {
             "method": "PATCH",
             "header": [
@@ -370,31 +469,7 @@
               "mode": "raw",
               "raw": "{\n  \"status\": \"APROVADO\",\n  \"reason\": \"Documentacao validada\"\n}"
             },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/{{solicitacaoId}}/status"
-          }
-        },
-        {
-          "name": "Recusar Solicitacao",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"status\": \"REJEITADO\",\n  \"reason\": \"Endereco inconsistente\"\n}"
-            },
-            "url": "{{msPontoColeta}}/api/pontos-coleta/{{solicitacaoIdReject}}/status"
-          }
-        },
-        {
-          "name": "Listar Aprovados",
-          "request": {
-            "method": "GET",
-            "url": "{{msPontoColeta}}/api/pontos-coleta/approved"
+            "url": "{{msPontoColeta}}/api/collection-point/{{solicitacaoId}}/status"
           }
         }
       ]
@@ -406,7 +481,7 @@
           "name": "Listar Administradores",
           "request": {
             "method": "GET",
-            "url": "{{msAdminUsers}}/api/credenciais"
+            "url": "{{msAdminUsers}}/api/credentials"
           }
         },
         {
@@ -423,7 +498,7 @@
               "mode": "raw",
               "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"emailUser\": \"{{adminEmail}}\",\n  \"senha\": \"senha123\"\n}"
             },
-            "url": "{{msAdminUsers}}/api/credenciais"
+            "url": "{{msAdminUsers}}/api/credentials"
           },
           "event": [
             {
@@ -458,7 +533,7 @@
           "name": "Buscar Administrador por ID",
           "request": {
             "method": "GET",
-            "url": "{{msAdminUsers}}/api/credenciais/{{idAdmin}}"
+            "url": "{{msAdminUsers}}/api/credentials/{{idAdmin}}"
           }
         },
         {
@@ -475,14 +550,14 @@
               "mode": "raw",
               "raw": "{\n  \"senha\": \"novaSenha123\"\n}"
             },
-            "url": "{{msAdminUsers}}/api/credenciais/{{idAdmin}}"
+            "url": "{{msAdminUsers}}/api/credentials/{{idAdmin}}"
           }
         },
         {
           "name": "Remover Administrador",
           "request": {
             "method": "DELETE",
-            "url": "{{msAdminUsers}}/api/credenciais/{{idAdmin}}"
+            "url": "{{msAdminUsers}}/api/credentials/{{idAdmin}}"
           }
         },
         {
@@ -499,7 +574,7 @@
               "mode": "raw",
               "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"senha\": \"senha123\"\n}"
             },
-            "url": "{{msAdminUsers}}/api/credenciais/login"
+            "url": "{{msAdminUsers}}/api/credentials/login"
           }
         },
         {
@@ -512,7 +587,7 @@
                 "value": "application/json"
               }
             ],
-            "url": "{{msAdminUsers}}/api/credenciais/logout"
+            "url": "{{msAdminUsers}}/api/credentials/logout"
           }
         },
         {
@@ -529,7 +604,7 @@
               "mode": "raw",
               "raw": "{\n  \"emailUser\": \"{{adminEmail}}\"\n}"
             },
-            "url": "{{msAdminUsers}}/api/credenciais/recuperacao/solicitar"
+            "url": "{{msAdminUsers}}/api/credentials/recuperacao/solicitar"
           }
         },
         {
@@ -546,7 +621,7 @@
               "mode": "raw",
               "raw": "{\n  \"emailUser\": \"{{adminEmail}}\",\n  \"resetToken\": \"seu_token_aqui\"\n}"
             },
-            "url": "{{msAdminUsers}}/api/credenciais/recuperacao/validar"
+            "url": "{{msAdminUsers}}/api/credentials/recuperacao/validar"
           }
         },
         {
@@ -563,19 +638,19 @@
               "mode": "raw",
               "raw": "{\n  \"emailUser\": \"{{adminEmail}}\",\n  \"resetToken\": \"seu_token_aqui\",\n  \"novaSenha\": \"novaSenha123\"\n}"
             },
-            "url": "{{msAdminUsers}}/api/credenciais/recuperacao/redefinir"
+            "url": "{{msAdminUsers}}/api/credentials/recuperacao/redefinir"
           }
         }
       ]
     },
     {
-      "name": "MS Relatorio Animais",
+      "name": "MS Animals Registration",
       "item": [
         {
           "name": "Listar Relatorios Animais",
           "request": {
             "method": "GET",
-            "url": "{{msRelatorioAnimais}}/api/relatorios-animais"
+            "url": "{{msRelatorioAnimais}}/api/animals-registration"
           }
         },
         {
@@ -592,7 +667,7 @@
               "mode": "raw",
               "raw": "{\n  \"data\": \"2026-04-07\",\n  \"tipoAnimal\": \"gato\",\n  \"quantidade\": 3\n}"
             },
-            "url": "{{msRelatorioAnimais}}/api/relatorios-animais"
+            "url": "{{msRelatorioAnimais}}/api/animals-registration"
           },
           "event": [
             {
@@ -616,7 +691,7 @@
           "name": "Buscar Relatorio Animal por ID",
           "request": {
             "method": "GET",
-            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/{{relatorioAnimalId}}"
+            "url": "{{msRelatorioAnimais}}/api/animals-registration/{{relatorioAnimalId}}"
           }
         },
         {
@@ -633,14 +708,14 @@
               "mode": "raw",
               "raw": "{\n  \"tipoAnimal\": \"cachorro\",\n  \"quantidade\": 4\n}"
             },
-            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/{{relatorioAnimalId}}"
+            "url": "{{msRelatorioAnimais}}/api/animals-registration/{{relatorioAnimalId}}"
           }
         },
         {
           "name": "Remover Relatorio Animal",
           "request": {
             "method": "DELETE",
-            "url": "{{msRelatorioAnimais}}/api/relatorios-animais/{{relatorioAnimalId}}"
+            "url": "{{msRelatorioAnimais}}/api/animals-registration/{{relatorioAnimalId}}"
           }
         }
       ]
@@ -652,7 +727,7 @@
           "name": "Listar Noticias",
           "request": {
             "method": "GET",
-            "url": "{{msNoticias}}/api/noticias"
+            "url": "{{msNoticias}}/api/news"
           }
         },
         {
@@ -669,7 +744,7 @@
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"Campanha de arrecadacao\",\n  \"link\": \"https://exemplo.com/noticia\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia.jpg\"\n}"
             },
-            "url": "{{msNoticias}}/api/noticias"
+            "url": "{{msNoticias}}/api/news"
           },
           "event": [
             {
@@ -693,7 +768,7 @@
           "name": "Buscar Noticia por ID",
           "request": {
             "method": "GET",
-            "url": "{{msNoticias}}/api/noticias/{{msNoticiaId}}"
+            "url": "{{msNoticias}}/api/news/{{msNoticiaId}}"
           }
         },
         {
@@ -710,14 +785,14 @@
               "mode": "raw",
               "raw": "{\n  \"titulo\": \"Campanha atualizada\",\n  \"link\": \"https://exemplo.com/noticia-atualizada\",\n  \"imagem\": \"https://exemplo.com/imagens/noticia-atualizada.jpg\"\n}"
             },
-            "url": "{{msNoticias}}/api/noticias/{{msNoticiaId}}"
+            "url": "{{msNoticias}}/api/news/{{msNoticiaId}}"
           }
         },
         {
           "name": "Remover Noticia",
           "request": {
             "method": "DELETE",
-            "url": "{{msNoticias}}/api/noticias/{{msNoticiaId}}"
+            "url": "{{msNoticias}}/api/news/{{msNoticiaId}}"
           }
         }
       ]
@@ -795,6 +870,35 @@
           "request": {
             "method": "DELETE",
             "url": "{{msCapsRegistration}}/api/caps-registration/{{capsRegistrationId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "MS Conversao CO2",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": "{{msConversaoCO2}}/health"
+          }
+        },
+        {
+          "name": "Converter Tampinhas para CO2",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tampinhas\": 1000\n}"
+            },
+            "url": "{{msConversaoCO2}}/converter"
           }
         }
       ]

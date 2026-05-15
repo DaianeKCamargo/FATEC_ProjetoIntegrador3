@@ -1,5 +1,5 @@
 const express = require("express");
-const relatoriosAnimaisRoutes = require("./routes/animals-resgitrationRoute");
+const relatoriosAnimaisRoutes = require("./routes/animals-registrationRoute");
 
 const app = express();
 const PORT = process.env.RELATORIO_ANIMAIS_PORT || 5503;
@@ -18,5 +18,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Microservico animals-registration em execucao na porta ${PORT}`);
+    console.log(`API animals-registration em execucao na porta ${PORT}`);
 });

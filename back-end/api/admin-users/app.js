@@ -49,7 +49,7 @@ app.use((req, res) => {
 
 if (require.main === module) {
     app.listen(PORT, () => {
-        console.log(`Microserviço autenticação em execução na porta ${PORT}`);
+        console.log(`API autenticação em execução na porta ${PORT}`);
     });
 }
 

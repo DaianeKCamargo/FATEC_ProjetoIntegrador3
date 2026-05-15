@@ -1,51 +1,51 @@
-const db = require("../../lib/db");
+// Proxy para microserviço de News (porta 5505)
+const API_NEWS_URL = process.env.API_NEWS_URL || "http://localhost:5505/api/news";
 
-async function listar() {
-    const result = await db.query("SELECT * FROM noticias ORDER BY id");
-    return result.rows;
+async function makeRequest(method, path, body = null) {
+    try {
+        const options = {
+            method,
+            headers: { "Content-Type": "application/json" },
+        };
+        if (body) options.body = JSON.stringify(body);
+
+        const response = await fetch(`${API_NEWS_URL}${path}`, options);
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(`Erro ao comunicar com microserviço de News:`, error);
+        throw error;
+    }
+}
+
+async function listarNoticias() {
+    return await makeRequest("GET", "");
 }
 
 async function buscarPorId(id) {
-    const result = await db.query(
-        "SELECT * FROM noticias WHERE id = $1",
-        [id]
-    );
-    return result.rows[0];
+    const lista = await makeRequest("GET", "");
+    return lista.find(n => n.id === Number(id));
 }
 
-async function criar(dados) {
-    const result = await db.query(
-        "INSERT INTO noticias (titulo, link, imagem) VALUES ($1, $2, $3) RETURNING *",
-        [dados.titulo, dados.link, dados.imagem]
-    );
-    return result.rows[0];
+async function criarNoticia(titulo, link, imagem) {
+    return await makeRequest("POST", "", { titulo, link, imagem });
 }
 
-async function atualizar(id, dados) {
-    const result = await db.query(
-        `UPDATE noticias 
-         SET titulo = $1, link = $2, imagem = $3
-         WHERE id = $4
-         RETURNING *`,
-        [dados.titulo, dados.link, dados.imagem, id]
-    );
-
-    return result.rows[0];
+async function atualizarNoticia(id, dados) {
+    return await makeRequest("PUT", `/${id}`, dados);
 }
 
-async function remover(id) {
-    const result = await db.query(
-        "DELETE FROM noticias WHERE id = $1 RETURNING *",
-        [id]
-    );
-
-    return result.rowCount > 0;
+async function removerNoticia(id) {
+    await makeRequest("DELETE", `/${id}`);
+    return { message: "Notícia removida com sucesso" };
 }
 
 module.exports = {
-    listar,
+    listarNoticias,
     buscarPorId,
-    criar,
-    atualizar,
-    remover,
+    criarNoticia,
+    atualizarNoticia,
+    removerNoticia,
 };
