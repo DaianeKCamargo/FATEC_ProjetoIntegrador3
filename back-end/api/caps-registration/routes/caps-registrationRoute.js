@@ -1,5 +1,5 @@
 const express = require("express");
-const controller = require("../controllers/caps-registrationControllers");
+const controller = require("../controllers/caps-registrationController");
 
 const router = express.Router();
 

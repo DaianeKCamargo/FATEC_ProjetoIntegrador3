@@ -1,7 +1,10 @@
 const model = require("../models/caps-registrationModel");
 const axios = require("axios");
 const MICROSERVICO_URL = process.env.MICROSERVICO_CONVERSAO_URL || "http://localhost:5506/converter";
+const MICROSERVICO_CO2_URL = process.env.MICROSERVICO_CO2_URL || "http://localhost:5508/converter";
 const FATOR_FALLBACK = 500; // Mesmo fator do microsserviço
+const PESO_MEDIO_TAMPINHA_GRAMAS = Number(process.env.PESO_MEDIO_TAMPINHA_GRAMAS || 2);
+const FATOR_CO2_KG_POR_KG = Number(process.env.FATOR_CO2_KG_POR_KG || 1.9);
 
 // Função auxiliar para converter via microsserviço
 async function converterKgParaTampinhas(kg) {
@@ -15,6 +18,18 @@ async function converterKgParaTampinhas(kg) {
     }
 }
 
+async function converterTampinhasParaCo2Kg(tampinhas) {
+    try {
+        const response = await axios.post(MICROSERVICO_CO2_URL, { tampinhas }, { timeout: 5000 });
+        return response.data.co2_evitado_kg;
+    } catch (error) {
+        console.warn(`⚠️ Erro ao chamar microsserviço de CO2: ${error.message}`);
+
+        const massaKg = (tampinhas * PESO_MEDIO_TAMPINHA_GRAMAS) / 1000;
+        return Number((massaKg * FATOR_CO2_KG_POR_KG).toFixed(6));
+    }
+}
+
 // LISTAR
 async function listar(req, res) {
     try {
@@ -23,9 +38,11 @@ async function listar(req, res) {
         const convertida = await Promise.all(
             lista.map(async (item) => {
                 const quantidade_tampinhas = await converterKgParaTampinhas(item.quantidadeKg);
+                const quantidade_co2_reduzido = await converterTampinhasParaCo2Kg(quantidade_tampinhas);
                 return {
                     ...item,
-                    quantidade_tampinhas
+                    quantidade_tampinhas,
+                    quantidade_co2_reduzido,
                 };
             })
         );

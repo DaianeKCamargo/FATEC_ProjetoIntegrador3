@@ -1,5 +1,5 @@
 const express = require("express");
-const capsRegistrationRoutes = require("./routes/caps-registrationRoutes");
+const capsRegistrationRoutes = require("./routes/caps-registrationRoute");
 
 const app = express();
 const PORT = process.env.CAPS_REGISTRATION_PORT || 5504;
