@@ -57,7 +57,7 @@ async function remover(req, res) {
         const id = Number(req.params.id);
         await model.remover(id);
 
-        return res.status(204).send();
+        return res.status(200).json({ message: "Registro de animais removido com sucesso" });
     } catch (error) {
         return res.status(404).json({ message: "Registros de animais nao encontrado" });
     }

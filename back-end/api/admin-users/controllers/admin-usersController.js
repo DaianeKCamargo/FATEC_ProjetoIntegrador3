@@ -64,7 +64,7 @@ async function remover(req, res) {
         const idAdmin = Number(req.params.idAdmin);
         await model.remover(idAdmin);
 
-        return res.status(204).send();
+        return res.status(200).json({ message: "Administrador removido com sucesso" });
     } catch (erro) {
         if (erro.message.includes("não encontrado")) {
             return res.status(404).json({ message: erro.message });

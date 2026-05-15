@@ -50,7 +50,7 @@ async function listar(req, res) {
         return res.json(convertida);
     } catch (error) {
         console.error("💥 ERRO em LISTAR:", error);
-        return res.status(500).json({ message: "Erro ao listar relatórios" });
+        return res.status(500).json({ message: "Erro ao listar registros" });
     }
 }
 
@@ -62,7 +62,7 @@ async function buscarPorId(req, res) {
 
         if (!item) {
             return res.status(404).json({
-                message: "Relatorio de tampinhas nao encontrado"
+                message: "Registro de tampinhas nao encontrado"
             });
         }
 
@@ -76,7 +76,7 @@ async function buscarPorId(req, res) {
         return res.status(200).json(convertido);
     } catch (error) {
         console.error("💥 ERRO em BUSCAR POR ID:", error);
-        return res.status(500).json({ message: "Erro ao buscar relatório" });
+        return res.status(500).json({ message: "Erro ao buscar registro" });
     }
 }
 
@@ -104,7 +104,7 @@ async function criar(req, res) {
     } catch (error) {
         console.error("💥 ERRO AO CRIAR:", error);
         return res.status(500).json({
-            message: "Erro ao criar relatório"
+            message: "Erro ao criar registro de tampinhas"
         });
     }
 }
@@ -125,7 +125,7 @@ async function atualizar(req, res) {
 
         if (!atualizado) {
             return res.status(404).json({
-                message: "Relatorio de tampinhas nao encontrado"
+                message: "Registro de tampinhas nao encontrado"
             });
         }
 
@@ -142,7 +142,7 @@ async function atualizar(req, res) {
     } catch (error) {
         console.error("💥 ERRO AO ATUALIZAR:", error);
         return res.status(500).json({
-            message: "Erro ao atualizar relatório"
+            message: "Erro ao atualizar registro de tampinhas"
         });
     }
 }
@@ -155,15 +155,15 @@ async function remover(req, res) {
 
         if (!removido) {
             return res.status(404).json({
-                message: "Relatorio de tampinhas nao encontrado"
+                message: "Registro de tampinhas nao encontrado"
             });
         }
 
-        return res.status(204).send();
+        return res.status(200).json({ message: "Registro de tampinhas removido com sucesso" });
     } catch (error) {
         console.error("💥 ERRO AO REMOVER:", error);
         return res.status(500).json({
-            message: "Erro ao remover relatório"
+            message: "Erro ao remover registro de tampinhas"
         });
     }
 }

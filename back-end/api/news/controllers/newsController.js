@@ -1,15 +1,15 @@
 const model = require('../models/newsModel');
 
-exports.listar = async (req, res) => {
+async function listar(req, res) {
   try {
     const dados = await model.listarNoticias();
-    res.json(dados);
+    return res.status(200).json(dados);
   } catch (err) {
-    res.status(500).json({ erro: err.message });
+    return res.status(500).json({ erro: err.message });
   }
-};
+}
 
-exports.buscarPorId = async (req, res) => {
+async function buscarPorId(req, res) {
   try {
     const { id } = req.params;
     const noticia = await model.buscarPorId(id);
@@ -18,13 +18,13 @@ exports.buscarPorId = async (req, res) => {
       return res.status(404).json({ mensagem: "Notícia não encontrada" });
     }
 
-    res.json(noticia);
+    return res.status(200).json(noticia);
   } catch (err) {
-    res.status(500).json({ erro: err.message });
+    return res.status(500).json({ erro: err.message });
   }
-};
+}
 
-exports.criar = async (req, res) => {
+async function criar(req, res) {
   try {
     const { titulo, link, imagem } = req.body;
 
@@ -33,32 +33,40 @@ exports.criar = async (req, res) => {
     }
 
     const nova = await model.criarNoticia(titulo, link, imagem);
-    res.status(201).json(nova);
+    return res.status(201).json(nova);
   } catch (err) {
-    res.status(500).json({ erro: err.message });
+    return res.status(500).json({ erro: err.message });
   }
-};
+}
 
-exports.atualizar = async (req, res) => {
+async function atualizar(req, res) {
   try {
     const { id } = req.params;
 
     const atualizada = await model.atualizarNoticia(id, req.body);
 
-    res.json(atualizada);
+    return res.status(200).json(atualizada);
   } catch (err) {
-    res.status(500).json({ erro: err.message });
+    return res.status(500).json({ erro: err.message });
   }
-};
+}
 
-exports.remover = async (req, res) => {
+async function remover(req, res) {
   try {
     const { id } = req.params;
 
     await model.removerNoticia(id);
 
-    res.json({ mensagem: "Notícia removida com sucesso" });
+    return res.status(200).json({ mensagem: "Notícia removida com sucesso" });
   } catch (err) {
-    res.status(500).json({ erro: err.message });
+    return res.status(500).json({ erro: err.message });
   }
+}
+
+module.exports = {
+  listar,
+  buscarPorId,
+  criar,
+  atualizar,
+  remover,
 };
