@@ -1,4 +1,4 @@
-const model = require('../models/newsModels');
+const model = require('../models/newsModel');
 
 exports.listar = async (req, res) => {
   try {

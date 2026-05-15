@@ -1,4 +1,4 @@
-const model = require("../models/caps-registrationModels");
+const model = require("../models/caps-registrationModel");
 const axios = require("axios");
 const MICROSERVICO_URL = process.env.MICROSERVICO_CONVERSAO_URL || "http://localhost:5506/converter";
 const FATOR_FALLBACK = 500; // Mesmo fator do microsserviço

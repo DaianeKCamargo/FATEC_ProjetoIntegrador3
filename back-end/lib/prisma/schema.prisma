@@ -13,7 +13,7 @@ enum PointCollectionStatus {
   REJEITADO
 }
 
-model Noticia {
+model News {
   id        Int     @id @default(autoincrement())
   titulo    String
   link      String
@@ -21,7 +21,7 @@ model Noticia {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@map("noticias")
+  @@map("news")
 }
 
 model PointCollection {
