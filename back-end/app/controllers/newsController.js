@@ -1,4 +1,4 @@
-const noticiaModel = require("../models/noticiaModels");
+const noticiaModel = require("../models/newsModel");
 
 async function listarNoticias(req, res) {
     try {

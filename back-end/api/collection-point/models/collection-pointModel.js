@@ -124,11 +124,12 @@ async function deletePoint(id) {
     });
 }
 
-async function updatePointStatus(id, status) {
+async function updatePointStatus(id, data) {
     return prisma.pointCollection.update({
         where: { idPc: id },
         data: {
-            status,
+            status: data.status,
+            rejectionReason: data.rejectionReason ?? null,
         },
         include: includePointRelations,
     });

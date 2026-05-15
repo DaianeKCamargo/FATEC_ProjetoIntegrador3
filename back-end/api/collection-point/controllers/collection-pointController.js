@@ -1,5 +1,5 @@
 const { ZodError } = require("zod");
-const service = require("../services/pontoColetaService");
+const service = require("../services/collection-pointService");
 
 function handleError(res, error) {
     if (error instanceof ZodError) {

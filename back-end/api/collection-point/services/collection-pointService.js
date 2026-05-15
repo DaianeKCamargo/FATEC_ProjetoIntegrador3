@@ -2,10 +2,10 @@ const {
     validateCreate,
     validateUpdate,
     validateStatus,
-} = require("../validators/pontoColetaValidator");
-const repository = require("../models/pontoColetaModel");
+} = require("../validators/collection-pointValidator");
+const repository = require("../models/collection-pointModel");
 
-const baseUrl = (process.env.MS_PONTO_COLETA_URL || "http://localhost:5501").replace(
+const baseUrl = (process.env.MS_PONTO_COLETA_URL || "http://localhost:5507").replace(
     /\/$/,
     ""
 );
@@ -125,12 +125,19 @@ async function atualizarStatusPontoColeta(rawId, payload) {
         reason: payload.reason ?? payload.rejectionReason,
     });
 
-    return requestMs(`/api/pontos-coleta/${id}/status`, {
+    const result = await requestMs(`/api/collection-point/${id}/status`, {
         method: "PATCH",
         body: JSON.stringify({
             status: data.status,
             reason: data.reason,
         }),
+    });
+
+    const updated = result?.data || result;
+
+    return repository.updatePointStatus(id, {
+        status: updated.status ?? data.status,
+        rejectionReason: updated.rejectionReason ?? (data.status === "REJEITADO" ? data.reason : null),
     });
 }
 

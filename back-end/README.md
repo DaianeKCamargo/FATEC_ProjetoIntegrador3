@@ -136,9 +136,11 @@ npm start
 cd microsservicos/collection-point-review-service
 npm install
 npm start
-# Rodará na porta 5505
-# Teste: GET http://localhost:5505/health
+# Rodará na porta 5507
+# Teste: GET http://localhost:5507/health
 ```
+
+Esse microsserviço é voltado para revisão de pontos de coleta: consulta de aprovados e alteração de status para `APROVADO` ou `REJEITADO`.
 
 **APIs que são parte da aplicação** (use npm scripts a partir da pasta back-end-admin):
 <code>npm run start:ms:admin-users</code> - gerenciamento de usuários admin (porta 5502) <br>
@@ -158,7 +160,7 @@ Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Post
 ### Variaveis usadas na coleção principal
 
 - `app`: `http://localhost:5500` (app principal)
-- `msPontoColeta`: `http://localhost:5501` (microsserviço ponto de coleta)
+- `msPontoColeta`: `http://localhost:5507` (microsserviço ponto de coleta)
 - `msAdminUsers`: `http://localhost:5502` (microsserviço gerenciamento de usuários admin)
 - `msRelatorioAnimais`: `http://localhost:5503` (microsserviço relatório animais)
 - `msCapsRegistration`: `http://localhost:5504` (microsserviço caps-registration)

@@ -27,6 +27,7 @@ model News {
 model PointCollection {
   idPc            Int                   @id @default(autoincrement()) @map("id_pc")
   status          PointCollectionStatus @default(PENDENTE)
+  rejectionReason String?               @map("rejection_reason")
   nameUser        String                @map("name_user")
   cpfUser         String                @unique @map("cpf_user")
   celUser         String                @map("cel_user")

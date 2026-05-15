@@ -1,5 +1,5 @@
 const express = require("express");
-const controller = require("../controllers/pontoColetaController");
+const controller = require("../controllers/collection-pointController");
 
 const router = express.Router();
 

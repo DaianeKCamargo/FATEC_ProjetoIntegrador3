@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PointCollectionStatus {
+  PENDENTE
+  APROVADO
+  REJEITADO
+}
+
+model PointCollection {
+  idPc            Int                   @id @default(autoincrement()) @map("id_pc")
+  status          PointCollectionStatus @default(PENDENTE)
+  rejectionReason String?               @map("rejection_reason")
+  nameUser        String                @map("name_user")
+  cpfUser         String                @unique @map("cpf_user")
+  celUser         String                @map("cel_user")
+  emailUser       String                @map("email_user")
+  linkPhoto       String                @map("link_photo")
+  namePoint       String                @map("name_point")
+  cnpjPoint       String                @unique @map("cnpj_point")
+  opensDay        String                @map("opens_day")
+  hourInit        String                @map("hour_init")
+  hourFinal       String                @map("hour_final")
+  createdAt       DateTime              @default(now()) @map("created_at")
+  updatedAt       DateTime              @updatedAt @map("updated_at")
+  address         AddressPoint?
+
+  @@index([status])
+  @@index([namePoint])
+  @@map("point_collections")
+}
+
+model AddressPoint {
+  idAddress          Int             @id @default(autoincrement()) @map("id_address")
+  street             String
+  number             String
+  complement         String?
+  district           String
+  city               String
+  postCode           String          @map("post_code")
+  fkPointCollections Int             @unique @map("fk_point_collections")
+  pointCollection    PointCollection @relation(fields: [fkPointCollections], references: [idPc], onDelete: Cascade)
+  createdAt          DateTime        @default(now()) @map("created_at")
+  updatedAt          DateTime        @updatedAt @map("updated_at")
+
+  @@index([city])
+  @@map("address_point")
+}

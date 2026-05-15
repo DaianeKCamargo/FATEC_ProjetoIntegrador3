@@ -1,9 +1,9 @@
 const express = require("express");
 
-const pontoColetaRoutes = require("./routes/pontoColetaRoutes");
-const noticiaRoutes = require("./routes/noticiaRoutes");
-const capsRegistrationRoutes = require("../api/caps-registration/routes/caps-registrationRoutes.js");
-const registrosAnimaisRoutes = require("../api/animals-registration/routes/animals-registrationRoute.js")
+const CollectionPointRoute = require("./routes/collection-pointRoutes");
+const newsRoute = require("./routes/newsRoute");
+const capsRegistrationRoute = require("../api/caps-registration/routes/caps-registrationRoute.js");
+const registrosAnimaisRoute = require("../api/animals-registration/routes/animals-registrationRoute.js")
 
 const app = express();
 const PORT = process.env.PORT || 5500;
@@ -15,12 +15,10 @@ app.get("/health", (req, res) => {
     res.status(200).json({ status: "ok", service: "app-principal" });
 });
 
-app.use("/api/points", pontoColetaRoutes);
-app.use("/api/pontos-coleta", pontoColetaRoutes);
-app.use("/api/ponto-coleta", pontoColetaRoutes);
-app.use("/api/noticias", noticiaRoutes);
-app.use("/api/caps-registration", capsRegistrationRoutes);
-app.use("/api/animals-registration", registrosAnimaisRoutes);
+app.use("/api/collection-point", CollectionPointRoute);
+app.use("/api/news", newsRoute);
+app.use("/api/caps-registration", capsRegistrationRoute);
+app.use("/api/animals-registration", registrosAnimaisRoute);
 
 app.use((req, res) => {
     res.status(404).json({ message: "Rota nao encontrada" });
