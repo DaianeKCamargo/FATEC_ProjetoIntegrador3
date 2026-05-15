@@ -3,7 +3,7 @@ const express = require("express");
 const pontoColetaRoutes = require("./routes/pontoColetaRoutes");
 const noticiaRoutes = require("./routes/noticiaRoutes");
 const capsRegistrationRoutes = require("../api/caps-registration/routes/caps-registrationRoutes.js");
-const registrosAnimaisRoutes = require("../api/relatorio-animais/routes/relatorio-animaisRoutes.js")
+const registrosAnimaisRoutes = require("../api/animals-registration/routes/animals-registrationRoute.js")
 
 const app = express();
 const PORT = process.env.PORT || 5500;

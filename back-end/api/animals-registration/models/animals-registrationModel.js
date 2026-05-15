@@ -2,17 +2,17 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function listar() {
-    return await prisma.registrosAnimais.findMany();
+    return await prisma.RegistrosAnimais.findMany();
 }
 
 async function buscarPorId(id) {
-    return await prisma.registrosAnimais.findUnique({
+    return await prisma.RegistrosAnimais.findUnique({
         where: { id }
     });
 }
 
 async function criar(dados) {
-    return await prisma.registrosAnimais.create({
+    return await prisma.RegistrosAnimais.create({
         data: {
             data: new Date(dados.data),
             tipoAnimal: dados.tipoAnimal,
@@ -22,7 +22,7 @@ async function criar(dados) {
 }
 
 async function atualizar(id, dados) {
-    return await prisma.registrosAnimais.update({
+    return await prisma.RegistrosAnimais.update({
         where: { id },
         data: {
             data: dados.data ? new Date(dados.data) : undefined,
@@ -33,7 +33,7 @@ async function atualizar(id, dados) {
 }
 
 async function remover(id) {
-    return await prisma.registrosAnimais.delete({
+    return await prisma.RegistrosAnimais.delete({
         where: { id }
     });
 }
