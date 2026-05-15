@@ -1,11 +1,11 @@
-const model = require("../models/relatorio-animaisModels");
+const model = require("../models/animals-registrationModel");
 
 async function listar(req, res) {
     try {
         const dados = await model.listar();
         return res.status(200).json(dados);
     } catch (error) {
-        return res.status(500).json({ message: "Erro ao listar relatorios" });
+        return res.status(500).json({ message: "Erro ao listar registros" });
     }
 }
 
@@ -15,12 +15,12 @@ async function buscarPorId(req, res) {
         const item = await model.buscarPorId(id);
 
         if (!item) {
-            return res.status(404).json({ message: "Relatorio de animais nao encontrado" });
+            return res.status(404).json({ message: "Registros de animais nao encontrado" });
         }
 
         return res.status(200).json(item);
     } catch (error) {
-        return res.status(500).json({ message: "Erro ao buscar relatorio" });
+        return res.status(500).json({ message: "Erro ao buscar registros" });
     }
 }
 
@@ -37,7 +37,7 @@ async function criar(req, res) {
         const novo = await model.criar(req.body);
         return res.status(201).json(novo);
     } catch (error) {
-        return res.status(500).json({ message: "Erro ao criar relatorio" });
+        return res.status(500).json({ message: "Erro ao criar registro" });
     }
 }
 
@@ -48,7 +48,7 @@ async function atualizar(req, res) {
 
         return res.status(200).json(atualizado);
     } catch (error) {
-        return res.status(404).json({ message: "Relatorio de animais nao encontrado" });
+        return res.status(404).json({ message: "Registros de animais nao encontrado" });
     }
 }
 
@@ -59,7 +59,7 @@ async function remover(req, res) {
 
         return res.status(204).send();
     } catch (error) {
-        return res.status(404).json({ message: "Relatorio de animais nao encontrado" });
+        return res.status(404).json({ message: "Registros de animais nao encontrado" });
     }
 }
 

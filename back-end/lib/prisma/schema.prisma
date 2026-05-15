@@ -76,7 +76,7 @@ model AdminUser {
   @@map("admin_user")
 }
 
-model RelatorioAnimais {
+model RegistrosAnimais {
   id           Int      @id @default(autoincrement())
   data         DateTime @db.Date
   tipoAnimal   String   @map("tipo_animal")
@@ -84,7 +84,7 @@ model RelatorioAnimais {
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  @@map("relatorio_animais")
+  @@map("animals_registration")
 }
 
 model CapsRegistration {

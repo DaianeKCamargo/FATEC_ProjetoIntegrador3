@@ -9,7 +9,7 @@
     "start:ms:collection-point": "node api/collection-point/app.js",
     "start:ms:news": "node api/news/app.js",
     "start:ms:admin-users": "node api/admin-users/app.js",
-    "start:ms:animal-registration": "node api/animal-registration/app.js",
+    "start:ms:animals-registration": "node api/animals-registration/app.js",
     "start:ms:caps-registration": "node api/caps-registration/app.js",
     "start:ms:conversao-tampinhas": "node microsservicos/conversao-tampinhas/server.js",
     "prisma:generate": "prisma generate",
