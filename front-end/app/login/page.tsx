@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import styles from '../../styles/login.module.css'
 
 export default function LoginPage() {
     const [username, setUsername] = useState('')
@@ -15,35 +16,35 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="login-container">
-            <form onSubmit={handleSubmit} className="login-form">
-                <h1 className="login-title">Entrar</h1>
+        <div className={styles.loginContainer}>
+            <form onSubmit={handleSubmit} className={styles.loginForm}>
+                <h1 className={styles.loginTitle}>Login</h1>
 
-                <label className="login-label">
-                    <span className="login-label-text">Usuário</span>
+                <label className={styles.loginLabel}>
+                    <span className={styles.loginLabelText}>Usuário</span>
                     <input
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
-                        className="login-input"
+                        className={styles.loginInput}
                         placeholder="Digite seu usuário"
                     />
                 </label>
 
-                <label className="login-label">
-                    <span className="login-label-text">Senha</span>
+                <label className={styles.loginLabel}>
+                    <span className={styles.loginLabelText}>Senha</span>
                     <input
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="login-input"
+                        className={styles.loginInput}
                         placeholder="Digite sua senha"
                     />
                 </label>
 
-                <button type="submit" className="login-button">
-                    Entrar como Admin
+                <button type="submit" className={styles.loginButton}>
+                    Entrar
                 </button>
             </form>
         </div>
