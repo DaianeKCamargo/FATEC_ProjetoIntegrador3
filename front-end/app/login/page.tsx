@@ -7,6 +7,7 @@ import styles from '../../styles/login.module.css'
 export default function LoginPage() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [activeTab, setActiveTab] = useState<'login' | 'reset'>('login')
     const router = useRouter()
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,7 +19,28 @@ export default function LoginPage() {
     return (
         <div className={styles.loginContainer}>
             <form onSubmit={handleSubmit} className={styles.loginForm}>
-                <h1 className={styles.loginTitle}>Login</h1>
+                <div className={styles.toggle} role="tablist" aria-label="Login or Recover password">
+                    <button
+                        type="button"
+                        className={activeTab === 'login' ? styles.toggleActive : styles.toggleButton}
+                        onClick={() => {
+                            setActiveTab('login')
+                            router.push('/login')
+                        }}
+                    >
+                        Login
+                    </button>
+                    <button
+                        type="button"
+                        className={activeTab === 'reset' ? styles.toggleActive : styles.toggleButton}
+                        onClick={() => {
+                            setActiveTab('reset')
+                            router.push('/login/reset-pass')
+                        }}
+                    >
+                        Recuperar Senha
+                    </button>
+                </div>
 
                 <label className={styles.loginLabel}>
                     <span className={styles.loginLabelText}>Usuário</span>
@@ -46,6 +68,7 @@ export default function LoginPage() {
                 <button type="submit" className={styles.loginButton}>
                     Entrar
                 </button>
+
             </form>
         </div>
     )
