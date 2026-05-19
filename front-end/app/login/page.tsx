@@ -15,34 +15,34 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <form onSubmit={handleSubmit} className="bg-white p-8 rounded shadow-md w-full max-w-md">
-                <h1 className="text-2xl font-semibold mb-6">Entrar</h1>
+        <div className="login-container">
+            <form onSubmit={handleSubmit} className="login-form">
+                <h1 className="login-title">Entrar</h1>
 
-                <label className="block mb-4">
-                    <span className="text-sm">Usuário</span>
+                <label className="login-label">
+                    <span className="login-label-text">Usuário</span>
                     <input
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
-                        className="mt-1 block w-full border rounded px-3 py-2"
+                        className="login-input"
                         placeholder="Digite seu usuário"
                     />
                 </label>
 
-                <label className="block mb-6">
-                    <span className="text-sm">Senha</span>
+                <label className="login-label">
+                    <span className="login-label-text">Senha</span>
                     <input
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="mt-1 block w-full border rounded px-3 py-2"
+                        className="login-input"
                         placeholder="Digite sua senha"
                     />
                 </label>
 
-                <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+                <button type="submit" className="login-button">
                     Entrar como Admin
                 </button>
             </form>
