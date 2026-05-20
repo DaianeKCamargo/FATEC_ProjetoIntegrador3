@@ -21,7 +21,7 @@ export default function AdminPage() {
             title: 'Ponto de Coleta',
             description: 'Gerenciar pontos de coleta de resíduos',
             icon: <MdPlace size={40} />,
-            route: '/admin/colletion-point'
+            route: '/admin/collection-point'
         },
         {
             id: 'caps-animals',
