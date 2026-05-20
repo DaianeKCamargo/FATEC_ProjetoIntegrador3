@@ -120,6 +120,64 @@
     height: auto;
 }
 
+/* HERO CAROUSEL (minimal) */
+.heroCarousel {
+    position: relative;
+    width: 100%;
+    min-height: 360px;
+    /* matches typical hero height; overridden on mobile */
+    overflow: hidden;
+}
+
+.carouselSlides {
+    display: flex;
+    width: 100%;
+    transition: transform 0.45s ease-in-out;
+}
+
+.carouselSlide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carouselControls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    transform: translateY(-50%);
+}
+
+.carouselButton {
+    border: 0;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.carouselButton svg {
+    width: 100px;
+    height: 100px;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .heroCarousel {
+        min-height: 250px;
+    }
+}
+
 /* COMO DOAR */
 .doar {
     display: flex;
