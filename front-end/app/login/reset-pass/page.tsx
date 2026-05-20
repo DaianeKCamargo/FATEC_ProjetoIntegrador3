@@ -41,8 +41,6 @@ export default function ResetPasswordPage() {
                     </button>
                 </div>
 
-                <h1 className={styles.loginTitle}>Recuperar Senha</h1>
-
                 <p className={styles.loginActions} style={{ marginTop: 0 }}>
                     Informe o e-mail cadastrado para iniciar a recuperação.
                 </p>
