@@ -1,0 +1,19 @@
+.direitosautorais {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    border-top: solid 0.1rem #b5b5b5;
+    padding: 1rem;
+    color: #8c8c8c;
+    font-size: 1.2rem;
+    height: 5vh;
+}
+
+@media (max-width: 768px) {
+    .direitosautorais {
+        display: grid;
+        font-size: 0.7rem;
+    }
+
+}

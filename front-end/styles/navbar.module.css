@@ -1,0 +1,198 @@
+.navbar {
+    display: flex;
+    justify-content: start;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    height: 80px;
+}
+
+.logotampets {
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    width: 25rem;
+    height: 10rem;
+}
+
+.navitems {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2rem;
+    font-size: 1.6rem;
+    color: #333;
+}
+
+.item {
+    text-decoration: none !important;
+    color: #333 !important;
+    font-size: 1.6rem;
+
+    &:hover {
+        font-weight: 600;
+        border-bottom: solid 0.3rem #5F81B7;
+    }
+}
+
+.navhamburguer {
+    display: none;
+}
+
+.btn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+    margin-right: 5rem;
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: solid 0.1rem #F85818;
+    border-radius: 5rem;
+    padding: 1rem;
+    font-size: 1.6rem;
+    color: #F85818;
+    text-decoration: none;
+
+    &:hover {
+        background-color: #F85818;
+        color: #333;
+        box-shadow: 0 0 0.1rem 0.1rem #333;
+    }
+}
+
+.buttonS {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: solid 0.1rem #d65552;
+    border-radius: 5rem;
+    padding: 1rem;
+    font-size: 1.6rem;
+    color: #d65552;
+    text-decoration: none;
+
+    &:hover {
+        background-color: #d65552;
+        color: #333;
+        box-shadow: 0 0 0.1rem 0.1rem #333;
+    }
+}
+
+.loggedButtons {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        justify-content: space-between;
+    }
+
+    .logotampets {
+        justify-content: flex-start;
+    }
+
+    .navitems,
+    .btn {
+        display: none;
+    }
+
+    .meuoffcanvas {
+        display: flex !important;
+        flex-direction: row !important;
+    }
+
+    .navlateral {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: row;
+        font-size: 1.6rem;
+        color: #333;
+    }
+
+    .items {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 2rem;
+        padding-top: 1.5rem;
+    }
+
+    .navhamburguer {
+        display: flex;
+        align-items: center;
+        margin-right: 5rem;
+    }
+
+
+    /* TENTATIVA DE TIRAR O AZUL DO DROPDOWN -V MOBILE */
+    .meuoffcanvas a,
+    .meuoffcanvas .nav-link,
+    .meuoffcanvas .dropdown-item,
+    .meuoffcanvas .dropdown-toggle,
+    .meuoffcanvas .item,
+    .meuoffcanvas .item1,
+    .meuoffcanvas .item * {
+        color: #333 !important;
+        /* cor desejada */
+        text-decoration: none !important;
+        /* tira sublinhado */
+        -webkit-text-fill-color: #333 !important;
+        /* força em iOS */
+        -webkit-tap-highlight-color: transparent;
+        /* remove highlight azul do tap */
+        -webkit-appearance: none;
+        /* previne aparências nativas */
+        appearance: none;
+    }
+
+    /* garante estados também */
+    .meuoffcanvas a:visited,
+    .meuoffcanvas .dropdown-item:visited,
+    .meuoffcanvas a:active,
+    .meuoffcanvas .dropdown-item:active,
+    .meuoffcanvas a:focus,
+    .meuoffcanvas .dropdown-item:focus {
+        color: #333 !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Se o Bootstrap aplica cor através de classes .nav-link ou .dropdown-item, força também */
+    .meuoffcanvas .nav-link,
+    .meuoffcanvas .dropdown-item {
+        background: transparent !important;
+        border: none !important;
+    }
+
+    /* Se quiser que o link mantenha estilo de hover no mobile */
+    .meuoffcanvas a:hover,
+    .meuoffcanvas .dropdown-item:hover {
+        color: #5F81B7 !important;
+        /* ou a cor que preferir no hover */
+        text-decoration: none !important;
+    }
+
+    /* opcional: garante que o link do Next Link (quando renderiza <a>) herde o estilo */
+    .meuoffcanvas a[role="link"] {
+        color: inherit !important;
+    }
+
+    .mobileButtons {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+}

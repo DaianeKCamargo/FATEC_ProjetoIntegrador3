@@ -1,0 +1,357 @@
+/* GERAL */
+.paginas {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* TEXTO */
+.section span {
+    display: block;
+    transform: translateX(-100px);
+    opacity: 0;
+    font-size: 4rem;
+    letter-spacing: -0.1rem;
+}
+
+.texto {
+    flex: 1;
+    text-align: center;
+    padding: 3rem;
+    margin: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.texto p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+}
+
+/* IMAGENS */
+.imagem {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    /* centraliza vertical */
+    justify-content: center;
+    /* centraliza horizontal */
+    height: 100%;
+    overflow: visible;
+    /* garante que a animação não corte nada */
+    position: relative;
+}
+
+.img {
+    width: 100%;
+    height: 100%;
+}
+
+.card {
+    position: relative;
+    z-index: 2;
+
+    width: 280px;
+    height: 380px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    border-radius: 25px 25px 25px 0px;
+
+    box-shadow: px 0 18px rgba(0, 0, 0, 0.15);
+    transform-origin: 10% 60%;
+    clip-path: polygon(0 0,
+            /* topo esquerdo */
+            100% 0,
+            /* topo direito */
+            100% 100%,
+            /* bottom right */
+            170px 100%,
+            /* desloca pra direita */
+            0 calc(100% - 30px)
+            /* sobe 40px */
+        );
+}
+
+/* ANIMAÇÕES DAS IMAGENS */
+.cardContainer {
+    position: relative;
+    width: 330px;
+    /* controla largura geral */
+    height: 450px;
+    /* controla altura geral */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.splash {
+    position: absolute;
+    z-index: 1;
+    /* atrás do card */
+
+    width: 380px;
+    /* maior que o card */
+    height: 428px;
+    /* maior que o card */
+
+    top: 10px;
+    left: -20px;
+
+    border-radius: 30px 90px 30px 30px;
+
+    clip-path: path("M 0 303.5 C 0 292.454 8.995 285.101 20 283.5 L 460 219.5 C 470.085 218.033 480 228.454 480 239.5 L 500 430 C 500 441.046 491.046 450 480 450 L 20 450 C 8.954 450 0 441.046 0 430 Z"
+        );
+}
+
+
+/* HERO */
+.hero {
+    width: 100%;
+}
+
+.folder {
+    width: 100%;
+    height: auto;
+}
+
+/* COMO DOAR */
+.doar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem;
+    gap: 2rem;
+    width: 100%;
+    background: linear-gradient(to right,
+            white,
+            white,
+            #faf9dd);
+
+}
+
+.box1 {
+    border-radius: 50px;
+    background: #d7c216;
+    cursor: pointer;
+    padding: 2rem;
+    width: 50%;
+}
+
+/* PONTO DE COLETA */
+.pontocoleta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5rem;
+    gap: 10%;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to left,
+            white,
+            white,
+            #e1f1ff);
+}
+
+/* TEXTO */
+.box2 {
+    border-radius: 50px;
+    background: #cfe9ff;
+    cursor: pointer;
+    padding: 2rem;
+}
+
+/* VOLUNTÁRIO */
+.ajuda {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* garante centralização */
+    width: 100%;
+    /* diminui o espaço */
+}
+
+/* TEXTO */
+.texto1 {
+    text-align: center;
+    padding: 1rem;
+}
+
+.cardsAjuda {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    /* espaçamento entre os cards */
+    justify-content: center;
+    /* centraliza */
+    align-items: center;
+    width: 100%;
+}
+
+/* RESUMO RELATORIO */
+.resumoRelatorio {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+    gap: 2rem;
+    width: 100%;
+    background-image: linear-gradient(to top,
+            white,
+            #d5c6ff);
+}
+
+.texto2 {
+    width: 100%;
+    text-align: center;
+}
+
+.animacao {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding-bottom: 2rem;
+}
+
+.circle {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    outline: 3px dashed #808080;
+    outline-offset: 4px;
+    box-shadow: 0 0 15px white;
+    padding: 3rem;
+}
+
+.circle h2 {
+    color: #333;
+    font-size: 2rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    flex-wrap: wrap;
+    text-align: center;
+
+}
+
+.textCount {
+    color: #333;
+    font-size: 4rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+/* PARCEIROS */
+.parceiros {
+    width: 100%;
+    height: 25vh;
+    padding: 2rem;
+}
+
+.texto3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    gap: 3rem;
+}
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+
+    /* GERAL */
+    /* IMAGEM */
+    .imagem {
+        display: none;
+    }
+
+    /* HERO */
+    .folder {
+        height: 250px;
+        object-fit: cover;
+    }
+
+    /* COMO DOAR */
+    .doar,
+    .pontocoleta {
+        flex-direction: column;
+        text-align: center;
+        background-color: white;
+        margin: 0;
+        padding: 1rem;
+    }
+
+    .box1 {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    /* TEXTO */
+    .texto {
+        padding: 1rem;
+    }
+
+    .section span {
+        margin-bottom: 2rem;
+        font-size: 3rem;
+    }
+
+    .texto p {
+        font-size: 1.2rem;
+    }
+
+    /* PONTO COLETA */
+    .box2 {
+        padding: 1rem 3rem;
+        gap: 0;
+    }
+
+    /* VOLUNTARIO */
+    .cardsAjuda {
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+    }
+
+    /* RESULTADOS */
+
+    .animacao {
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
+    }
+
+    .circle {
+        width: 200px;
+        height: 200px;
+        padding: 2rem;
+    }
+
+    .circle h2 {
+        font-size: 1.3rem;
+
+    }
+
+    .textCount {
+        color: white;
+        font-size: 3rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    }
+}

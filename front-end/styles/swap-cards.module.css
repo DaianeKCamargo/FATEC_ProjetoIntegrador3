@@ -1,0 +1,101 @@
+.document {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.cardArea {
+    width: 350px;
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card {
+    position: relative;
+    width: 320px;
+    height: 350px;
+    padding: 3rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* ⬅ centraliza tudo horizontalmente */
+    gap: 1rem;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+        transform: scale(1.2);
+        background-color: #f3d4c2;
+    }
+
+}
+
+.cardBorder {
+    position: absolute;
+    z-index: 0;
+    /* inset: -10; */
+}
+
+
+.cardImage {
+    width: 50%;
+    /* Aumentei um pouco, mas você ajusta */
+    border-radius: 8px;
+    margin: 0 auto;
+    /* ⬅ centraliza perfeitamente */
+    z-index: 3;
+    display: block;
+    /* garante que o margin auto funcione */
+}
+
+.card h2 {
+    font-size: 2.2rem;
+    color: black;
+    z-index: 3;
+    display: flex;
+    text-align: center;
+
+}
+
+.card figcaption {
+    font-size: 1.2rem;
+    z-index: 3;
+    text-align: center;
+}
+
+.button {
+    z-index: 4;
+    padding: 1rem;
+    border-radius: 20px;
+    background: white;
+    color: #F85818;
+    border: 1px solid #F85818;
+    text-align: center;
+    font-weight: 500;
+    transition: 0.3s;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.button:hover {
+    background: #F85818;
+    color: black;
+}
+
+@media (max-width: 768px) {
+    .card {
+
+
+        &:hover {
+            transform: none;
+            background-color: white;
+        }
+    }
+}

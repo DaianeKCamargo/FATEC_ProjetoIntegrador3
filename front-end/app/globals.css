@@ -1,26 +1,46 @@
 @import "tailwindcss";
+@import "bootstrap/dist/css/bootstrap.min.css";
 
+/* GERAL */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  perspective: 1200px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.body {
+  background-color: #fff;
+  padding: 2rem 10rem;
+  height: 150vh;
+}
+
+html {
+  font-size: 62.5%;
+  /* 1rem = 10px */
+  padding: 2rem 10rem;
+}
+
+section {
+  margin: 1rem;
+}
+
+
+@media (max-width: 768px) {
+
+  /* GERAL */
+  html,
+  body {
+    overflow-x: hidden;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  section {
+    margin: 0;
+  }
+
 }

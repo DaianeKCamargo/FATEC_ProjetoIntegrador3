@@ -4,12 +4,10 @@ import Image from "next/image";
 import styles from '@/styles/home.module.css';
 import { motion, useInView, Variants } from "framer-motion";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import SwapCards from "@/components/home/SwapCards";
-import WhatsModal from "@/components/home/WhatsModal";
+import WhatsModal from "@/components/whatsModal";
 import CountUp from "@/components/countUp";
 import { FaCat, FaDog } from "react-icons/fa";
 import { AiFillGold } from "react-icons/ai";
-import PartnersCarousel from "@/components/partners/Carrossel";
 import { CiCirclePlus } from "react-icons/ci";
 
 
@@ -41,6 +39,36 @@ interface CardProps {
   color: string
 }
 
+interface SwapCardsProps {
+  imagem: string
+  titulo: string
+  descricao: string
+  src?: string
+  label: string
+  onOpenModal?: () => void
+}
+
+function SwapCards({ imagem, titulo, descricao, src, label, onOpenModal }: SwapCardsProps) {
+  const content = (
+    <div>
+      <Image src={imagem} alt={titulo} width={300} height={300} />
+      <h3>{titulo}</h3>
+      <p>{descricao}</p>
+      <span>{label}</span>
+    </div>
+  )
+
+  if (onOpenModal) {
+    return <button type="button" onClick={onOpenModal}>{content}</button>
+  }
+
+  if (src) {
+    return <a href={src}>{content}</a>
+  }
+
+  return content
+}
+
 const cardVariants: Variants = {
   offscreen: { y: 300 },
   onscreen: {
@@ -69,6 +97,10 @@ function ContainerImagens({ img, color }: CardProps) {
       </motion.div>
     </motion.div>
   )
+}
+
+function PartnersCarousel() {
+  return null
 }
 
 // Lista dos cards como doar e ponto de coleta - imagens
