@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-import styles from '@/styles/relatorio.module.css';
 
 export default function Relatorio() {
     
@@ -20,15 +19,14 @@ export default function Relatorio() {
 
 
     return (
-        <section className={styles.container}>
+        <section>
 
             
 
             {/* Filtros dos cards */}
-            <div className={styles.margin}>
-                <div className={styles.filtros}>
-
-                    <div className={styles.filtroItem}>
+            <div>
+                <div>
+                    <div>
                         <label>Mês:</label>
                         <select
                             value={cardMonth}
@@ -38,7 +36,7 @@ export default function Relatorio() {
                         </select>
                     </div>
 
-                    <div className={styles.filtroItem}>
+                    <div>
                         <label>Ano:</label>
                         <select
                             value={cardYear}
@@ -56,10 +54,10 @@ export default function Relatorio() {
                 
 
                 {/* Gráfico de Tampinhas */}
-                <div className={styles.graficoBox}>
-                    <div className={styles.filtros}>
-                        <div className={styles.filtroItem}>
-                            <label className={styles.label}>Ano:</label>
+                <div>
+                    <div>
+                        <div>
+                            <label>Ano:</label>
                             <select
                                 value={tampinhasYear}
                                 onChange={(e) => setTampinhasYear(Number(e.target.value))}
@@ -74,9 +72,9 @@ export default function Relatorio() {
                 </div>
 
                 {/* Gráfico CO2 */}
-                <div className={styles.graficoBox}>
-                    <div className={styles.filtros}>
-                        <div className={styles.filtroItem}>
+                <div>
+                    <div>
+                        <div>
                             <label>Ano:</label>
                             <select
                                 value={co2Year}
