@@ -113,3 +113,52 @@
         margin-bottom: 1rem;
     }
 }
+
+.loginActions {
+    margin-top: 0.75rem;
+    text-align: center;
+    color: #555;
+}
+
+.loginLink {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.loginLink:hover {
+    text-decoration: underline;
+}
+
+.toggle {
+    display: flex;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto 1rem;
+    background: #f3f4f6;
+    border-radius: 999px;
+    padding: 4px;
+    box-sizing: border-box;
+}
+
+.toggleButton {
+    flex: 1;
+    padding: 0.6rem 0.75rem;
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #555;
+}
+
+.toggleActive {
+    flex: 1;
+    padding: 0.6rem 0.75rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    color: white;
+    font-weight: 700;
+}
