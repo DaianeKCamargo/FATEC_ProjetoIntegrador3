@@ -9,6 +9,7 @@ import CountUp from "@/components/countUp";
 import { FaCat, FaDog } from "react-icons/fa";
 import { AiFillGold } from "react-icons/ai";
 import { CiCirclePlus } from "react-icons/ci";
+import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 
 
 // Animação dos titulos
@@ -115,12 +116,40 @@ export default function Home() {
 
   // Voluntario
   const [openModal, setOpenModal] = useState(false);
+  // Hero carousel state: slides are left blank for you to replace later
+  const slides: string[] = ["/folder_home.png", "/reduct_animal.png", "/donate.png"]; // fill these with image paths later
+  const [slideIndex, setSlideIndex] = useState(0);
+  const prevSlide = () => setSlideIndex((i) => (i - 1 + slides.length) % slides.length);
+  const nextSlide = () => setSlideIndex((i) => (i + 1) % slides.length);
 
   return (
     <div>
 
       <div className={styles.hero}>
-        <img className={styles.folder} src="/folder_home.png" alt="folder home" />
+        <div className={styles.heroCarousel}>
+          <div className={styles.carouselSlides} style={{ transform: `translateX(-${slideIndex * 100}%)` }}>
+            {slides.map((src, i) => (
+              <div className={styles.carouselSlide} key={i}>
+                {/* placeholder image: replace data-src with your path or set src directly */}
+                <img
+                  className={styles.folder}
+                  src={src || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="}
+                  data-src={src}
+                  alt={`Hero slide ${i + 1}`}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.carouselControls}>
+            <button aria-label="Previous slide" onClick={prevSlide} className={styles.carouselButton}>
+              <BiChevronLeft />
+            </button>
+            <button aria-label="Next slide" onClick={nextSlide} className={styles.carouselButton}>
+              <BiChevronRight />
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className={styles.doar}>
