@@ -5,7 +5,7 @@ import { FaBarsStaggered } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import FaixaColorida from '@/components/colorLine';
-import { BiSolidHomeHeart } from "react-icons/bi";
+import { BiSolidHomeHeart, BiChevronDown } from "react-icons/bi";
 
 export default function NavbarLogout() {
     const [role, setRole] = useState<string | null>(null);
@@ -41,9 +41,11 @@ export default function NavbarLogout() {
 
                 {/* DESKTOP */}
                 <div className={styles.navitems}>
-                    <details className={styles.item}>
-                        <summary style={{ cursor: 'pointer' }}>O Projeto</summary>
-                        <div>
+                    <details className={styles.dropdown}>
+                        <summary className={styles.dropdownToggle}>
+                            O Projeto <BiChevronDown className={styles.dropdownIcon} />
+                        </summary>
+                        <div className={styles.dropdownMenu}>
                             <Link className={styles.item} href="/sobre-nos">
                                 Sobre Nós
                             </Link>
@@ -79,9 +81,11 @@ export default function NavbarLogout() {
                             </div>
 
                             <div className={styles.items}>
-                                <details className={styles.item1}>
-                                    <summary style={{ cursor: 'pointer' }}>O Projeto</summary>
-                                    <div>
+                                <details className={styles.dropdownMobile}>
+                                    <summary className={styles.dropdownToggle}>
+                                        O Projeto <BiChevronDown className={styles.dropdownIcon} />
+                                    </summary>
+                                    <div className={styles.dropdownMenuMobile}>
                                         <Link className={styles.item} href="/sobre-nos" onClick={handleFechado}>
                                             Sobre Nós
                                         </Link>

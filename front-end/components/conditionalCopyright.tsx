@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Footer from "./footer";
+import Copyright from "./copyright";
 
 export default function ConditionalCopyright() {
     const pathname = usePathname() || "/";
@@ -13,5 +13,5 @@ export default function ConditionalCopyright() {
     const shouldHide = hideOn.some((p) => pathname === p || pathname.startsWith(p + "/"));
 
     if (shouldHide) return null;
-    return <Footer />;
+    return <Copyright />;
 }
