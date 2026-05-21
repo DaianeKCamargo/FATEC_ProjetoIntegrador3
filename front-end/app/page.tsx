@@ -155,6 +155,7 @@ export default function Home() {
       <div className={styles.doar}>
         <div className={styles.texto}>
           <Section>Doe sua Tampinhas!</Section>
+          <p>Transforme suas tampinhas em ações...</p>
 
           <motion.div
             className={styles.box1}
@@ -162,15 +163,8 @@ export default function Home() {
             whileTap={{ scale: 0.9 }}
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
-            <a className={styles.paginas} href="/como-doar">
-              <p>Transforme suas tampinhas em ações...</p>
-              <p><b>Clique aqui e saiba mais!</b></p>
-            </a>
           </motion.div>
-        </div>
-
-        <div className={styles.imagem}>
-          <ContainerImagens img="/doar.png" color="#d7c216" />
+            <button className={styles.btn14}>Read More</button>
         </div>
       </div>
 
