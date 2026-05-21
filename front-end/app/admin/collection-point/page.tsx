@@ -1,54 +1,97 @@
-import Link from "next/link";
+"use client";
 
-export default function CollectionPointAdmin() {
-  return (
-    <main className="min-h-screen p-10 bg-gray-100">
-      <h1 className="text-3xl font-bold mb-8 text-black">
-        Painel de Pontos de Coleta
-      </h1>
+import styles from "@/styles/admin-collection-point.module.css";
 
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+import {
+    FaClipboardList,
+    FaCheckCircle,
+    FaMapMarkedAlt
+} from "react-icons/fa";
 
-        <Link
-          href="/admin/collection-point/registration"
-          className="bg-blue-600 text-white p-6 rounded-lg shadow-md hover:bg-blue-700 transition"
-        >
-          <h2 className="text-xl font-semibold mb-2">
-            Cadastrar Ponto
-          </h2>
+export default function CollectionPointPage() {
+    return (
+        <div className={styles.adminContainer}>
+            <div className={styles.adminContent}>
 
-          <p>
-            Criar um novo ponto de coleta.
-          </p>
-        </Link>
+                <h1 className={styles.adminTitle}>
+                    Administração de Pontos de Coleta
+                </h1>
 
-        <Link
-          href="/admin/collection-point/registration-review"
-          className="bg-yellow-500 text-white p-6 rounded-lg shadow-md hover:bg-yellow-600 transition"
-        >
-          <h2 className="text-xl font-semibold mb-2">
-            Aprovar Cadastros
-          </h2>
+                <p className={styles.adminSubtitle}>
+                    Gerencie os cadastros e acompanhe os pontos de coleta.
+                </p>
 
-          <p>
-            Aprovar ou recusar solicitações.
-          </p>
-        </Link>
+                <div className={styles.cardsGrid}>
 
-        <Link
-          href="/admin/collection-point/view-points"
-          className="bg-green-600 text-white p-6 rounded-lg shadow-md hover:bg-green-700 transition"
-        >
-          <h2 className="text-xl font-semibold mb-2">
-            Visualizar Pontos
-          </h2>
+                    <div className={styles.card}>
 
-          <p>
-            Ver e editar pontos cadastrados.
-          </p>
-        </Link>
+                        <div className={styles.cardIcon}>
+                            <FaClipboardList size={42} />
+                        </div>
 
-      </section>
-    </main>
-  );
+                        <div className={styles.cardContent}>
+                            <h2 className={styles.cardTitle}>
+                                Registrar Ponto de Coleta
+                            </h2>
+
+                            <p className={styles.cardDescription}>
+                                Cadastre novos pontos de coleta no sistema.
+                            </p>
+                        </div>
+
+                        <button className={styles.cardButton}>
+                            Acessar
+                        </button>
+
+                    </div>
+
+                    <div className={styles.card}>
+
+                        <div className={styles.cardIcon}>
+                            <FaCheckCircle size={42} />
+                        </div>
+
+                        <div className={styles.cardContent}>
+                            <h2 className={styles.cardTitle}>
+                                Revisar Solicitações
+                            </h2>
+
+                            <p className={styles.cardDescription}>
+                                Aprove ou recuse solicitações enviadas pelos usuários.
+                            </p>
+                        </div>
+
+                        <button className={styles.cardButton}>
+                            Acessar
+                        </button>
+
+                    </div>
+
+                    <div className={styles.card}>
+
+                        <div className={styles.cardIcon}>
+                            <FaMapMarkedAlt size={42} />
+                        </div>
+
+                        <div className={styles.cardContent}>
+                            <h2 className={styles.cardTitle}>
+                                Visualizar Pontos
+                            </h2>
+
+                            <p className={styles.cardDescription}>
+                                Veja todos os pontos cadastrados, aprovados ou recusados.
+                            </p>
+                        </div>
+
+                        <button className={styles.cardButton}>
+                            Acessar
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    );
 }
