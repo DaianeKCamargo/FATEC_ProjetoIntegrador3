@@ -37,3 +37,14 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## extensões
 project tree generator => gerar a árvore dos arquivos do projeto
+
+## Galeria do Instagram
+
+Para a galeria da home funcionar, configure estas variáveis de ambiente no front-end:
+
+```bash
+IG_ACCESS_TOKEN=seu_token_do_instagram
+IG_MEDIA_LIMIT=6
+```
+
+A rota interna `GET /api/instagram-media` busca as publicações pela API do Instagram e a home exibe os itens retornados.

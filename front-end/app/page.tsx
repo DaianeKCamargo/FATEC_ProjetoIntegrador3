@@ -8,8 +8,16 @@ import WhatsModal from "@/components/whatsModal";
 import CountUp from "@/components/countUp";
 import { FaCat, FaDog } from "react-icons/fa";
 import { AiFillGold } from "react-icons/ai";
-import { CiCirclePlus } from "react-icons/ci";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
+
+interface InstagramMediaItem {
+  id: string
+  caption?: string
+  media_url: string
+  permalink: string
+  media_type: string
+  thumbnail_url?: string
+}
 
 
 // Animação dos titulos
@@ -104,23 +112,46 @@ function PartnersCarousel() {
   return null
 }
 
-// Lista dos cards como doar e ponto de coleta - imagens
-const cardsData = [
-  { img: "/doar.png", color: "#FAF9DD" },
-  { img: "/localizacao.png", color: "#5f81b7" }
-]
-
 
 export default function Home() {
 
 
   // Voluntario
   const [openModal, setOpenModal] = useState(false);
+
   // Hero carousel state: slides are left blank for you to replace later
   const slides: string[] = ["/folder_home.png", "/reduct_animal.png", "/donate.png"]; // fill these with image paths later
   const [slideIndex, setSlideIndex] = useState(0);
   const prevSlide = () => setSlideIndex((i) => (i - 1 + slides.length) % slides.length);
   const nextSlide = () => setSlideIndex((i) => (i + 1) % slides.length);
+  const [instagramMedia, setInstagramMedia] = useState<InstagramMediaItem[]>([]);
+  const [instagramLoading, setInstagramLoading] = useState(true);
+  const [instagramError, setInstagramError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadInstagramMedia = async () => {
+      try {
+        setInstagramLoading(true);
+        setInstagramError(null);
+
+        const response = await fetch('/api/instagram-media');
+
+        if (!response.ok) {
+          throw new Error('Não foi possível carregar a galeria do Instagram.');
+        }
+
+        const data = await response.json();
+        setInstagramMedia(Array.isArray(data.items) ? data.items : []);
+      } catch (error) {
+        setInstagramMedia([]);
+        setInstagramError(error instanceof Error ? error.message : 'Erro ao carregar a galeria.');
+      } finally {
+        setInstagramLoading(false);
+      }
+    };
+
+    loadInstagramMedia();
+  }, []);
 
   return (
     <div>
@@ -164,7 +195,7 @@ export default function Home() {
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
           </motion.div>
-            <button className={styles.btn14}>Read More</button>
+          <button className={styles.btn14}>Read More</button>
         </div>
       </div>
 
@@ -274,16 +305,44 @@ export default function Home() {
         </a>
       </div>
 
-      <div className={styles.parceiros}>
-        <div className={styles.texto3}>
-          <h1> Conheça nossos parceiros</h1>
-          <a href="/parceiros" className={styles.paginas}>
-            <CiCirclePlus size={30} />
-          </a>
+      <div className={styles.instagramGallery}>
+        <div className={styles.texto1}>
+          <Section>Galeria do Instagram</Section>
+          <p>Veja as publicações mais recentes do projeto.</p>
         </div>
-        <div className={styles.carrossel}>
-          <PartnersCarousel />
-        </div>
+
+        {instagramLoading && <p className={styles.instagramStatus}>Carregando publicações...</p>}
+
+        {!instagramLoading && instagramError && (
+          <p className={styles.instagramStatus}>{instagramError}</p>
+        )}
+
+        {!instagramLoading && !instagramError && (
+          <div className={styles.instagramGrid}>
+            {instagramMedia.slice(0, 6).map((item) => {
+              const previewUrl = item.media_type === 'VIDEO' ? item.thumbnail_url || item.media_url : item.media_url;
+
+              return (
+                <a
+                  key={item.id}
+                  href={item.permalink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={styles.instagramCard}
+                >
+                  <img
+                    src={previewUrl}
+                    alt={item.caption || 'Publicação do Instagram'}
+                    className={styles.instagramImage}
+                  />
+                  <div className={styles.instagramOverlay}>
+                    <span>Ver no Instagram</span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div >
   );
