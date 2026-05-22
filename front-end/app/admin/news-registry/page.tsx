@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import styles from "../../../styles/news.module.css";
 
 interface Noticia {
   id: number;
@@ -18,35 +19,35 @@ export default function CadastroNoticias() {
   });
 
   const [noticias, setNoticias] = useState<Noticia[]>([]);
-
   const [editandoId, setEditandoId] = useState<number | null>(null);
 
   // =========================
-  // BUSCAR NOTÍCIAS
+  // CARREGAR NOTÍCIAS
   // =========================
-  const carregarNoticias = async () => {
-    try {
+ const carregarNoticias = async () => {
+  try {
 
-      const response = await fetch(
-        "http://localhost:5505/api/news"
-      );
+    const response = await fetch(
+      "http://localhost:5505/api/news"
+    );
 
-      const data = await response.json();
+    console.log("STATUS:", response.status);
 
-      setNoticias(data);
+    const data = await response.json();
 
-    } catch (error) {
-      console.error(error);
-    }
-  };
+    console.log("DADOS:", data);
 
-  // =========================
-  // CARREGA AO ABRIR
-  // =========================
-  useEffect(() => {
-    carregarNoticias();
-  }, []);
+    setNoticias(data);
 
+  } catch (error) {
+
+    console.error("ERRO:", error);
+
+  }
+};
+useEffect(() => {
+  carregarNoticias();
+}, []);
   // =========================
   // INPUTS
   // =========================
@@ -60,7 +61,7 @@ export default function CadastroNoticias() {
   };
 
   // =========================
-  // CADASTRAR / EDITAR
+  // SALVAR
   // =========================
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -93,7 +94,6 @@ export default function CadastroNoticias() {
           : "Notícia cadastrada!"
       );
 
-      // limpa form
       setFormData({
         titulo: "",
         link: "",
@@ -159,63 +159,49 @@ export default function CadastroNoticias() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className={styles.container}>
 
       {/* FORM */}
-      <div className="card shadow p-4 mb-5">
+      <div className={styles.formCard}>
 
-        <h2 className="text-center mb-4">
-
+        <h2 className={styles.titulo}>
           {editandoId
             ? "Editar Notícia"
             : "Cadastro de Notícias"}
-
         </h2>
 
         <form onSubmit={handleSubmit}>
 
-          {/* Título */}
-          <div className="mb-3">
-            <label className="form-label">
-              Título
-            </label>
+          <div className={styles.inputGroup}>
+            <label>Título</label>
 
             <input
               type="text"
               name="titulo"
-              className="form-control"
               value={formData.titulo}
               onChange={handleChange}
               required
             />
           </div>
 
-          {/* Imagem */}
-          <div className="mb-3">
-            <label className="form-label">
-              Link da imagem
-            </label>
+          <div className={styles.inputGroup}>
+            <label>Link da imagem</label>
 
             <input
               type="url"
               name="imagem"
-              className="form-control"
               value={formData.imagem}
               onChange={handleChange}
               required
             />
           </div>
 
-          {/* Link */}
-          <div className="mb-4">
-            <label className="form-label">
-              Link da notícia
-            </label>
+          <div className={styles.inputGroup}>
+            <label>Link da notícia</label>
 
             <input
               type="url"
               name="link"
-              className="form-control"
               value={formData.link}
               onChange={handleChange}
               required
@@ -224,11 +210,11 @@ export default function CadastroNoticias() {
 
           <button
             type="submit"
-            className={`btn w-100 ${
+            className={
               editandoId
-                ? "btn-warning"
-                : "btn-success"
-            }`}
+                ? styles.botaoEditar
+                : styles.botaoCadastrar
+            }
           >
             {editandoId
               ? "Salvar Alterações"
@@ -236,69 +222,61 @@ export default function CadastroNoticias() {
           </button>
 
         </form>
+
       </div>
 
       {/* LISTA */}
       <div>
 
-        <h3 className="mb-4">
+        <h3 className={styles.subtitulo}>
           Notícias cadastradas
         </h3>
 
-        <div className="row">
+        <div className={styles.grid}>
 
           {noticias.map((noticia) => (
 
             <div
-              className="col-md-4 mb-4"
+              className={styles.card}
               key={noticia.id}
             >
 
-              <div className="card h-100 shadow">
+              <img
+                src={noticia.imagem}
+                alt={noticia.titulo}
+                className={styles.imagem}
+              />
 
-                <img
-                  src={noticia.imagem}
-                  className="card-img-top"
-                  alt={noticia.titulo}
-                  style={{
-                    height: "220px",
-                    objectFit: "cover",
-                  }}
-                />
+              <div className={styles.cardBody}>
 
-                <div className="card-body d-flex flex-column">
+                <h5>{noticia.titulo}</h5>
 
-                  <h5 className="card-title">
-                    {noticia.titulo}
-                  </h5>
+                <a
+                  href={noticia.link}
+                  target="_blank"
+                  className={styles.botaoLink}
+                >
+                  Ver notícia
+                </a>
 
-                  <a
-                    href={noticia.link}
-                    target="_blank"
-                    className="btn btn-primary mb-2"
-                  >
-                    Ver notícia
-                  </a>
+                <button
+                  className={styles.botaoEditar}
+                  onClick={() =>
+                    editarNoticia(noticia)
+                  }
+                >
+                  Editar
+                </button>
 
-                  <button
-                    className="btn btn-warning mb-2"
-                    onClick={() =>
-                      editarNoticia(noticia)
-                    }
-                  >
-                    Editar
-                  </button>
+                <button
+                  className={styles.botaoExcluir}
+                  onClick={() =>
+                    excluirNoticia(noticia.id)
+                  }
+                >
+                  Excluir
+                </button>
 
-                  <button
-                    className="btn btn-danger"
-                    onClick={() =>
-                      excluirNoticia(noticia.id)
-                    }
-                  >
-                    Excluir
-                  </button>
-
-                </div>
               </div>
 
             </div>
@@ -307,6 +285,7 @@ export default function CadastroNoticias() {
         </div>
 
       </div>
+
     </div>
   );
 }
