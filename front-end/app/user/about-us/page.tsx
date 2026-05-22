@@ -1,6 +1,6 @@
  'use client';
 
-import Titulo from '@/components/titulo/Titulo';
+import Tittle from '@/components/tittle';
 import style from '@/styles/sobre-nos.module.css';
 import Image from 'next/image';
 
@@ -9,9 +9,9 @@ import { PawPrint, Recycle, Info} from "lucide-react";
 export default function SobreNos() {
     return (
         <section className={style.page}>
-            <Titulo 
+            <Tittle
                 src="/img_titulo_verde.png" 
-                title="Sobre Nós" 
+                tittle="Sobre Nós" 
                 label="Não conhece nosso projeto? Você está no lugar certo!"
             />
 
