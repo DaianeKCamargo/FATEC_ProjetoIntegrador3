@@ -5,10 +5,31 @@ import { FaBarsStaggered } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import FaixaColorida from '@/components/colorLine';
+import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa6';
 import { BiSolidHomeHeart, BiChevronDown } from "react-icons/bi";
 
 export default function NavbarLogout() {
     const [role, setRole] = useState<string | null>(null);
+    const socialLinks = [
+        {
+            href: 'https://wa.me/5515988327955',
+            label: 'WhatsApp',
+            icon: <FaWhatsapp />,
+            className: styles.whatsapp,
+        },
+        {
+            href: 'https://www.facebook.com/ProjetoTampets/',
+            label: 'Facebook',
+            icon: <FaFacebookF />,
+            className: styles.facebook,
+        },
+        {
+            href: 'https://www.instagram.com/tampetsorocaba',
+            label: 'Instagram',
+            icon: <FaInstagram />,
+            className: styles.instagram,
+        },
+    ];
 
     useEffect(() => {
         const r = localStorage.getItem("role");
@@ -61,6 +82,22 @@ export default function NavbarLogout() {
                     <Link className={styles.item} href="/relatorio">Relatório</Link>
                     <Link className={styles.item} href="/ponto-coleta">Ponto de Coleta</Link>
                     <Link className={styles.item} href="/como-doar">Como Doar</Link>
+                </div>
+
+                <div className={styles.socialLinks} aria-label="Redes sociais">
+                    {socialLinks.map((social) => (
+                        <a
+                            key={social.label}
+                            className={`${styles.socialLink} ${social.className}`}
+                            href={social.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={social.label}
+                            title={social.label}
+                        >
+                            {social.icon}
+                        </a>
+                    ))}
                 </div>
 
                 {/* HAMBURGUER MOBILE */}

@@ -108,10 +108,6 @@ function ContainerImagens({ img, color }: CardProps) {
   )
 }
 
-function PartnersCarousel() {
-  return null
-}
-
 
 export default function Home() {
 
@@ -121,12 +117,28 @@ export default function Home() {
 
   // Hero carousel state: slides are left blank for you to replace later
   const slides: string[] = ["/folder_home.png", "/reduct_animal.png", "/donate.png"]; // fill these with image paths later
+
   const [slideIndex, setSlideIndex] = useState(0);
+
   const prevSlide = () => setSlideIndex((i) => (i - 1 + slides.length) % slides.length);
+
   const nextSlide = () => setSlideIndex((i) => (i + 1) % slides.length);
+
+  // Instagram media state
+
   const [instagramMedia, setInstagramMedia] = useState<InstagramMediaItem[]>([]);
+
   const [instagramLoading, setInstagramLoading] = useState(true);
+
   const [instagramError, setInstagramError] = useState<string | null>(null);
+
+  const getCarouselObjectPosition = (src: string) => {
+    if (src === "/folder_home.png") {
+      return "center center";
+    }
+
+    return "left center";
+  };
 
   useEffect(() => {
     const loadInstagramMedia = async () => {
@@ -161,11 +173,11 @@ export default function Home() {
           <div className={styles.carouselSlides} style={{ transform: `translateX(-${slideIndex * 100}%)` }}>
             {slides.map((src, i) => (
               <div className={styles.carouselSlide} key={i}>
-                {/* placeholder image: replace data-src with your path or set src directly */}
                 <img
                   className={styles.folder}
-                  src={src || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="}
+                  src={src || "/folder_home.png"}
                   data-src={src}
+                  style={{ objectPosition: getCarouselObjectPosition(src || "/folder_home.png") }}
                   alt={`Hero slide ${i + 1}`}
                 />
               </div>
