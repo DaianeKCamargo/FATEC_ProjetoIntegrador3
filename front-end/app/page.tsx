@@ -1,6 +1,7 @@
 'use client'
 
 import Image from "next/image";
+import Script from "next/script";
 import styles from '@/styles/home.module.css';
 import { motion, useInView, Variants } from "framer-motion";
 import { ReactNode, useEffect, useRef, useState } from "react";
@@ -150,30 +151,6 @@ export default function Home() {
     return "left center";
   };
 
-  useEffect(() => {
-    const loadInstagramMedia = async () => {
-      try {
-        setInstagramLoading(true);
-        setInstagramError(null);
-
-        const response = await fetch('/api/instagram-media');
-
-        if (!response.ok) {
-          throw new Error('Não foi possível carregar a galeria do Instagram.');
-        }
-
-        const data = await response.json();
-        setInstagramMedia(Array.isArray(data.items) ? data.items : []);
-      } catch (error) {
-        setInstagramMedia([]);
-        setInstagramError(error instanceof Error ? error.message : 'Erro ao carregar a galeria.');
-      } finally {
-        setInstagramLoading(false);
-      }
-    };
-
-    loadInstagramMedia();
-  }, []);
 
   return (
     <div>
@@ -328,44 +305,9 @@ export default function Home() {
       </div>
 
       <div className={styles.instagramGallery}>
-        <div className={styles.texto1}>
-          <Section>Galeria do Instagram</Section>
-          <p>Veja as publicações mais recentes do projeto.</p>
-        </div>
-
-        {instagramLoading && <p className={styles.instagramStatus}>Carregando publicações...</p>}
-
-        {!instagramLoading && instagramError && (
-          <p className={styles.instagramStatus}>{instagramError}</p>
-        )}
-
-        {!instagramLoading && !instagramError && (
-          <div className={styles.instagramGrid}>
-            {instagramMedia.slice(0, 6).map((item) => {
-              const previewUrl = item.media_type === 'VIDEO' ? item.thumbnail_url || item.media_url : item.media_url;
-
-              return (
-                <a
-                  key={item.id}
-                  href={item.permalink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={styles.instagramCard}
-                >
-                  <img
-                    src={previewUrl}
-                    alt={item.caption || 'Publicação do Instagram'}
-                    className={styles.instagramImage}
-                  />
-                  <div className={styles.instagramOverlay}>
-                    <span>Ver no Instagram</span>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        )}
+        <div className="elfsight-app-ebf19717-0590-4628-8bee-8b2d6de712ac" data-elfsight-app-lazy></div>
+        <script src="https://elfsightcdn.com/platform.js" async></script>
       </div>
-    </div >
-  );
+    </div>
+  )
 }
