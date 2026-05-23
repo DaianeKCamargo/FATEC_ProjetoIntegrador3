@@ -195,10 +195,6 @@ export default function Home() {
         </div>
       </div>
 
-      <div>
-        <h1> Olá </h1>
-      </div>
-
       <div className={styles.doar}>
         <div className={styles.texto}>
           <Section>Doe sua Tampinhas!</Section>
