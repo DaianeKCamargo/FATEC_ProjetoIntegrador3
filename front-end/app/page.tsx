@@ -124,6 +124,16 @@ export default function Home() {
 
   const nextSlide = () => setSlideIndex((i) => (i + 1) % slides.length);
 
+  useEffect(() => {
+    if (slides.length <= 1) return;
+
+    const autoplay = window.setInterval(() => {
+      setSlideIndex((current) => (current + 1) % slides.length);
+    }, 5000);
+
+    return () => window.clearInterval(autoplay);
+  }, [slides.length]);
+
   // Instagram media state
 
   const [instagramMedia, setInstagramMedia] = useState<InstagramMediaItem[]>([]);
