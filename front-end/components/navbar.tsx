@@ -70,7 +70,7 @@ export default function NavbarLogout() {
                             <Link className={styles.item} href="/sobre-nos">
                                 Sobre Nós
                             </Link>
-                            <Link className={styles.item} href="/sobre-nos/tampets-na-midia">
+                            <Link className={styles.item} href="/user/news">
                                 Tampets na Mídia
                             </Link>
                             <Link className={styles.item} href="/sobre-nos/galeria-tampets">
