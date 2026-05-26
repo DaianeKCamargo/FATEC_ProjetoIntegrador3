@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.listarNoticias = async () => {
-  return await prisma.News.findMany({
+  return await prisma.news.findMany({
     orderBy: {
       id: 'desc'
     }
@@ -10,7 +10,7 @@ exports.listarNoticias = async () => {
 };
 
 exports.buscarPorId = async (id) => {
-  return await prisma.News.findUnique({
+  return await prisma.news.findUnique({
     where: {
       id: Number(id)
     }
@@ -18,7 +18,7 @@ exports.buscarPorId = async (id) => {
 };
 
 exports.criarNoticia = async (titulo, link, imagem) => {
-  return await prisma.News.create({
+  return await prisma.news.create({
     data: {
       titulo,
       link,
@@ -28,7 +28,7 @@ exports.criarNoticia = async (titulo, link, imagem) => {
 };
 
 exports.atualizarNoticia = async (id, dados) => {
-  return await prisma.News.update({
+  return await prisma.news.update({
     where: {
       id: Number(id)
     },
@@ -41,7 +41,7 @@ exports.atualizarNoticia = async (id, dados) => {
 };
 
 exports.removerNoticia = async (id) => {
-  return await prisma.News.delete({
+  return await prisma.news.delete({
     where: {
       id: Number(id)
     }

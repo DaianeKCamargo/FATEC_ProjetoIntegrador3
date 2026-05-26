@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import styles from "../../../styles/newsuser.module.css";
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_APP_NAME || "http://localhost:5500/api").replace(/\/$/, "");
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5500/api").replace(/\/$/, "");
 
 interface Noticia {
   id: number;
