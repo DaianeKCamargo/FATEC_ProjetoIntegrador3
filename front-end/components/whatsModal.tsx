@@ -5,13 +5,16 @@ import styles from "@/styles/whats-modal.module.css";
 interface WhatsModalProps {
   numero: string; // exemplo "5515999999999"
   open: boolean;
+  kind?: 'partner' | 'volunteer' | null;
   onClose: () => void;
 }
 
-export default function WhatsModal({ numero, open, onClose }: WhatsModalProps) {
+export default function WhatsModal({ numero, open, kind, onClose }: WhatsModalProps) {
   const [nome, setNome] = useState("");
   const [bairro, setBairro] = useState("");
-  const mensagem = "Olá, tenho interesse em ser voluntária, poderia me passar mais detalhes de quais ajuda vocês estão precisando? Fico no aguardo do seu retorno";
+  const mensagem = kind === 'partner'
+    ? "Olá, quero me tornar um parceiro do projeto Tampets. Poderia me passar mais detalhes sobre como posso ajudar? Fico no aguardo do seu retorno."
+    : "Olá, quero me tornar um voluntário do projeto Tampets. Poderia me passar mais detalhes sobre como posso ajudar? Fico no aguardo do seu retorno.";
 
   useEffect(() => {
     if (!open) {

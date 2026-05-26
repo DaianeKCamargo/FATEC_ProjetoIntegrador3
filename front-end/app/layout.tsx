@@ -1,6 +1,5 @@
 import './globals.css';
 import type { Metadata } from "next";
-import { Noto_Sans_JP } from 'next/font/google';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ConditionalNavbar from '@/components/conditionalNavbar';
 import ConditionalFooter from '@/components/conditionalFooter';
@@ -14,12 +13,6 @@ export const metadata: Metadata = {
   description: "Venha conhecer um pouco sobre nós e fazer parte desse projeto incrivel!",
 };
 
-// Configuração da fonte
-const notoSansJp = Noto_Sans_JP({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-});
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,12 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={notoSansJp.className}>
+      <body>
         <AuthProvider >
-        <ConditionalNavbar />
-        {children}
-        <ConditionalFooter />
-        <ConditionalCopyright />
+          <ConditionalNavbar />
+          {children}
+          <ConditionalFooter />
+          <ConditionalCopyright />
         </AuthProvider>
       </body>
     </html>

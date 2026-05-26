@@ -1,0 +1,49 @@
+/* TITULO */
+.tittle {
+    width: 100%;
+    display: inline-block;
+    position: relative;
+}
+
+.imgt {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Título principal */
+.escritat {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #333;
+    font-size: clamp(1.4rem, 4vw, 3rem);
+    font-weight: 700;
+    text-align: center;
+    width: 90%;
+}
+
+/* Subtítulo */
+.escritap {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #333;
+    font-size: clamp(1rem, 3vw, 2rem);
+    text-align: center;
+    width: 90%;
+    margin-bottom: 0.1rem;
+}
+
+/* Ajuste fino para telas muito pequenas (opcional) */
+@media (max-width: 380px) {
+    .escritat {
+        top: 50%;
+    }
+
+    .escritap {
+        display: none;
+    }
+}

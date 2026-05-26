@@ -1,17 +1,16 @@
 'use client'
-import React from 'react';
 import Image from 'next/image';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import Titulo from '@/components/titulo/Titulo';
-import style from '@/styles/como-doar.module.css';
+import Tittle from '@/components/tittle';
+import style from '@/styles/how-donate.module.css';
 import { TriangleAlert, Bone } from 'lucide-react';
 
 export default function ComoDoar() {
   return (
     <section className={style.page}>
-      <Titulo 
+      <Tittle 
         src="/img_titulo_amarelo.png" 
-        title="Como doar" 
+        tittle="Como doar" 
         label=" Está com duvída de como você pode nos ajudar?"/>
 
     <div className={style.doar}>

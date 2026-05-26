@@ -4,6 +4,38 @@
     color: inherit;
 }
 
+.sectionTag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    background: rgba(157, 67, 194, 0.12);
+    color: #7b2a9b;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+}
+
+.pickupSectionTag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    background: rgba(95, 129, 183, 0.12);
+    color: #2c4d7d;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+}
+
 /* TEXTO */
 .section span {
     display: block;
@@ -27,6 +59,113 @@
 .texto p {
     font-size: 1.5rem;
     line-height: 1.6;
+}
+
+.donateCard,
+.pickupCard {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 2rem;
+    width: min(100%, 1240px);
+    margin: 0 auto;
+    align-items: stretch;
+}
+
+.donateIntro,
+.pickupIntro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem;
+    border-radius: 32px;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 18px 40px rgba(80, 80, 80, 0.08);
+    backdrop-filter: blur(10px);
+}
+
+.donateIntro p,
+.pickupIntro p {
+    max-width: 52rem;
+    margin-bottom: 1.8rem;
+}
+
+.donateHighlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 2rem;
+}
+
+.donateHighlights span {
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    background: rgba(157, 67, 194, 0.12);
+    color: #7b2a9b;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.donateSteps,
+.pickupDetails {
+    display: grid;
+    gap: 1.2rem;
+}
+
+.donateStepCard,
+.pickupDetailCard {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    padding: 1.6rem;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 14px 30px rgba(80, 80, 80, 0.08);
+}
+
+.donateStepCard strong,
+.pickupDetailCard strong {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 1.6rem;
+    color: #1f2b3d;
+}
+
+.donateStepCard p,
+.pickupDetailCard p {
+    margin: 0;
+    font-size: 1.35rem;
+    color: #4f5d72;
+    line-height: 1.5;
+}
+
+.stepIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #9d43c2, #c06ad8);
+    color: #fff;
+    font-size: 1.7rem;
+    box-shadow: 0 10px 22px rgba(157, 67, 194, 0.25);
+}
+
+.btn14,
+.btnOutline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    width: fit-content;
+    min-height: 4.4rem;
+    padding: 1rem 1.8rem;
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: 700;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
 }
 
 
@@ -96,6 +235,12 @@
     .heroCarousel {
         min-height: 250px;
     }
+
+    .folder {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
 }
 
 /* COMO DOAR */
@@ -103,25 +248,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5rem;
+    padding: 5rem 4rem;
     gap: 2rem;
     width: 100%;
-    background: linear-gradient(to right,
-            white,
-            white,
-            #faf9dd);
-
+    box-sizing: border-box;
+    min-height: 58rem;
+    overflow: hidden;
 }
 
 .btn14 {
     position: relative;
-    background: rgb(255, 151, 0);
+    background: linear-gradient(135deg, #9d43c2, #c06ad8);
+    color: #fff;
     border: none;
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
     cursor: pointer;
     z-index: 1;
     overflow: hidden;
+    box-shadow: 0 14px 28px rgba(157, 67, 194, 0.24);
+}
+
+.btnOutline {
+    position: relative;
+    background: linear-gradient(135deg, #5f81b7, #82b0e3);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+    overflow: hidden;
+    box-shadow: 0 14px 28px rgba(95, 129, 183, 0.24);
+}
+
+.btn14:hover,
+.btnOutline:hover {
+    transform: translateY(-2px);
 }
 
 .btn14:after {
@@ -133,8 +292,8 @@
     left: 0;
     z-index: -1;
     border-radius: 5px;
-    background-color: #eaf818;
-    background-image: linear-gradient(315deg, #eaf818 0%, #f6fc9c 74%);
+    background-color: #f8cd3f;
+    background-image: linear-gradient(315deg, #f8cd3f 0%, #f3d77cee 74%);
     box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5);
     box-shadow: 7px 7px 20px 0px rgba(0, 0, 0, .1),
         4px 4px 5px 0px rgba(0, 0, 0, .1);
@@ -142,6 +301,10 @@
 }
 
 .btn14:hover {
+    color: #000;
+}
+
+.btnOutline:hover {
     color: #000;
 }
 
@@ -155,19 +318,103 @@
     top: 2px;
 }
 
+.btnOutline:after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    border-radius: 5px;
+    background-color: #f8cd3f;
+    background-image: linear-gradient(315deg, #f8cd3f 0%, #f3d77cee 74%);
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5);
+    box-shadow: 7px 7px 20px 0px rgba(0, 0, 0, .1),
+        4px 4px 5px 0px rgba(0, 0, 0, .1);
+    transition: all 0.3s ease;
+}
+
+.btnOutline:hover:after {
+    top: auto;
+    bottom: 0;
+    height: 100%;
+}
+
+.btnOutline:active {
+    top: 2px;
+}
+
 /* PONTO DE COLETA */
 .pontocoleta {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    padding: 5rem;
-    gap: 10%;
+    justify-content: center;
+    padding: 5rem 4rem;
+    gap: 2rem;
     width: 100%;
-    height: 100%;
+    box-sizing: border-box;
+    min-height: 58rem;
+    overflow: hidden;
     background-image: linear-gradient(to left,
             white,
             white,
             #e1f1ff);
+}
+
+.imagem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: min(100%, 460px);
+    flex: 0 0 460px;
+    margin: 0;
+}
+
+.pickupCard {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    width: min(100%, 760px);
+    flex: 1 1 0;
+    margin: 0;
+}
+
+.pickupIntro {
+    background: rgba(255, 255, 255, 0.78);
+}
+
+.pickupDetailCard .stepIcon {
+    background: linear-gradient(135deg, #5f81b7, #82b0e3);
+    box-shadow: 0 10px 22px rgba(95, 129, 183, 0.25);
+}
+
+.pickupDetails {
+    align-content: center;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.pickupDetailCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1rem;
+    min-height: 12rem;
+    max-width: 30rem;
+    aspect-ratio: auto;
+}
+
+.pickupDetailHead {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    width: 100%;
+}
+
+.pickupDetailHead strong {
+    margin-bottom: 0;
+    text-align: center;
 }
 
 /* TEXTO */
@@ -195,15 +442,96 @@
     padding: 1rem;
 }
 
+.ajudaDescricao {
+    max-width: 92rem;
+    margin: 1.2rem auto 0;
+    font-size: 1.55rem;
+    line-height: 1.65;
+    color: #4f5d72;
+}
+
+.ajudaDescricao strong {
+    color: #1f2b3d;
+    font-weight: 700;
+}
+
 .cardsAjuda {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    /* espaçamento entre os cards */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 320px));
+    gap: 10rem;
     justify-content: center;
-    /* centraliza */
-    align-items: center;
+    align-items: stretch;
+    width: min(100%, 1240px);
+    margin: 4rem 20rem;
+    max-width: 100%;
+}
+
+.pontodecoleta,
+.parceiro,
+.voluntario {
+    display: flex;
+    justify-content: center;
+}
+
+.pontodecoleta>div,
+.parceiro>div,
+.voluntario>div {
     width: 100%;
+    cursor: pointer;
+}
+
+.pontodecoleta>div>div,
+.parceiro>div>div,
+.voluntario>div>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1.2rem;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2.5px solid rgba(255, 140, 70, 0.6);
+    box-shadow: 0 12px 32px rgba(255, 140, 70, 0.18);
+    transition: all 0.3s ease;
+    min-height: 420px;
+    justify-content: flex-start;
+}
+
+.pontodecoleta>div:hover>div,
+.parceiro>div:hover>div,
+.voluntario>div:hover>div {
+    transform: translateY(-15px);
+    box-shadow: 0 18px 48px rgba(255, 140, 70, 0.28);
+    border-color: rgba(255, 140, 70, 0.8);
+    background: rgba(255, 255, 255, 1);
+}
+
+.pontodecoleta>div>div img,
+.parceiro>div>div img,
+.voluntario>div>div img {
+    width: 280px;
+    height: 280px;
+    object-fit: contain;
+    margin-bottom: 1.2rem;
+}
+
+.pontodecoleta>div>div h3,
+.parceiro>div>div h3,
+.voluntario>div>div h3 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin: 0.8rem auto 0.5rem auto;
+    padding: 0.8rem 1.4rem;
+    border-radius: 5px;
+    border: 2px solid rgba(255, 140, 70, 0.55);
+    background: linear-gradient(135deg, rgba(255, 181, 107, 0.14), rgba(255, 211, 154, 0.18));
+    font-size: 2rem;
+    color: #1f2b3d;
+    font-weight: 700;
+    line-height: 1.3;
+    box-shadow: 0 14px 28px rgba(255, 140, 70, 0.18);
 }
 
 /* RESUMO RELATORIO */
@@ -223,59 +551,14 @@
     text-align: center;
 }
 
+/* GALERIA DO INSTAGRAM */
+
 .instagramGallery {
-    width: 100%;
-    padding: 4rem 3rem;
-    background: linear-gradient(to bottom, #fff 0%, #fff8d9 100%);
-}
-
-.instagramStatus {
-    text-align: center;
-    margin: 1.5rem 0 0;
-    font-size: 1.05rem;
-    color: #6a5500;
-}
-
-.instagramGrid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.25rem;
-    margin-top: 2rem;
-}
-
-.instagramCard {
-    position: relative;
-    display: block;
-    border-radius: 22px;
-    overflow: hidden;
-    min-height: 260px;
-    box-shadow: 0 16px 30px rgba(87, 69, 0, 0.12);
-    background: #fff;
-    text-decoration: none;
-}
-
-.instagramImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.instagramOverlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    padding: 1rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.05));
-    color: white;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-}
-
-.instagramCard:hover .instagramOverlay {
-    opacity: 1;
+    padding: 3rem 4rem;
+    background-image: linear-gradient(to right,
+            white,
+            white,
+            #f0f0f0);
 }
 
 @media (max-width: 900px) {
@@ -332,24 +615,12 @@
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
 }
 
-/* PARCEIROS */
-.parceiros {
-    width: 100%;
-    height: 25vh;
-    padding: 2rem;
-}
 
-.texto3 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    gap: 3rem;
-}
 
 @media (max-width: 768px) {
 
     /* GERAL */
+
     /* IMAGEM */
     .imagem {
         display: none;
@@ -368,7 +639,33 @@
         text-align: center;
         background-color: white;
         margin: 0;
+        width: 100%;
+        min-height: auto;
+        border-radius: 0;
+        overflow: visible;
         padding: 1rem;
+    }
+
+    .donateCard,
+    .pickupCard {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+
+    .donateIntro,
+    .pickupIntro {
+        padding: 2rem 1.5rem;
+        align-items: center;
+    }
+
+    .donateStepCard,
+    .pickupDetailCard {
+        padding: 1.4rem;
+        text-align: left;
+    }
+
+    .donateHighlights {
+        justify-content: center;
     }
 
     .box1 {
@@ -403,7 +700,7 @@
         gap: 1rem;
     }
 
-    /* RESULTADOS */
+    /* RELATÓRIO -> RESULTADOS */
 
     .animacao {
         flex-direction: column;

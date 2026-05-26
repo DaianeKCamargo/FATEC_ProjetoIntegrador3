@@ -1,0 +1,184 @@
+.page {
+    min-height: 100vh;
+    padding: 4rem 1.5rem 5rem;
+    background:
+        radial-gradient(circle at top left, rgba(255, 181, 107, 0.18), transparent 32%),
+        radial-gradient(circle at top right, rgba(95, 129, 183, 0.14), transparent 28%),
+        linear-gradient(180deg, #fff 0%, #fff8f0 100%);
+}
+
+.hero {
+    width: min(100%, 1100px);
+    margin: 0 auto 2rem;
+    padding: 2rem;
+    text-align: center;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 999px;
+    border: 2px solid rgba(255, 140, 70, 0.55);
+    background: linear-gradient(135deg, rgba(255, 181, 107, 0.14), rgba(255, 211, 154, 0.18));
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1f2b3d;
+    box-shadow: 0 14px 28px rgba(255, 140, 70, 0.14);
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: clamp(2.8rem, 4vw, 4.2rem);
+    color: #1f2b3d;
+    line-height: 1.1;
+}
+
+.hero p {
+    max-width: 80rem;
+    margin: 1.2rem auto 0;
+    font-size: 1.55rem;
+    line-height: 1.7;
+    color: #4f5d72;
+}
+
+.backLink {
+    display: inline-flex;
+    margin-top: 1.4rem;
+    padding: 0.95rem 1.4rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #ffb56b, #ffd39a);
+    box-shadow: 0 14px 28px rgba(255, 140, 70, 0.24);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.backLink:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 34px rgba(255, 140, 70, 0.3);
+}
+
+.formSection {
+    width: min(100%, 1100px);
+    margin: 0 auto;
+}
+
+.formCard {
+    padding: 2rem;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 2px solid rgba(255, 140, 70, 0.35);
+    box-shadow: 0 20px 50px rgba(255, 140, 70, 0.14);
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.field,
+.fieldWide {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.fieldWide {
+    grid-column: 1 / -1;
+}
+
+.field label,
+.fieldWide label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1f2b3d;
+}
+
+.field input,
+.fieldWide input {
+    width: 100%;
+    padding: 0.95rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #d7dce3;
+    font-size: 1.2rem;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.btnArea {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.sendBtn {
+    border: none;
+    border-radius: 5px;
+    padding: 1rem 1.6rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #ffb56b, #ffd39a);
+    box-shadow: 0 14px 28px rgba(255, 140, 70, 0.24);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sendBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 34px rgba(255, 140, 70, 0.3);
+}
+
+.sendBtn:disabled {
+    opacity: 0.75;
+    cursor: progress;
+}
+
+.errorMessage,
+.successMessage {
+    margin: 1rem 0 0;
+    padding: 1rem 1.1rem;
+    border-radius: 10px;
+    font-size: 1.2rem;
+}
+
+.errorMessage {
+    background: #ffe8e7;
+    color: #b42318;
+}
+
+.successMessage {
+    background: #e7f7ea;
+    color: #1b7a2a;
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding: 2.5rem 1rem 4rem;
+    }
+
+    .hero,
+    .formCard {
+        padding: 1.4rem;
+    }
+
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .btnArea {
+        justify-content: stretch;
+    }
+
+    .sendBtn {
+        width: 100%;
+    }
+}

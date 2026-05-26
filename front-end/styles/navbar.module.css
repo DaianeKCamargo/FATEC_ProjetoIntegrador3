@@ -28,6 +28,49 @@
     color: #333;
 }
 
+.socialLinks {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+    padding-right: 2rem;
+}
+
+.socialLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.8rem;
+    height: 3.8rem;
+    border-radius: 999px;
+    color: #fff;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.socialLink:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.6rem 1.2rem rgba(0, 0, 0, 0.15);
+    opacity: 0.95;
+}
+
+.socialLink svg {
+    width: 1.8rem;
+    height: 1.8rem;
+}
+
+.whatsapp {
+    background: #25d366;
+}
+
+.facebook {
+    background: #1877f2;
+}
+
+.instagram {
+    background: linear-gradient(135deg, #f58529, #dd2a7b 55%, #8134af);
+}
+
 .dropdown,
 .dropdownMobile {
     position: relative;
@@ -152,6 +195,10 @@
 
     .navitems,
     .btn {
+        display: none;
+    }
+
+    .socialLinks {
         display: none;
     }
 
