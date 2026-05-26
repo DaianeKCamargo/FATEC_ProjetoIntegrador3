@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import styles from "../../../styles/news.module.css";
 
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5500/api").replace(/\/$/, "");
+
 interface Noticia {
   id: number;
   titulo: string;
@@ -24,30 +26,30 @@ export default function CadastroNoticias() {
   // =========================
   // CARREGAR NOTÍCIAS
   // =========================
- const carregarNoticias = async () => {
-  try {
+  const carregarNoticias = async () => {
+    try {
 
-    const response = await fetch(
-      "http://localhost:5505/api/news"
-    );
+      const response = await fetch(
+        `${API_BASE_URL}/news`
+      );
 
-    console.log("STATUS:", response.status);
+      console.log("STATUS:", response.status);
 
-    const data = await response.json();
+      const data = await response.json();
 
-    console.log("DADOS:", data);
+      console.log("DADOS:", data);
 
-    setNoticias(data);
+      setNoticias(data);
 
-  } catch (error) {
+    } catch (error) {
 
-    console.error("ERRO:", error);
+      console.error("ERRO:", error);
 
-  }
-};
-useEffect(() => {
-  carregarNoticias();
-}, []);
+    }
+  };
+  useEffect(() => {
+    carregarNoticias();
+  }, []);
   // =========================
   // INPUTS
   // =========================
@@ -71,8 +73,8 @@ useEffect(() => {
     try {
 
       const url = editandoId
-        ? `http://localhost:5505/api/news/${editandoId}`
-        : "http://localhost:5505/api/news";
+        ? `${API_BASE_URL}/news/${editandoId}`
+        : `${API_BASE_URL}/news`;
 
       const metodo = editandoId ? "PUT" : "POST";
 
@@ -138,7 +140,7 @@ useEffect(() => {
     try {
 
       const response = await fetch(
-        `http://localhost:5505/api/news/${id}`,
+        `${API_BASE_URL}/news/${id}`,
         {
           method: "DELETE",
         }

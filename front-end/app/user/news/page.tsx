@@ -7,6 +7,8 @@
 import { useEffect, useState } from "react";
 import styles from "../../../styles/newsuser.module.css";
 
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5500/api").replace(/\/$/, "");
+
 interface Noticia {
   id: number;
   titulo: string;
@@ -27,7 +29,7 @@ export default function NoticiasPage() {
     try {
 
       const response = await fetch(
-        "http://localhost:5505/api/news"
+        `${API_BASE_URL}/news`
       );
 
       const data = await response.json();
