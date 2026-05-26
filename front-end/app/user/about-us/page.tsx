@@ -1,7 +1,7 @@
  'use client';
 
 import Tittle from '@/components/tittle';
-import style from '@/styles/sobre-nos.module.css';
+import style from '@/styles/about-us.module.css';
 import Image from 'next/image';
 
 import { PawPrint, Recycle, Info} from "lucide-react";

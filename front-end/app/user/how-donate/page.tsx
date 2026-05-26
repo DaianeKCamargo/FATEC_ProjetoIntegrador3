@@ -1,9 +1,8 @@
 'use client'
-import React from 'react';
 import Image from 'next/image';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Tittle from '@/components/tittle';
-import style from '@/styles/como-doar.module.css';
+import style from '@/styles/how-donate.module.css';
 import { TriangleAlert, Bone } from 'lucide-react';
 
 export default function ComoDoar() {
