@@ -30,7 +30,8 @@ export default function CadastroNoticias() {
     try {
 
       const response = await fetch(
-        `${API_BASE_URL}/news`
+        `${API_BASE_URL}/news`,
+        { cache: "no-store" }
       );
 
       console.log("STATUS:", response.status);
@@ -38,6 +39,10 @@ export default function CadastroNoticias() {
       const data = await response.json();
 
       console.log("DADOS:", data);
+
+      if (!response.ok || !Array.isArray(data)) {
+        throw new Error("Falha ao carregar noticias");
+      }
 
       setNoticias(data);
 

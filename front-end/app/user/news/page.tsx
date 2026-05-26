@@ -19,6 +19,7 @@ interface Noticia {
 export default function NoticiasPage() {
 
   const [noticias, setNoticias] = useState<Noticia[]>([]);
+  const [erro, setErro] = useState("");
 
   useEffect(() => {
     carregarNoticias();
@@ -27,17 +28,29 @@ export default function NoticiasPage() {
   const carregarNoticias = async () => {
 
     try {
+      setErro("");
 
       const response = await fetch(
-        `${API_BASE_URL}/news`
+        `${API_BASE_URL}/news`,
+        { cache: "no-store" }
       );
 
+      if (!response.ok) {
+        throw new Error(`Falha ao carregar noticias (${response.status})`);
+      }
+
       const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Resposta invalida da API de noticias");
+      }
 
       setNoticias(data);
 
     } catch (error) {
       console.error(error);
+      setNoticias([]);
+      setErro("Nao foi possivel carregar as noticias agora.");
     }
   };
 
@@ -60,6 +73,12 @@ export default function NoticiasPage() {
 
       {/* GRID */}
       <section className={styles.grid}>
+
+        {erro && <p>{erro}</p>}
+
+        {!erro && noticias.length === 0 && (
+          <p>Nenhuma noticia cadastrada no momento.</p>
+        )}
 
         {noticias.map((noticia) => (
 
