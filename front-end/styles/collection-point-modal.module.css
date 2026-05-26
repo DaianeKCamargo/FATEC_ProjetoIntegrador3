@@ -1,0 +1,137 @@
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+    z-index: 9999;
+}
+
+.modalContent {
+    width: min(100%, 980px);
+    max-height: 92vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 18px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modalContent h2 {
+    font-size: 2.4rem;
+    margin: 0;
+    color: #1f2b3d;
+}
+
+.modalDescription {
+    margin: 0;
+    color: #4f5d72;
+    font-size: 1.4rem;
+    line-height: 1.5;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.field,
+.fieldWide {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fieldWide {
+    grid-column: 1 / -1;
+}
+
+.field label,
+.fieldWide label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1f2b3d;
+}
+
+.field input,
+.fieldWide input {
+    width: 100%;
+    padding: 0.95rem 1rem;
+    border-radius: 10px;
+    border: 1px solid #d7dce3;
+    font-size: 1.2rem;
+    box-sizing: border-box;
+}
+
+.btnArea {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.sendBtn,
+.closeBtn {
+    border: none;
+    border-radius: 8px;
+    padding: 0.95rem 1.4rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.sendBtn {
+    background: linear-gradient(135deg, #ffb56b, #ffd39a);
+    color: #fff;
+    box-shadow: 0 14px 28px rgba(255, 140, 70, 0.24);
+}
+
+.closeBtn {
+    background: #f1f1f1;
+    color: #1f2b3d;
+}
+
+.errorMessage,
+.successMessage {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    font-size: 1.2rem;
+}
+
+.errorMessage {
+    background: #ffe8e7;
+    color: #b42318;
+}
+
+.successMessage {
+    background: #e7f7ea;
+    color: #1b7a2a;
+}
+
+@media (max-width: 768px) {
+    .modalContent {
+        padding: 1.4rem;
+    }
+
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .btnArea {
+        flex-direction: column;
+    }
+
+    .sendBtn,
+    .closeBtn {
+        width: 100%;
+    }
+}

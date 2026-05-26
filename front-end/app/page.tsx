@@ -5,6 +5,7 @@ import Image from "next/image";
 import styles from '@/styles/home.module.css';
 import { motion, useInView, Variants } from "framer-motion";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import WhatsModal from "@/components/whatsModal";
 import CountUp from "@/components/countUp";
 import { FaCat, FaDog, FaHandHoldingHeart, FaMapMarkerAlt, FaPaw, FaClock, FaRoute } from "react-icons/fa";
@@ -52,31 +53,51 @@ interface CardProps {
 interface SwapCardsProps {
   imagem: string
   titulo: string
-  descricao: string
   src?: string
-  label: string
-  onOpenModal?: () => void
+  modalKind?: 'partner' | 'volunteer'
+  onOpenModal?: (kind?: 'partner' | 'volunteer') => void
 }
 
-function SwapCards({ imagem, titulo, descricao, src, label, onOpenModal }: SwapCardsProps) {
-  const content = (
-    <div>
-      <Image src={imagem} alt={titulo} width={300} height={300} />
-      <h3>{titulo}</h3>
-      <p>{descricao}</p>
-      <span>{label}</span>
+function SwapCards({ imagem, titulo, src, modalKind, onOpenModal }: SwapCardsProps) {
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (onOpenModal && modalKind) {
+      onOpenModal(modalKind);
+      return;
+    }
+
+    if (onOpenModal) {
+      onOpenModal();
+      return;
+    }
+
+    if (src) {
+      router.push(src);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleClick();
+    }
+  };
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      aria-label={titulo}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+    >
+      <div>
+        <Image src={imagem} alt={titulo} width={300} height={300} />
+        <h3>{titulo}</h3>
+      </div>
     </div>
   )
-
-  if (onOpenModal) {
-    return <button type="button" onClick={onOpenModal}>{content}</button>
-  }
-
-  if (src) {
-    return <a href={src}>{content}</a>
-  }
-
-  return content
 }
 
 const cardVariants: Variants = {
@@ -113,8 +134,8 @@ function ContainerImagens({ img, color }: CardProps) {
 export default function Home() {
 
 
-  // Voluntario
   const [openModal, setOpenModal] = useState(false);
+  const [modalKind, setModalKind] = useState<'partner' | 'volunteer' | null>(null);
 
   // Hero carousel state: slides are left blank for you to replace later
   const slides: string[] = ["/folder_home.png", "/reduct_animal.png", "/donate.png"]; // fill these with image paths later
@@ -135,13 +156,7 @@ export default function Home() {
     return () => window.clearInterval(autoplay);
   }, [slides.length]);
 
-  // Instagram media state
 
-  const [instagramMedia, setInstagramMedia] = useState<InstagramMediaItem[]>([]);
-
-  const [instagramLoading, setInstagramLoading] = useState(true);
-
-  const [instagramError, setInstagramError] = useState<string | null>(null);
 
   const getCarouselObjectPosition = (src: string) => {
     if (src === "/folder_home.png") {
@@ -277,8 +292,10 @@ export default function Home() {
                 whileHover={{ y: -4 }}
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
               >
-                <div className={styles.stepIcon}>{item.icon}</div>
-                <strong>{item.title}</strong>
+                <div className={styles.pickupDetailHead}>
+                  <div className={styles.stepIcon}>{item.icon}</div>
+                  <strong>{item.title}</strong>
+                </div>
                 <p>{item.text}</p>
               </motion.div>
             ))}
@@ -289,39 +306,50 @@ export default function Home() {
       <div className={styles.ajuda}>
         <div className={styles.texto1}>
           <Section> Faça parte do projeto! </Section>
+          <p className={styles.ajudaDescricao}>
+            Você pode colaborar como ponto de coleta, parceiro ou voluntário e ajudar a transformar pequenas doações em cuidado real. <strong>Para participar, basta clicar em alguns dos cards abaixo.</strong>
+          </p>
         </div>
 
         <div className={styles.cardsAjuda}>
           <div className={styles.pontodecoleta}>
             <SwapCards
-              imagem={"/ponto_coleta.png"}
+              imagem={"/collection-point.png"}
               titulo={"Seja um Ponto de Coleta"}
-              descricao={"Você que tem um estabelecimento, você pode nos ajudar aceitando receber as tampinhas. "}
-              src={"/cadastro"}
-              label={"Ser Ponto de Coleta "} />
+              src={"/cadastro-ponto-coleta"}
+            />
           </div>
           <div className={styles.parceiro}>
             <SwapCards
-              imagem={"/parceiro.png"}
+              imagem={"/partner.jpeg"}
               titulo={"Seja uma Parceiro"}
-              descricao={"Aqui você pode nos ajudar de alguma outra forma, clique no botão e saiba mais."}
-              src={"/cadastro"}
-              label={"Ser Parceiro"} />
+              modalKind="partner"
+              onOpenModal={(kind) => {
+                setModalKind(kind ?? null);
+                setOpenModal(true);
+              }}
+            />
           </div>
           <div className={styles.voluntario}>
             <SwapCards
-              imagem={"/voluntario.png"}
+              imagem={"/volunters.png"}
               titulo={"Seja um voluntário"}
-              descricao={"Venha fazer parte desse projeto e ajudar aqueles animaiszinhos que mais tanto precisam."}
-              label={"Ser voluntário "}
-              onOpenModal={() => setOpenModal(true)}
+              modalKind="volunteer"
+              onOpenModal={(kind) => {
+                setModalKind(kind ?? null);
+                setOpenModal(true);
+              }}
             />
           </div>
 
           <WhatsModal
             numero={"5515988327955"}
             open={openModal}
-            onClose={() => setOpenModal(false)}
+            kind={modalKind}
+            onClose={() => {
+              setOpenModal(false);
+              setModalKind(null);
+            }}
           />
         </div>
       </div>
