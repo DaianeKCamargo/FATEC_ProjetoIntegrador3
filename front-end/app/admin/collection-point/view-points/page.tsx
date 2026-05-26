@@ -1,4 +1,4 @@
-export default function RegistrationReview() {
+export default function ViewPoints() {
     return (
         <div>
             <h1>View Collection Points</h1>

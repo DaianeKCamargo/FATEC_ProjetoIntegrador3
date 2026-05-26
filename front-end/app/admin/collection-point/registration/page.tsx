@@ -1,4 +1,4 @@
-export default function RegistrationReview() {
+export default function Registration() {
     return (
         <div>
             <h1>Registration</h1>
