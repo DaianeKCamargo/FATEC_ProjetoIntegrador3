@@ -1,11 +1,11 @@
-// Criar aqui a página de exibição das notícias (TamPets na Mídia)
-// Fazer a ligação com o banco de dados
-// Fazer a página responsiva e de acordo com o atual design do projeto
-// GET (Apresentar as notícias)
-"use client";
-
-import { useCallback, useEffect, useState } from "react";
+import React from "react";
 import styles from "../../../styles/newsuser.module.css";
+
+const API_BASE_URL = (
+  process.env.API_BASE_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:5500/api"
+).replace(/\/$/, "");
 
 interface Noticia {
   id: number;
@@ -14,43 +14,34 @@ interface Noticia {
   imagem: string;
 }
 
-export default function NoticiasPage() {
+async function buscarNoticias(): Promise<{ noticias: Noticia[]; erro: string }> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/news`, {
+      cache: "no-store",
+      headers: {
+        Accept: "application/json",
+      },
+    });
 
-  const [noticias, setNoticias] = useState<Noticia[]>([]);
-  const [erro, setErro] = useState("");
-
-  const carregarNoticias = useCallback(async () => {
-
-    try {
-      setErro("");
-
-      const response = await fetch(
-        "/api/news",
-        { cache: "no-store" }
-      );
-
-      if (!response.ok) {
-        throw new Error(`Falha ao carregar noticias (${response.status})`);
-      }
-
-      const data = await response.json();
-
-      if (!Array.isArray(data)) {
-        throw new Error("Resposta invalida da API de noticias");
-      }
-
-      setNoticias(data);
-
-    } catch (error) {
-      console.error(error);
-      setNoticias([]);
-      setErro("Nao foi possivel carregar as noticias agora.");
+    if (!response.ok) {
+      return { noticias: [], erro: `Falha ao carregar noticias (${response.status})` };
     }
-  }, []);
 
-  useEffect(() => {
-    carregarNoticias();
-  }, [carregarNoticias]);
+    const data = await response.json();
+
+    if (!Array.isArray(data)) {
+      return { noticias: [], erro: "Resposta invalida da API de noticias" };
+    }
+
+    return { noticias: data, erro: "" };
+  } catch (error) {
+    console.error(error);
+    return { noticias: [], erro: "Nao foi possivel carregar as noticias agora." };
+  }
+}
+
+export default async function NoticiasPage() {
+  const { noticias, erro } = await buscarNoticias();
 
   return (
     <main className={styles.container}>
@@ -100,6 +91,7 @@ export default function NoticiasPage() {
               <a
                 href={noticia.link}
                 target="_blank"
+                rel="noreferrer"
                 className={styles.botao}
               >
                 Ler notícia
