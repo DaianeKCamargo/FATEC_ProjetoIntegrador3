@@ -1,0 +1,102 @@
+.page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e3efe5;
+}
+
+.sobre {
+    max-width: 1050px;;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+.sectionBox {
+    background: #f7fdf8;            
+    padding: 1.8rem;
+    margin-bottom: 2rem;
+    border-radius: 15px;
+    border: 1.5px solid #d6e8d9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    padding: 3rem;
+    max-width: 950px; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.2rem;
+}
+
+.sectionHeader h2 {
+    font-size: 2.2rem; 
+    font-weight: 700;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+.sectionContent p {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;  
+}
+
+.sectionContent ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1.2rem;
+}
+
+.sectionContent ul li {
+     font-size: 1.5rem;
+    margin-bottom: 0.7rem;
+    padding-left: 1.4rem;
+    position: relative;
+}
+
+.sectionContent ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #5da166;
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.Image-banner {
+    display: block;
+    margin: 3rem auto 0 auto;
+    border-radius: 15px;
+    box-shadow: 1 6px 10px rgba(0, 0, 0, 0.08);
+}
+
+
+@media (max-width: 768px) {
+  .sobre {
+    padding: 1.5rem 1rem;
+  }
+
+  .sectionHeader h2 {
+   font-size: 1.8rem; 
+  }
+
+  .sectionContent p,
+  .sectionContent ul li {
+     font-size: 1.3rem;
+  }
+
+  .Image-banner {
+    margin-top: 10%;
+    margin-bottom: 10%;
+    width: 100%;
+    height: auto;
+  }
+}

@@ -12,15 +12,6 @@ import { FaCat, FaDog, FaHandHoldingHeart, FaMapMarkerAlt, FaPaw, FaClock, FaRou
 import { AiFillGold } from "react-icons/ai";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 
-interface InstagramMediaItem {
-  id: string
-  caption?: string
-  media_url: string
-  permalink: string
-  media_type: string
-  thumbnail_url?: string
-}
-
 
 // Animação dos titulos
 type SectionProps = { children: ReactNode }
@@ -155,7 +146,6 @@ export default function Home() {
 
     return () => window.clearInterval(autoplay);
   }, [slides.length]);
-
 
 
   const getCarouselObjectPosition = (src: string) => {
@@ -321,7 +311,7 @@ export default function Home() {
           </div>
           <div className={styles.parceiro}>
             <SwapCards
-              imagem={"/partner.jpeg"}
+              imagem={"/partner.jpg"}
               titulo={"Seja uma Parceiro"}
               modalKind="partner"
               onOpenModal={(kind) => {
