@@ -262,7 +262,7 @@ export default function Home() {
 
         <div className={styles.pickupCard}>
           <div className={styles.pickupIntro}>
-            <span className={styles.sectionTag}>Ponto de coleta</span>
+            <span className={styles.pickupSectionTag}>Ponto de coleta</span>
             <Section>Encontre o local ideal para entregar suas tampinhas</Section>
             <p>Veja pontos parceiros, horários de atendimento e informações essenciais para realizar sua entrega com facilidade.</p>
 

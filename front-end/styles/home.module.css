@@ -11,6 +11,22 @@
     width: fit-content;
     padding: 0.6rem 1.1rem;
     border-radius: 999px;
+    background: rgba(157, 67, 194, 0.12);
+    color: #7b2a9b;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+}
+
+.pickupSectionTag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
     background: rgba(95, 129, 183, 0.12);
     color: #2c4d7d;
     font-size: 1.2rem;
@@ -82,8 +98,8 @@
 .donateHighlights span {
     padding: 0.7rem 1rem;
     border-radius: 999px;
-    background: #fff5dc;
-    color: #8a5a00;
+    background: rgba(157, 67, 194, 0.12);
+    color: #7b2a9b;
     font-size: 1.2rem;
     font-weight: 600;
 }
@@ -129,10 +145,10 @@
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
-    background: linear-gradient(135deg, #5f81b7, #82b0e3);
+    background: linear-gradient(135deg, #9d43c2, #c06ad8);
     color: #fff;
     font-size: 1.7rem;
-    box-shadow: 0 10px 22px rgba(95, 129, 183, 0.25);
+    box-shadow: 0 10px 22px rgba(157, 67, 194, 0.25);
 }
 
 .btn14,
@@ -233,29 +249,38 @@
     justify-content: center;
     padding: 5rem 4rem;
     gap: 2rem;
-    width: 100%;
+    width: min(100% - 8rem, 1240px);
+    margin: 0 auto;
+    min-height: 58rem;
+    border-radius: 32px;
+    overflow: hidden;
     background: linear-gradient(to right,
-            white,
-            white,
-            #faf9dd);
+            #fff,
+            #f5e8fb,
+            #ecd5f7);
 
 }
 
 .btn14 {
     position: relative;
-    background: linear-gradient(135deg, #ff9f1c, #ffbf47);
-    color: #2b1a00;
+    background: linear-gradient(135deg, #9d43c2, #c06ad8);
+    color: #fff;
     border: none;
     cursor: pointer;
     z-index: 1;
     overflow: hidden;
-    box-shadow: 0 14px 28px rgba(255, 159, 28, 0.24);
+    box-shadow: 0 14px 28px rgba(157, 67, 194, 0.24);
 }
 
 .btnOutline {
-    border: 2px solid #5f81b7;
-    color: #31527f;
-    background: rgba(95, 129, 183, 0.08);
+    position: relative;
+    background: linear-gradient(135deg, #5f81b7, #82b0e3);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+    overflow: hidden;
+    box-shadow: 0 14px 28px rgba(95, 129, 183, 0.24);
 }
 
 .btn14:hover,
@@ -284,6 +309,10 @@
     color: #000;
 }
 
+.btnOutline:hover {
+    color: #fff;
+}
+
 .btn14:hover:after {
     top: auto;
     bottom: 0;
@@ -294,6 +323,33 @@
     top: 2px;
 }
 
+.btnOutline:after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 0;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    border-radius: 5px;
+    background-color: #dbe9ff;
+    background-image: linear-gradient(315deg, #dbe9ff 0%, #f2f7ff 74%);
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5);
+    box-shadow: 7px 7px 20px 0px rgba(0, 0, 0, .1),
+        4px 4px 5px 0px rgba(0, 0, 0, .1);
+    transition: all 0.3s ease;
+}
+
+.btnOutline:hover:after {
+    top: auto;
+    bottom: 0;
+    height: 100%;
+}
+
+.btnOutline:active {
+    top: 2px;
+}
+
 /* PONTO DE COLETA */
 .pontocoleta {
     display: flex;
@@ -301,8 +357,11 @@
     justify-content: center;
     padding: 5rem 4rem;
     gap: 2rem;
-    width: 100%;
-    height: 100%;
+    width: min(100% - 8rem, 1240px);
+    margin: 0 auto;
+    min-height: 58rem;
+    border-radius: 32px;
+    overflow: hidden;
     background-image: linear-gradient(to left,
             white,
             white,
@@ -311,6 +370,15 @@
 
 .pickupCard {
     grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+}
+
+.pickupIntro {
+    background: rgba(255, 255, 255, 0.78);
+}
+
+.pickupDetailCard .stepIcon {
+    background: linear-gradient(135deg, #5f81b7, #82b0e3);
+    box-shadow: 0 10px 22px rgba(95, 129, 183, 0.25);
 }
 
 .pickupDetails {
@@ -462,6 +530,10 @@
         text-align: center;
         background-color: white;
         margin: 0;
+        width: 100%;
+        min-height: auto;
+        border-radius: 0;
+        overflow: visible;
         padding: 1rem;
     }
 
