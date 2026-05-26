@@ -73,9 +73,6 @@ export default function NavbarLogout() {
                             <Link className={styles.item} href="/user/news">
                                 Tampets na Mídia
                             </Link>
-                            <Link className={styles.item} href="/sobre-nos/galeria-tampets">
-                                Galeria de Fotos
-                            </Link>
                         </div>
                     </details>
 
@@ -128,9 +125,6 @@ export default function NavbarLogout() {
                                         </Link>
                                         <Link className={styles.item} href="/sobre-nos/tampets-na-midia" onClick={handleFechado}>
                                             Tampets na Mídia
-                                        </Link>
-                                        <Link className={styles.item} href="/sobre-nos/galeria-tampets" onClick={handleFechado}>
-                                            Galeria de Fotos
                                         </Link>
                                     </div>
                                 </details>
