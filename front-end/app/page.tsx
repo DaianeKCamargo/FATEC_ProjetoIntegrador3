@@ -1,13 +1,13 @@
 'use client'
 
+import Link from "next/link";
 import Image from "next/image";
-import Script from "next/script";
 import styles from '@/styles/home.module.css';
 import { motion, useInView, Variants } from "framer-motion";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import WhatsModal from "@/components/whatsModal";
 import CountUp from "@/components/countUp";
-import { FaCat, FaDog } from "react-icons/fa";
+import { FaCat, FaDog, FaHandHoldingHeart, FaMapMarkerAlt, FaPaw, FaClock, FaRoute } from "react-icons/fa";
 import { AiFillGold } from "react-icons/ai";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 
@@ -151,6 +151,42 @@ export default function Home() {
     return "left center";
   };
 
+  const donationSteps = [
+    {
+      icon: <FaPaw />,
+      title: "Separe as tampinhas",
+      text: "Junte tampinhas limpas e secas para facilitar a triagem e a reciclagem.",
+    },
+    {
+      icon: <FaHandHoldingHeart />,
+      title: "Confirme o destino",
+      text: "Veja se o ponto escolhido aceita o material e quais horários funcionam melhor.",
+    },
+    {
+      icon: <FaRoute />,
+      title: "Entregue com facilidade",
+      text: "Leve sua doação ao ponto mais próximo e acompanhe o impacto do projeto.",
+    },
+  ];
+
+  const pickupDetails = [
+    {
+      icon: <FaMapMarkerAlt />,
+      title: "Locais parceiros",
+      text: "Encontre estabelecimentos e instituições cadastradas para receber suas tampinhas.",
+    },
+    {
+      icon: <FaClock />,
+      title: "Horários de atendimento",
+      text: "Consulte os melhores períodos para entrega antes de sair de casa.",
+    },
+    {
+      icon: <FaHandHoldingHeart />,
+      title: "Entrega organizada",
+      text: "Cada ponto ajuda a transformar sua doação em cuidado real com os animais.",
+    },
+  ];
+
 
   return (
     <div>
@@ -183,18 +219,39 @@ export default function Home() {
       </div>
 
       <div className={styles.doar}>
-        <div className={styles.texto}>
-          <Section>Doe sua Tampinhas!</Section>
-          <p>Transforme suas tampinhas em ações...</p>
+        <div className={styles.donateCard}>
+          <div className={styles.donateIntro}>
+            <span className={styles.sectionTag}>Como doar</span>
+            <Section>Doe suas tampinhas em poucos passos</Section>
+            <p>Uma forma simples de ajudar: leve tampinhas limpas, escolha o ponto de coleta e acompanhe o impacto da sua entrega.</p>
 
-          <motion.div
-            className={styles.box1}
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-          </motion.div>
-          <button className={styles.btn14}>Read More</button>
+            <div className={styles.donateHighlights}>
+              <span>Prático</span>
+              <span>Rápido</span>
+              <span>Solidário</span>
+            </div>
+
+            <Link className={styles.btn14} href="/cadastro">Quero doar agora</Link>
+          </div>
+
+          <div className={styles.donateSteps}>
+            {donationSteps.map((step, index) => (
+              <motion.article
+                className={styles.donateStepCard}
+                key={step.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ delay: index * 0.12 }}
+              >
+                <div className={styles.stepIcon}>{step.icon}</div>
+                <div>
+                  <strong>{step.title}</strong>
+                  <p>{step.text}</p>
+                </div>
+              </motion.article>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -203,20 +260,29 @@ export default function Home() {
           <ContainerImagens img="/localizacao.png" color="#5f81b7" />
         </div>
 
-        <div className={styles.texto}>
-          <Section>Pontos de coleta</Section>
+        <div className={styles.pickupCard}>
+          <div className={styles.pickupIntro}>
+            <span className={styles.sectionTag}>Ponto de coleta</span>
+            <Section>Encontre o local ideal para entregar suas tampinhas</Section>
+            <p>Veja pontos parceiros, horários de atendimento e informações essenciais para realizar sua entrega com facilidade.</p>
 
-          <motion.div
-            className={styles.box2}
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <a className={styles.paginas} href="/ponto-coleta">
-              <p>Veja os pontos de coleta mais próximos...</p>
-              <p><b>Clique aqui e saiba mais!</b></p>
-            </a>
-          </motion.div>
+            <Link className={styles.btnOutline} href="/ponto-coleta">Ver pontos de coleta</Link>
+          </div>
+
+          <div className={styles.pickupDetails}>
+            {pickupDetails.map((item) => (
+              <motion.div
+                className={styles.pickupDetailCard}
+                key={item.title}
+                whileHover={{ y: -4 }}
+                transition={{ type: "spring", stiffness: 260, damping: 20 }}
+              >
+                <div className={styles.stepIcon}>{item.icon}</div>
+                <strong>{item.title}</strong>
+                <p>{item.text}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
 
