@@ -4,10 +4,8 @@
 // GET (Apresentar as notícias)
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "../../../styles/newsuser.module.css";
-
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5500/api").replace(/\/$/, "");
 
 interface Noticia {
   id: number;
@@ -21,17 +19,13 @@ export default function NoticiasPage() {
   const [noticias, setNoticias] = useState<Noticia[]>([]);
   const [erro, setErro] = useState("");
 
-  useEffect(() => {
-    carregarNoticias();
-  }, []);
-
-  const carregarNoticias = async () => {
+  const carregarNoticias = useCallback(async () => {
 
     try {
       setErro("");
 
       const response = await fetch(
-        `${API_BASE_URL}/news`,
+        "/api/news",
         { cache: "no-store" }
       );
 
@@ -52,7 +46,11 @@ export default function NoticiasPage() {
       setNoticias([]);
       setErro("Nao foi possivel carregar as noticias agora.");
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    carregarNoticias();
+  }, [carregarNoticias]);
 
   return (
     <main className={styles.container}>
