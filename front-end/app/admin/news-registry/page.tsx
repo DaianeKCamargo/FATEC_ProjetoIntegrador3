@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import styles from "../../../styles/news.module.css";
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5500/api").replace(/\/$/, "");
+const API_BASE_URL =
+  "http://localhost:5505/api";
 
 interface Noticia {
   id: number;
