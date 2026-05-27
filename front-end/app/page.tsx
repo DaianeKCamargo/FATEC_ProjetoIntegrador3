@@ -128,6 +128,8 @@ function ContainerImagens({ img, color }: CardProps) {
 
 export default function Home() {
 
+  const elfsightWidgetId = process.env.NEXT_PUBLIC_ELFSIGHT_WIDGET_ID ?? "ebf19717-0590-4628-8bee-8b2d6de712ac";
+
 
   const [openModal, setOpenModal] = useState(false);
   const [modalKind, setModalKind] = useState<'partner' | 'volunteer' | null>(null);
@@ -466,8 +468,12 @@ export default function Home() {
       </div>
 
       <div className={styles.instagramGallery}>
-        <div className="elfsight-app-ebf19717-0590-4628-8b2d6de712ac" data-elfsight-app-lazy></div>
-        <Script src="https://elfsightcdn.com/platform.js" strategy="afterInteractive" />
+        {elfsightWidgetId ? (
+          <>
+            <div className={`elfsight-app-${elfsightWidgetId}`} data-elfsight-app-lazy></div>
+            <Script src="https://elfsightcdn.com/platform.js" strategy="afterInteractive" />
+          </>
+        ) : null}
       </div>
     </div>
   )
