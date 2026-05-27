@@ -97,4 +97,3 @@ model CapsRegistration {
 
   @@map("caps-registration")
 }
-
