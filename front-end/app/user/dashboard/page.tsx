@@ -15,8 +15,8 @@ export default function Relatorio() {
 
   // filtros
   const [cardMonth, setCardMonth] = useState(1);
-  const [cardYear, setCardYear] = useState(2025);
-  const [tampinhasYear, setTampinhasYear] = useState(2025);
+  const [cardYear, setCardYear] = useState(2026);
+  const [tampinhasYear, setTampinhasYear] = useState(2026);
 
   // dados
   const [capsData, setCapsData] = useState<any[]>([]);
@@ -28,7 +28,7 @@ export default function Relatorio() {
   const [dogs, setDogs] = useState(0);
   const [totalCaps, setTotalCaps] = useState(0);
 
-  const anosDisponiveis = [2025, 2024, 2023];
+  const anosDisponiveis = [2026, 2025, 2024, 2023];
 
   // ✅ BUSCAR APIs
   useEffect(() => {

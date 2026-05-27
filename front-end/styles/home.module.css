@@ -541,9 +541,7 @@
     padding: 3rem;
     gap: 2rem;
     width: 100%;
-    background-image: linear-gradient(to top,
-            white,
-            #d5c6ff);
+
 }
 
 .texto2 {
@@ -595,7 +593,7 @@
     flex-direction: column;
     outline: 3px dashed #808080;
     outline-offset: 4px;
-    box-shadow: 0 0 15px white;
+    box-shadow: 0 10px 30px rgba(16,24,40,0.08), 0 2px 8px rgba(0,0,0,0.06);
     padding: 3rem;
 }
 
