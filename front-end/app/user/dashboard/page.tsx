@@ -110,10 +110,10 @@ export default function Relatorio() {
   }, [animalsData, capsData, cardMonth, cardYear]);
 
   return (
-    <section className="container">
+    <section className="usercontainer">
 
       {/* FILTROS */}
-      <div className="filters">
+      <div className="userfilters">
         <div>
           <label>Mês:</label>
           <select value={cardMonth} onChange={(e) => setCardMonth(Number(e.target.value))}>
@@ -134,25 +134,25 @@ export default function Relatorio() {
       </div>
 
       {/* CARDS */}
-      <div className="cards">
+      <div className="usercards">
         <div className="card">
           <h3>Gatos</h3>
           <span>{cats}</span>
         </div>
 
-        <div className="card">
+        <div className="usercard">
           <h3>Cães</h3>
           <span>{dogs}</span>
         </div>
 
-        <div className="card">
+        <div className="usercard">
           <h3>Tampinhas (kg)</h3>
           <span>{totalCaps.toLocaleString()}</span>
         </div>
       </div>
 
       {/* FILTRO GRAFICO */}
-      <div className="filterChart">
+      <div className="userfilterChart">
         <label>Ano:</label>
         <select
           value={tampinhasYear}
@@ -165,7 +165,9 @@ export default function Relatorio() {
       </div>
 
       {/* GRAFICO */}
-      <CapsChart data={chartData} />
+      <div className="userchartContainer">
+        <CapsChart data={chartData} />
+      </div>
 
     </section>
   );
