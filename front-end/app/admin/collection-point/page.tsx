@@ -39,9 +39,14 @@ export default function CollectionPointPage() {
                             </p>
                         </div>
 
-                        <button className={styles.cardButton}>
+                        {/* <button
+                            className={styles.cardButton}
+                            onClick={() =>
+                                router.push("/admin/collection-point/register")
+                            }
+                        >
                             Acessar
-                        </button>
+                        </button> */}
 
                     </div>
 
