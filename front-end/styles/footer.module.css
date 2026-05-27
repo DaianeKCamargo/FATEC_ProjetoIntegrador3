@@ -1,51 +1,123 @@
 .footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: center;
-    background: white;
-    height: 15vh;
+    gap: 2rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+    min-height: 15vh;
+    padding: 1.5rem 2rem;
     box-shadow: 0 0 0.2rem 0.4rem rgba(0, 0, 0, 0.08);
     color: #333;
 }
 
-/* // LOGO // */
-.logoredes {
+.column {
     display: flex;
     justify-content: center;
-    flex-direction: column;
     align-items: center;
-    flex-grow: 1;
+    text-align: center;
 }
 
-/* // REDES SOCIAIS // */
+.logoLink {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo {
+    max-width: 100%;
+    height: auto;
+}
+
+.menuArea,
 .redessociais {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    font-size: 1.5.0rem;
-    flex-grow: 1;
+    gap: 1rem;
+}
+
+.titulo {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #25324b;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.menuLink {
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 1.3rem;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.menuLink:hover {
+    color: #5f81b7;
+    transform: translateX(2px);
 }
 
 .icons {
     display: flex;
-    gap: 2rem;
-    margin-top: 1rem;
-    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.iconLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 999px;
+    color: #ffffff;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.iconLink:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.8rem 1.6rem rgba(0, 0, 0, 0.14);
+    opacity: 0.95;
+}
+
+.iconLink svg {
+    width: 1.9rem;
+    height: 1.9rem;
+}
+
+.whatsapp {
+    background: #25d366;
+}
+
+.facebook {
+    background: #1877f2;
 }
 
 @media (max-width: 768px) {
     .footer {
-        height: 20vh;
-        flex-direction: column;
-        justify-content: center;
+        grid-template-columns: 1fr;
         gap: 1rem;
-        padding-bottom: 2rem;
+        padding: 2rem 1rem;
     }
 
-    .logoredes {
-        width: 50%;
+    .titulo {
+        font-size: 1.4rem;
     }
 
+    .menuLink {
+        font-size: 1.2rem;
+    }
+
+    .iconLink {
+        width: 3.6rem;
+        height: 3.6rem;
+    }
 }

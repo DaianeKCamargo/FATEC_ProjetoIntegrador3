@@ -1,18 +1,40 @@
-// APENAS PARA TESTE, AINDA NÃO IMPLEMENTADO NADA, SÓ PARA VER SE A ROTA ESTÁ FUNCIONANDO
+'use client';
 
-'use client'
+import Link from 'next/link';
+import '@/styles/dashboard.css';
 
-export default function dashRegistrationAdminPage() {
-    return (
-        <div>
-            <h1>Painel de Administração - Ponto de Coleta</h1>
-            <p>Aqui você pode gerenciar os pontos de coleta cadastrados pelos usuários.</p>
-            <p>Funcionalidades:</p>
-            <ul>
-                <li>Aprovar ou recusar novos cadastros de pontos de coleta</li> 
-                <li>Visualizar todos os cadastros, tanto aprovados quanto recusados</li>
-                <li>Editar informações dos pontos de coleta aprovados</li>
-            </ul>
-        </div>
-    )
+export default function DashRegistration() {
+
+  return (
+    <div className="adminContainer">
+
+      <h1>Painel de Registros</h1>
+      <p className="adminsubtitle">Selecione uma opção</p>
+
+      <div className="adminmenuGrid">
+
+        <Link href="/admin/dash-registration/caps" className="adminmenuCard">
+          <h2>Registro de Tampinhas</h2>
+          <p>Cadastro de quantidade em kg</p>
+        </Link>
+
+        <Link href="/admin/dash-registration/animals" className="adminmenuCard">
+          <h2>Registro de Animais</h2>
+          <p>Cadastrar gatos e cães</p>
+        </Link>
+
+        <Link href="/admin/dash-registration/edit" className="adminmenuCard">
+          <h2>Editar Registros</h2>
+          <p>Alterar dados existentes</p>
+        </Link>
+
+        <Link href="/admin/dash-registration/delete" className="adminmenuCard">
+          <h2>Excluir Registros</h2>
+          <p>Remover dados existentes</p>
+        </Link>
+
+      </div>
+
+    </div>
+  );
 }
