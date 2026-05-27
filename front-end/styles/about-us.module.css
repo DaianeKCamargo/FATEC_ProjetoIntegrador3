@@ -1,102 +1,116 @@
+/* ===== PAGE ===== */
 .page {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #e3efe5;
+  background: #edfef2;
+  min-height: 100vh;
 }
 
-.sobre {
-    max-width: 1050px;;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-    line-height: 1.6;
-    color: #333;
+/* ===== HERO (TOPO VERDE) ===== */
+.hero {
+  position: relative;
+  background: #edfef2;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 50px;
+  overflow: hidden;
 }
 
+.hero::before {
+  top: 20px;
+  left: 20%;
+}
+
+.hero::after {
+  bottom: 10px;
+  right: 20%;
+}
+
+.heroContent h1 {
+  font-size: 45px;
+  margin-bottom: 8px;
+  color: #1d2822;
+}
+
+.heroContent p {
+  font-size: 20px;
+  color: #294238;
+}
+
+/* ===== CARD ===== */
 .sectionBox {
-    background: #f7fdf8;            
-    padding: 1.8rem;
-    margin-bottom: 2rem;
-    border-radius: 15px;
-    border: 1.5px solid #d6e8d9;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-    padding: 3rem;
-    max-width: 950px; 
-    margin-left: auto;
-    margin-right: auto;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6px);
+  border-radius: 14px;
+  padding: 22px 26px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid #4caf7c;
 }
 
+.sectionBox:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== HEADER DO CARD ===== */
 .sectionHeader {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: #2e4a3f;
 }
 
 .sectionHeader h2 {
-    font-size: 2.2rem; 
-    font-weight: 700;
-    color: #1a1a1a;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
+.sectionHeader svg {
+  color: #4caf7c;
+}
 
+/* ===== TEXTO ===== */
 .sectionContent p {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;  
+  font-size: 15px;
+  line-height: 1.6;
+  color: #444;
+  margin-bottom: 12px;
 }
 
+/* ===== LISTA ===== */
 .sectionContent ul {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 1.2rem;
+  padding-left: 18px;
 }
 
-.sectionContent ul li {
-     font-size: 1.5rem;
-    margin-bottom: 0.7rem;
-    padding-left: 1.4rem;
-    position: relative;
+.sectionContent li {
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
-.sectionContent ul li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: #5da166;
-    font-size: 1.6rem;
-    line-height: 1;
-}
-
+/* ===== IMAGEM ===== */
 .Image-banner {
-    display: block;
-    margin: 3rem auto 0 auto;
-    border-radius: 15px;
-    box-shadow: 1 6px 10px rgba(0, 0, 0, 0.08);
+  margin-top: 15px;
+  border-radius: 12px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
 }
 
-
+/* ===== RESPONSIVO ===== */
 @media (max-width: 768px) {
+  .hero {
+    height: 220px;
+  }
+
+  .heroContent h1 {
+    font-size: 22px;
+  }
+
   .sobre {
-    padding: 1.5rem 1rem;
-  }
-
-  .sectionHeader h2 {
-   font-size: 1.8rem; 
-  }
-
-  .sectionContent p,
-  .sectionContent ul li {
-     font-size: 1.3rem;
-  }
-
-  .Image-banner {
-    margin-top: 10%;
-    margin-bottom: 10%;
-    width: 100%;
-    height: auto;
+    margin-top: -70px;
   }
 }
