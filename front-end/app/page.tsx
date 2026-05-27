@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from '@/styles/home.module.css';
 import { motion, useInView, Variants } from "framer-motion";
+import Script from 'next/script';
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import WhatsModal from "@/components/whatsModal";
@@ -465,8 +466,8 @@ export default function Home() {
       </div>
 
       <div className={styles.instagramGallery}>
-        <div className="elfsight-app-ebf19717-0590-4628-8bee-8b2d6de712ac" data-elfsight-app-lazy></div>
-        <script src="https://elfsightcdn.com/platform.js" async></script>
+        <div className="elfsight-app-ebf19717-0590-4628-8b2d6de712ac" data-elfsight-app-lazy></div>
+        <Script src="https://elfsightcdn.com/platform.js" strategy="afterInteractive" />
       </div>
     </div>
   )
