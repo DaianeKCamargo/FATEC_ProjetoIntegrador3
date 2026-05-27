@@ -67,7 +67,7 @@ export default function NavbarLogout() {
                             O Projeto <BiChevronDown className={styles.dropdownIcon} />
                         </summary>
                         <div className={styles.dropdownMenu}>
-                            <Link className={styles.item} href="/sobre-nos">
+                            <Link className={styles.item} href="/user/about-us">
                                 Sobre Nós
                             </Link>
                             <Link className={styles.item} href="/user/news">
@@ -76,9 +76,9 @@ export default function NavbarLogout() {
                         </div>
                     </details>
 
-                    <Link className={styles.item} href="/relatorio">Relatório</Link>
-                    <Link className={styles.item} href="/ponto-coleta">Ponto de Coleta</Link>
-                    <Link className={styles.item} href="/como-doar">Como Doar</Link>
+                    <Link className={styles.item} href="/user/dashboard">Relatório</Link>
+                    <Link className={styles.item} href="/user/collection-point">Ponto de Coleta</Link>
+                    <Link className={styles.item} href="/user/how-donate">Como Doar</Link>
                 </div>
 
                 <div className={styles.socialLinks} aria-label="Redes sociais">
@@ -120,21 +120,21 @@ export default function NavbarLogout() {
                                         O Projeto <BiChevronDown className={styles.dropdownIcon} />
                                     </summary>
                                     <div className={styles.dropdownMenuMobile}>
-                                        <Link className={styles.item} href="/sobre-nos" onClick={handleFechado}>
+                                        <Link className={styles.item} href="/user/about-us" onClick={handleFechado}>
                                             Sobre Nós
                                         </Link>
-                                        <Link className={styles.item} href="/sobre-nos/tampets-na-midia" onClick={handleFechado}>
+                                        <Link className={styles.item} href="/user/news" onClick={handleFechado}>
                                             Tampets na Mídia
                                         </Link>
                                     </div>
                                 </details>
-                                <Link className={styles.item} href="/relatorio" onClick={handleFechado}>
+                                <Link className={styles.item} href="/user/dashboard" onClick={handleFechado}>
                                     Relatório
                                 </Link>
-                                <Link className={styles.item} href="/ponto-coleta" onClick={handleFechado}>
+                                <Link className={styles.item} href="/user/collection-point" onClick={handleFechado}>
                                     Ponto de Coleta
                                 </Link>
-                                <Link className={styles.item} href="/como-doar" onClick={handleFechado}>
+                                <Link className={styles.item} href="/user/how-donate" onClick={handleFechado}>
                                     Como Doar
                                 </Link>
                             </div>
