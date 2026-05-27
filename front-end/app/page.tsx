@@ -8,6 +8,9 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import WhatsModal from "@/components/whatsModal";
 import CountUp from "@/components/countUp";
+import capsService from "@/services/capsService";
+import animalsService from "@/services/animalsService";
+import api from "@/services/api";
 import { FaCat, FaDog, FaHandHoldingHeart, FaMapMarkerAlt, FaPaw, FaClock, FaRoute } from "react-icons/fa";
 import { AiFillGold } from "react-icons/ai";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
@@ -132,6 +135,79 @@ export default function Home() {
   const slides: string[] = ["/folder_home.png", "/reduct_animal.png", "/donate.png"]; // fill these with image paths later
 
   const [slideIndex, setSlideIndex] = useState(0);
+
+  // Resumo / Resultados
+  const [gatosCastrados, setGatosCastrados] = useState(0);
+  const [cachorrosCastrados, setCachorrosCastrados] = useState(0);
+  const [tampinhasUnidades, setTampinhasUnidades] = useState(0);
+  const [mesTitulo, setMesTitulo] = useState("");
+
+  useEffect(() => {
+    const now = new Date();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+
+    const monthNames = [
+      "Janeiro",
+      "Fevereiro",
+      "Março",
+      "Abril",
+      "Maio",
+      "Junho",
+      "Julho",
+      "Agosto",
+      "Setembro",
+      "Outubro",
+      "Novembro",
+      "Dezembro",
+    ];
+
+    setMesTitulo(monthNames[month]);
+
+    async function loadResumo() {
+      try {
+        const [caps, animals] = await Promise.all([
+          capsService.getAll(),
+          animalsService.getAll(),
+        ]);
+
+        // Tampinhas: soma o campo quantidade_tampinhas quando disponível,
+        // fallback para conversão a partir de quantidadeKg usando fator 500
+        const tampinhasSum = caps
+          .filter((it: any) => {
+            const d = new Date(it.data);
+            return d.getMonth() === month && d.getFullYear() === year;
+          })
+          .reduce((s: number, it: any) => {
+            const unidades = it.quantidade_tampinhas ?? Math.round((Number(it.quantidadeKg) || 0) * 500);
+            return s + unidades;
+          }, 0);
+
+        // Animais: soma por tipo
+        const gatosSum = animals
+          .filter((it: any) => {
+            const d = new Date(it.data);
+            return d.getMonth() === month && d.getFullYear() === year;
+          })
+          .reduce((s: number, it: any) => s + ((String(it.tipoAnimal).toLowerCase() === "gato") ? (Number(it.quantidade) || 0) : 0), 0);
+
+        const cachorrosSum = animals
+          .filter((it: any) => {
+            const d = new Date(it.data);
+            return d.getMonth() === month && d.getFullYear() === year;
+          })
+          .reduce((s: number, it: any) => s + ((String(it.tipoAnimal).toLowerCase() === "cachorro") ? (Number(it.quantidade) || 0) : 0), 0);
+
+        setTampinhasUnidades(tampinhasSum);
+        setGatosCastrados(gatosSum);
+        setCachorrosCastrados(cachorrosSum);
+      } catch (err) {
+        console.error("Erro ao carregar resumo (home):", err);
+      }
+    }
+
+    loadResumo();
+  }, []);
 
   const prevSlide = () => setSlideIndex((i) => (i - 1 + slides.length) % slides.length);
 
@@ -346,7 +422,7 @@ export default function Home() {
 
       <div className={styles.resumoRelatorio}>
         <div className={styles.texto2}>
-          <Section> Resultados </Section>
+          <Section> Resultados do Mês de {mesTitulo} </Section>
         </div>
 
         <a className={styles.paginas} href="/relatorio">
@@ -355,8 +431,8 @@ export default function Home() {
               <div className={styles.circle}>
                 <p><FaCat size={40} color="" /></p>
                 <CountUp
-                  to={50}
-                  duration={8}
+                  to={gatosCastrados}
+                  duration={2}
                   className={styles.textCount}
                 />
                 <h2>Gatos Castrados</h2>
@@ -366,8 +442,8 @@ export default function Home() {
               <div className={styles.circle}>
                 <p><FaDog size={40} color="" /></p>
                 <CountUp
-                  to={12}
-                  duration={8}
+                  to={cachorrosCastrados}
+                  duration={2}
                   className={styles.textCount}
                 />
                 <h2>Cachorros Castrados</h2>
@@ -377,11 +453,11 @@ export default function Home() {
               <div className={styles.circle}>
                 <p><AiFillGold size={40} color="" /></p>
                 <CountUp
-                  to={1458521}
-                  duration={8}
+                  to={tampinhasUnidades}
+                  duration={2}
                   className={styles.textCount}
                 />
-                <h2>Tampinhas Coletadas(un)</h2>
+                <h2>Tampinhas Coletadas (un)</h2>
               </div>
             </div>
           </div>

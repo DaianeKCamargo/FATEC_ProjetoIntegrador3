@@ -6,7 +6,7 @@ export default function Copyright() {
     return (
         <>
             <div className={styles.direitosautorais}>
-                <p>Politica de Privacidade | <PiCopyrightThin style={{ display: "inline-block", marginRight: "2px" }} /> 2025 Code & Cloud. Todos os direitos reservados.</p>
+                <p>Politica de Privacidade | <PiCopyrightThin style={{ display: "inline-block", marginRight: "2px" }} /> 2026 Code & Cloud. Todos os direitos reservados.</p>
             </div>
             <FaixaColorida />
         </>
