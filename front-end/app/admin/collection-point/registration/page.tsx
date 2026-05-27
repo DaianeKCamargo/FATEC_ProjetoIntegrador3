@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import styles from "@/styles/admin-register-point.module.css";
+
 export default function RegisterCollectionPointPage() {
 
     const router = useRouter();
