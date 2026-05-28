@@ -1,36 +1,48 @@
 'use client';
 
 import Link from 'next/link';
-import '@/styles/dashboard.css';
+import { MdPets, MdInventory } from 'react-icons/md';
+import styles from '@/styles/admin-dashboard.module.css';
 
 export default function DashRegistration() {
-
   return (
-    <div className="adminContainer">
+    <div className={styles.container}>
 
-      <h1>Painel de Registros</h1>
-      <p className="adminsubtitle">Selecione uma opção</p>
+      <h1 className={styles.title}>
+        Painel de Registros
+      </h1>
 
-      <div className="adminmenuGrid">
+      <p className={styles.subtitle}>
+        Selecione uma opção
+      </p>
 
-        <Link href="/admin/dash-registration/caps" className="adminmenuCard">
+      <div className={styles.menuGrid}>
+
+        {/* TAMPNHAS */}
+        <Link href="/admin/dash-registration/caps" className={styles.menuCard}>
+          <div className={styles.icon}>
+            <MdInventory size={40} />
+          </div>
           <h2>Registro de Tampinhas</h2>
           <p>Cadastro de quantidade em kg</p>
         </Link>
 
-        <Link href="/admin/dash-registration/animals" className="adminmenuCard">
+        {/* ANIMAIS */}
+        <Link href="/admin/dash-registration/animals" className={styles.menuCard}>
+          <div className={styles.icon}>
+            <MdPets size={40} />
+          </div>
           <h2>Registro de Animais</h2>
           <p>Cadastrar gatos e cães</p>
         </Link>
 
-        <Link href="/admin/dash-registration/edit" className="adminmenuCard">
-          <h2>Editar Registros</h2>
-          <p>Alterar dados existentes</p>
-        </Link>
-
-        <Link href="/admin/dash-registration/delete" className="adminmenuCard">
-          <h2>Excluir Registros</h2>
-          <p>Remover dados existentes</p>
+        {/* REGISTROS (EDITAR + DELETAR) */}
+        <Link href="/admin/dash-registration/records" className={styles.menuCard}>
+          <div className={styles.icon}>
+            <MdInventory size={40} />
+          </div>
+          <h2>Registros</h2>
+          <p>Editar e excluir dados existentes</p>
         </Link>
 
       </div>

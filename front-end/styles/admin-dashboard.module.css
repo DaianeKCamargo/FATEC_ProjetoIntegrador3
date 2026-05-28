@@ -1,0 +1,82 @@
+.container {
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f4e4a6 0%, #fef3c7 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.menuGrid {
+    width: 100%;
+    max-width: 800px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.menuCard {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+    border: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.menuCard:hover {
+    transform: translateY(-6px);
+    border-color: #dabe25;
+    box-shadow: 0 10px 20px rgba(218, 180, 37, 0.3);
+}
+
+/* ✅ Ícone */
+.icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #dabe25, #c5a51a);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-bottom: 0.8rem;
+}
+
+.menuCard h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+}
+
+.menuCard p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .menuGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+}
