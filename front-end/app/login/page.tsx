@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AxiosError } from 'axios'
 import api from '@/services/api'
@@ -21,11 +21,15 @@ export default function LoginPage() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [activeTab, setActiveTab] = useState<'login' | 'reset'>('login')
-    const [phraseIndex] = useState(() => Math.floor(Math.random() * motivationalPhrases.length))
+    const [phraseIndex, setPhraseIndex] = useState(0)
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const router = useRouter()
     const { login } = useAuth()
+
+    useEffect(() => {
+        setPhraseIndex(Math.floor(Math.random() * motivationalPhrases.length))
+    }, [])
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()

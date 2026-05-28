@@ -1,4 +1,4 @@
-const LOCAL_BACKEND_BASE_URL = 'http://localhost:5501/api'
+const LOCAL_BACKEND_BASE_URL = 'http://localhost:5500/api'
 const PRODUCTION_BACKEND_BASE_URL = 'https://projeto-integrador-3-back.vercel.app/api'
 
 const isProduction = process.env.NODE_ENV === 'production'
