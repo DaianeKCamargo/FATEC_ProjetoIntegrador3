@@ -157,7 +157,7 @@ export default function CredentialsAdminPage() {
                         Atualizar lista
                     </button>
                     <Link href="/admin" className={styles.secondaryButton}>
-                        Voltar ao painel
+                        Voltar ao menu principal
                     </Link>
                 </div>
             </section>
