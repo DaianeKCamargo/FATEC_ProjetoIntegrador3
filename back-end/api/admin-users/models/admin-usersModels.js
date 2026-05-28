@@ -4,6 +4,15 @@ const crypto = require("crypto"); // Para geração de tokens de recuperação d
 
 const prisma = new PrismaClient();
 
+function sanitizarAdmin(admin) {
+    if (!admin) {
+        return null;
+    }
+
+    const { passHash: _, resetToken: __, resetTokenExpiry: ___, ...adminSeguro } = admin;
+    return adminSeguro;
+}
+
 
 async function criar(dados) {
     const { username, senha, emailUser } = dados;
@@ -44,8 +53,7 @@ async function criar(dados) {
     });
 
     // Não retornar a senha
-    const { passHash: _, ...admin } = novoAdmin;
-    return admin;
+    return sanitizarAdmin(novoAdmin);
 }
 
 async function login(username, senha) {
@@ -58,19 +66,18 @@ async function login(username, senha) {
     });
 
     if (!admin) {
-        throw new Error("Username ou senha inválidos");
+        throw new Error("Usuário não encontrado");
     }
 
     // Comparar senhas
     const senhaValida = await bcrypt.compare(senha, admin.passHash);
 
     if (!senhaValida) {
-        throw new Error("Username ou senha inválidos");
+        throw new Error("Senha incorreta");
     }
 
     // Não retornar a senha
-    const { passHash: _, ...adminSeguro } = admin;
-    return adminSeguro;
+    return sanitizarAdmin(admin);
 }
 
 async function buscarPorId(idAdmin) {
@@ -80,8 +87,7 @@ async function buscarPorId(idAdmin) {
 
     if (!admin) return null;
 
-    const { passHash: _, ...adminSeguro } = admin;
-    return adminSeguro;
+    return sanitizarAdmin(admin);
 }
 
 async function buscarPorUsername(username) {
@@ -99,7 +105,7 @@ async function listar() {
     const admins = await prisma.adminUser.findMany();
 
     // Não retornar senhas
-    return admins.map(({ passHash: _, ...admin }) => admin);
+    return admins.map((admin) => sanitizarAdmin(admin));
 }
 
 async function gerarTokenRecuperacao(emailUser) {
@@ -166,8 +172,7 @@ async function redefinirSenha(emailUser, resetToken, novaSenha) {
         }
     });
 
-    const { passHash: _, ...adminSeguro } = admin;
-    return adminSeguro;
+    return sanitizarAdmin(admin);
 }
 
 async function atualizar(idAdmin, dados) {
@@ -214,8 +219,7 @@ async function atualizar(idAdmin, dados) {
         data: atualizacao
     });
 
-    const { passHash: _, ...adminSeguro } = adminAtualizado;
-    return adminSeguro;
+    return sanitizarAdmin(adminAtualizado);
 }
 
 async function remover(idAdmin) {

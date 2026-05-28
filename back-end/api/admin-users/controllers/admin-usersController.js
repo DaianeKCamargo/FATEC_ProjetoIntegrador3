@@ -88,6 +88,14 @@ async function login(req, res) {
             admin
         });
     } catch (erro) {
+        if (erro.message === "Usuário não encontrado") {
+            return res.status(404).json({ message: erro.message });
+        }
+
+        if (erro.message === "Senha incorreta") {
+            return res.status(401).json({ message: erro.message });
+        }
+
         return res.status(401).json({ message: erro.message });
     }
 }
