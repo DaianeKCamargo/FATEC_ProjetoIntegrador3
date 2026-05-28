@@ -47,7 +47,7 @@
 
 .title {
     margin: 0;
-    font-size: 1.35rem;
+    font-size: 1.4rem;
     line-height: 1.2;
     color: #25324b;
 }
@@ -61,7 +61,7 @@
     padding: 0.8rem 1.15rem;
     background: linear-gradient(135deg, #dabe25 0%, #c5a51a 100%);
     color: #fff;
-    font-size: 0.98rem;
+    font-size: 1.3rem;
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;

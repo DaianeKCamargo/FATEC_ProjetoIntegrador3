@@ -145,7 +145,6 @@ export default function CredentialsAdminPage() {
         <div className={styles.page}>
             <section className={styles.hero}>
                 <div>
-                    <p className={styles.heroKicker}>Banco de dados</p>
                     <h2 className={styles.heroTitle}>Gerenciamento de credenciais</h2>
                     <p className={styles.heroDescription}>
                         Cadastre, edite e remova administradores diretamente na tabela AdminUser.
