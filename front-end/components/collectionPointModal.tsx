@@ -78,7 +78,7 @@ export default function CollectionPointModal({ open, onClose }: CollectionPointM
         setSuccessMessage("");
 
         try {
-            await collectionPointService.create({
+            collectionPointService.create({
                 nameUser: formData.nameUser,
                 cpfUser: formData.cpfUser,
                 celUser: formData.celUser,
