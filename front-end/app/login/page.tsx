@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AxiosError } from 'axios'
 import api from '@/services/api'
+import { authApi } from '@/services/api'
 import { API_BASE_URL } from '@/services/apiBase'
 import { useAuth } from '@/context/AuthContext'
 import styles from '../../styles/login.module.css'
@@ -32,7 +33,7 @@ export default function LoginPage() {
         setLoading(true)
 
         try {
-            const response = await api.post('/credentials/login', {
+            const response = await authApi.post('/credentials/login', {
                 username,
                 senha: password,
             })

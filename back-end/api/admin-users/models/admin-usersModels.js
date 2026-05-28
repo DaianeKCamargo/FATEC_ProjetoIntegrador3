@@ -13,7 +13,6 @@ function sanitizarAdmin(admin) {
     return adminSeguro;
 }
 
-
 async function criar(dados) {
     const { username, senha, emailUser } = dados;
 

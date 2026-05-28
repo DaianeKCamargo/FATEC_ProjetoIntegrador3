@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const cors = require("cors");
 const session = require("express-session");
 const adminUsersRoutes = require("./routes/admin-usersRoutes");
 
@@ -15,6 +16,14 @@ if (!SESSION_SECRET) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// CORS - allow front-end dev origin and credentials
+app.use(
+    cors({
+        origin: process.env.FRONTEND_ORIGIN || "http://localhost:3001",
+        credentials: true,
+    })
+);
+
 // Configurar sessão com opções de segurança
 app.use(
     session({
@@ -24,7 +33,7 @@ app.use(
         cookie: {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production", // true em produção
-            sameSite: "strict",
+            sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
             maxAge: 1000 * 60 * 60 * 24, // 24 horas
         },
     })
