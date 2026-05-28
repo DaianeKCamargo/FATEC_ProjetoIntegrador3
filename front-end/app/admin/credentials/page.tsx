@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { MdAddCircleOutline, MdDelete, MdEdit, MdRefresh } from 'react-icons/md'
-import api from '@/services/api'
+import { authApi } from '@/services/api'
 import styles from '../../../styles/admin-credentials.module.css'
 
 interface AdminCredential {
@@ -40,7 +40,7 @@ export default function CredentialsAdminPage() {
         setError('')
 
         try {
-            const response = await api.get('/credentials')
+            const response = await authApi.get('/credentials')
             setAdmins(response.data)
         } catch {
             setError('Não foi possível carregar as credenciais do banco de dados.')
@@ -75,10 +75,10 @@ export default function CredentialsAdminPage() {
                     payload.senha = form.senha
                 }
 
-                await api.put(`/credentials/${editingId}`, payload)
+                await authApi.put(`/credentials/${editingId}`, payload)
                 setMessage('Credencial atualizada com sucesso.')
             } else {
-                await api.post('/credentials', {
+                await authApi.post('/credentials', {
                     username: form.username,
                     emailUser: form.emailUser,
                     senha: form.senha,
@@ -126,7 +126,7 @@ export default function CredentialsAdminPage() {
         setMessage('')
 
         try {
-            await api.delete(`/credentials/${idAdmin}`)
+            await authApi.delete(`/credentials/${idAdmin}`)
             setMessage('Credencial removida com sucesso.')
             await loadAdmins()
         } catch (requestError: unknown) {
