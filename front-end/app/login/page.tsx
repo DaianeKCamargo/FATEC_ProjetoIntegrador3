@@ -63,7 +63,7 @@ export default function LoginPage() {
                 } else if (status === 500) {
                     message = backendMessage || 'Erro interno na API de autenticação.'
                 } else if (!error.response) {
-                    message = `Não foi possível conectar à API de autenticação em ${API_BASE_URL}.`
+                    message = `Não foi possível conectar à API de autenticação.`
                 } else {
                     message = backendMessage || `Falha ao autenticar. Status HTTP ${status ?? 'desconhecido'}.`
                 }

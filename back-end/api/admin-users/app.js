@@ -17,9 +17,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS - allow front-end dev origin and credentials
+// Default frontend dev origin is 3000 (Next.js default). Use env var to override.
 app.use(
     cors({
-        origin: process.env.FRONTEND_ORIGIN || "http://localhost:3001",
+        origin: process.env.FRONTEND_ORIGIN || "http://localhost:3000",
         credentials: true,
     })
 );
