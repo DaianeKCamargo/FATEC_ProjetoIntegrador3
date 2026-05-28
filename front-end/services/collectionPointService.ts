@@ -1,10 +1,9 @@
-import api from "./api";
-
-const collectionPointService = {
-    create: async (data: any) => {
-        const response = await api.post("/collection-point", data);
-        return response.data;
-    },
-};
-
-export default collectionPointService;
+export async function createCollectionPoint(data: any) {
+    return fetch("http://localhost:3000/pontos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+}
