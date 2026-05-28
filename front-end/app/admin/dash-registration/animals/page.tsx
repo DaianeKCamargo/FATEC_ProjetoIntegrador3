@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import animalsService from '@/services/animalsService';
-import '@/styles/dashboard.css';
+import '@/styles/dashboard.module.css';
 
 export default function AnimalsPage() {
 

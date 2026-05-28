@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import capsService from '@/services/capsService';
-import '@/styles/dashboard.css';
+import '@/styles/dashboard.module.css';
 
 export default function CapsPage() {
 
