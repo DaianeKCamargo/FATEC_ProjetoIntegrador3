@@ -4,6 +4,7 @@ import style from '@/styles/about-us.module.css';
 import Image from 'next/image';
 
 import { PawPrint, Recycle, Info } from "lucide-react";
+import { div } from 'framer-motion/client';
 
 export default function SobreNos() {
     return (
