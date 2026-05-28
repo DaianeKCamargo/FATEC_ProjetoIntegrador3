@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AxiosError } from 'axios'
 import api from '@/services/api'
+import { API_BASE_URL } from '@/services/apiBase'
 import { useAuth } from '@/context/AuthContext'
 import styles from '../../styles/login.module.css'
 
@@ -61,7 +62,7 @@ export default function LoginPage() {
                 } else if (status === 500) {
                     message = backendMessage || 'Erro interno na API de autenticação.'
                 } else if (!error.response) {
-                    message = 'Não foi possível conectar à API de autenticação.'
+                    message = `Não foi possível conectar à API de autenticação em ${API_BASE_URL}.`
                 } else {
                     message = backendMessage || `Falha ao autenticar. Status HTTP ${status ?? 'desconhecido'}.`
                 }

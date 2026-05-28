@@ -1,8 +1,6 @@
 import React from "react";
 import styles from "../../../styles/newsuser.module.css";
-
-const API_BASE_URL =
-  "http://localhost:5505/api";
+import { API_BASE_URL } from "@/services/apiBase";
 
 interface Noticia {
   id: number;
