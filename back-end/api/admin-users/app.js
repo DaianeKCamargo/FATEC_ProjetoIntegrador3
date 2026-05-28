@@ -17,10 +17,31 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS - allow front-end dev origin and credentials
-// Default frontend dev origin is 3000 (Next.js default). Use env var to override.
+// Allow local dev and Vercel frontend domains. Override with FRONTEND_ORIGIN when needed.
 app.use(
     cors({
-        origin: process.env.FRONTEND_ORIGIN || "http://localhost:3000",
+        origin: (origin, callback) => {
+            const allowedOrigins = new Set([
+                "http://localhost:3000",
+                "http://localhost:3001",
+                "http://127.0.0.1:3000",
+                "http://127.0.0.1:3001",
+                ...(process.env.FRONTEND_ORIGIN ? process.env.FRONTEND_ORIGIN.split(",").map((value) => value.trim()).filter(Boolean) : []),
+            ]);
+
+            const isAllowed =
+                !origin ||
+                allowedOrigins.has(origin) ||
+                origin.endsWith(".vercel.app") ||
+                origin.startsWith("https://vercel.app") ||
+                origin.startsWith("https://www.vercel.app");
+
+            if (isAllowed) {
+                return callback(null, true);
+            }
+
+            return callback(new Error(`CORS bloqueado para a origem: ${origin}`));
+        },
         credentials: true,
     })
 );
