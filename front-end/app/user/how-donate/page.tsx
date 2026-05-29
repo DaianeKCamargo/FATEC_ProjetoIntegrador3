@@ -70,7 +70,7 @@ export default function ComoDoar() {
 
             <div>
               <h3>Alimentos</h3>
-              /Tampinhasplasticas.jpg
+              <img src="" alt="" />
               <p>
                 Tampas de refrigerantes, sucos, margarina, maionese,
                 molhos, requeijão, óleo de cozinha etc.
@@ -79,7 +79,7 @@ export default function ComoDoar() {
 
             <div>
               <h3>Produtos de limpeza</h3>
-              /ProdLimpeza.jpeg
+              
               <p>
                 Tampas de amaciante, cloro, cândida,
                 desinfetante, desengordurante, etc.
