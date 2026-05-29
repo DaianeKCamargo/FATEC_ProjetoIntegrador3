@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import capsService from '@/services/capsService';
 import animalsService from '@/services/animalsService';
-import '@/styles/dashboard.module.css';
 
 export default function DeletePage() {
 

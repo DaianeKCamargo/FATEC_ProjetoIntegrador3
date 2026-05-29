@@ -2,20 +2,15 @@
 
 import { useRouter } from 'next/navigation'
 import { MdAdminPanelSettings, MdLogout } from 'react-icons/md'
+import { useAuth } from '@/context/AuthContext'
 import styles from '../styles/admin-shell.module.css'
-
-function clearAuthCookie() {
-    document.cookie = 'tampets_admin_auth=; path=/; max-age=0; samesite=lax'
-}
 
 export default function AdminTopBar() {
     const router = useRouter()
+    const { logout } = useAuth()
 
     const handleLogout = () => {
-        localStorage.removeItem('isLogged')
-        localStorage.removeItem('role')
-        localStorage.removeItem('admin')
-        clearAuthCookie()
+        logout({ redirect: false })
         router.replace('/login')
     }
 

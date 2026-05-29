@@ -9,10 +9,6 @@ const app = express();
 const PORT = process.env.ADMIN_USERS_PORT || 5502;
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
-if (!SESSION_SECRET) {
-    throw new Error("SESSION_SECRET não definido. Configure a variável no arquivo .env.");
-}
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

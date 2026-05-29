@@ -1,55 +1,75 @@
 .container {
     min-height: 100vh;
-    padding: 2rem;
     background: linear-gradient(135deg, #f4e4a6 0%, #fef3c7 100%);
+    padding: 2rem;
+}
+
+/* botão voltar */
+.backButton {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    gap: 0.5rem;
+    background: #dabe25;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+}
+
+.backButton:hover {
+    background: #c5a51a;
+}
+
+/* conteúdo */
+.content {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 
 .title {
+    text-align: center;
     font-size: 2.5rem;
     font-weight: bold;
-    color: #333;
-    margin-bottom: 0.5rem;
 }
 
 .subtitle {
-    font-size: 1.2rem;
-    color: #666;
+    text-align: center;
     margin-bottom: 2rem;
+    color: #666;
 }
 
-.menuGrid {
-    width: 100%;
-    max-width: 800px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+/* lista de cards */
+.cards {
+    display: flex;
+    flex-direction: column;
     gap: 1.5rem;
 }
 
-.menuCard {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    text-decoration: none;
-    color: inherit;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: all 0.3s;
-    border: 2px solid transparent;
+/* card estilo admin */
+.card {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 2px solid #fef3c7;
+    transition: 0.3s;
 }
 
-.menuCard:hover {
+.card:hover {
     transform: translateY(-6px);
     border-color: #dabe25;
     box-shadow: 0 10px 20px rgba(218, 180, 37, 0.3);
 }
 
-/* ✅ Ícone */
-.icon {
+/* ícone */
+.cardIcon {
     width: 60px;
     height: 60px;
     background: linear-gradient(135deg, #dabe25, #c5a51a);
@@ -58,25 +78,31 @@
     align-items: center;
     justify-content: center;
     color: white;
-    margin-bottom: 0.8rem;
 }
 
-.menuCard h2 {
-    font-size: 1.2rem;
+/* conteúdo */
+.cardContent {
+    flex: 1;
+}
+
+.cardContent h2 {
     margin-bottom: 0.3rem;
 }
 
-.menuCard p {
-    font-size: 0.9rem;
-    color: #555;
+.cardContent p {
+    color: #666;
 }
 
-@media (max-width: 768px) {
-    .menuGrid {
-        grid-template-columns: 1fr;
-    }
+/* botão */
+.button {
+    background: #dabe25;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
 
-    .title {
-        font-size: 1.8rem;
-    }
+.button:hover {
+    background: #c5a51a;
 }
