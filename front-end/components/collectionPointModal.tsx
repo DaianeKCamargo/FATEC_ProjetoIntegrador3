@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "@/styles/collection-point-modal.module.css";
-import collectionPointService from "@/services/collectionPointService";
+import * as collectionPointService from "@/services/collectionPointService";
 
 interface CollectionPointModalProps {
     open: boolean;
@@ -78,7 +78,7 @@ export default function CollectionPointModal({ open, onClose }: CollectionPointM
         setSuccessMessage("");
 
         try {
-            await collectionPointService.create({
+            collectionPointService.create({
                 nameUser: formData.nameUser,
                 cpfUser: formData.cpfUser,
                 celUser: formData.celUser,

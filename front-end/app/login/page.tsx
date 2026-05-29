@@ -1,7 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { AxiosError } from 'axios'
+import api from '@/services/api'
+import { authApi } from '@/services/api'
+import { API_BASE_URL } from '@/services/apiBase'
+import { useAuth } from '@/context/AuthContext'
 import styles from '../../styles/login.module.css'
 
 const motivationalPhrases = [
@@ -16,13 +21,61 @@ export default function LoginPage() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [activeTab, setActiveTab] = useState<'login' | 'reset'>('login')
-    const [phraseIndex] = useState(() => Math.floor(Math.random() * motivationalPhrases.length))
+    const [phraseIndex, setPhraseIndex] = useState(0)
+    const [loading, setLoading] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
     const router = useRouter()
+    const { login } = useAuth()
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        setPhraseIndex(Math.floor(Math.random() * motivationalPhrases.length))
+    }, [])
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        // redireciona para a interface admin (rota /admin)
-        router.push('/admin')
+        setErrorMessage('')
+        setLoading(true)
+
+        try {
+            const response = await authApi.post('/credentials/login', {
+                username,
+                senha: password,
+            })
+
+            const admin = response.data?.admin
+            const role = admin?.role || 'admin'
+
+            if (typeof window !== 'undefined' && admin) {
+                localStorage.setItem('admin', JSON.stringify(admin))
+            }
+
+            login(role)
+            router.push('/admin')
+        } catch (error: unknown) {
+            let message = 'Não foi possível fazer login.'
+
+            if (error instanceof AxiosError) {
+                const status = error.response?.status
+                const backendMessage = error.response?.data?.message
+
+                if (status === 404) {
+                    message = backendMessage || 'Usuário não encontrado.'
+                } else if (status === 401) {
+                    message = backendMessage || 'Senha incorreta para o usuário informado.'
+                } else if (status === 400) {
+                    message = backendMessage || 'Informe usuário e senha para continuar.'
+                } else if (status === 500) {
+                    message = backendMessage || 'Erro interno na API de autenticação.'
+                } else if (!error.response) {
+                    message = `Não foi possível conectar à API de autenticação.`
+                } else {
+                    message = backendMessage || `Falha ao autenticar. Status HTTP ${status ?? 'desconhecido'}.`
+                }
+            }
+            setErrorMessage(message)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -80,8 +133,14 @@ export default function LoginPage() {
                         />
                     </label>
 
-                    <button type="submit" className={styles.loginButton}>
-                        Entrar
+                    {errorMessage && (
+                        <p className={styles.loginFeedback} role="alert">
+                            {errorMessage}
+                        </p>
+                    )}
+
+                    <button type="submit" className={styles.loginButton} disabled={loading}>
+                        {loading ? 'Entrando...' : 'Entrar'}
                     </button>
 
                 </form>

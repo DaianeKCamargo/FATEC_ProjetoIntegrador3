@@ -533,7 +533,7 @@
     flex-direction: column;
     outline: 3px dashed #808080;
     outline-offset: 4px;
-    box-shadow: 0 10px 30px rgba(16,24,40,0.08), 0 2px 8px rgba(0,0,0,0.06);
+    box-shadow: 0 10px 30px rgba(16, 24, 40, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
     padding: 3rem;
 }
 
@@ -626,6 +626,20 @@
         text-align: left;
     }
 
+    .pickupDetails {
+        justify-items: center;
+    }
+
+    .pickupDetailCard {
+        align-items: center;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .pickupDetailCard p {
+        text-align: center;
+    }
+
     .donateHighlights {
         justify-content: center;
     }
@@ -688,9 +702,9 @@
         text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
     }
 
-    
 
-    
+
+
 }
 
 @media (max-width: 900px) {

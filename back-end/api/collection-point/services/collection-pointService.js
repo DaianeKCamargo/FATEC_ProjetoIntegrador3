@@ -25,6 +25,20 @@ function toIntId(value) {
     return id;
 }
 
+
+function validarCoordenadas(lat, lng) {
+    if (
+        typeof lat !== "number" ||
+        typeof lng !== "number" ||
+        lat < -90 ||
+        lat > 90 ||
+        lng < -180 ||
+        lng > 180
+    ) {
+        throw new HttpError(400, "Coordenadas inválidas");
+    }
+}
+
 async function parseResponse(response) {
     const contentType = response.headers.get("content-type") || "";
     const isJson = contentType.includes("application/json");
@@ -32,7 +46,10 @@ async function parseResponse(response) {
 
     if (!response.ok) {
         const message =
-            (isJson && body && body.message) || response.statusText || "Erro no microsservico";
+            (isJson && body && body.message) ||
+            response.statusText ||
+            "Erro no microsservico";
+
         throw new HttpError(response.status, message);
     }
 
@@ -59,8 +76,15 @@ async function requestMs(path, options = {}) {
     }
 }
 
+
 async function criarPontoColeta(payload) {
     const data = validateCreate(payload);
+
+    
+    validarCoordenadas(
+        data.address.latitude,
+        data.address.longitude
+    );
 
     const duplicateCpf = await repository.findPointByCpf(data.cpfUser);
     if (duplicateCpf) {
@@ -75,9 +99,11 @@ async function criarPontoColeta(payload) {
     return repository.createPoint(data);
 }
 
+
 async function listarPontosColeta(filters = {}) {
     return repository.listPoints(filters);
 }
+
 
 async function buscarPontoColetaPorId(rawId) {
     const id = toIntId(rawId);
@@ -90,9 +116,11 @@ async function buscarPontoColetaPorId(rawId) {
     return point;
 }
 
+
 async function atualizarPontoColeta(rawId, payload) {
     const id = toIntId(rawId);
     const data = validateUpdate(payload);
+
     const current = await repository.findPointById(id);
 
     if (!current) {
@@ -100,11 +128,25 @@ async function atualizarPontoColeta(rawId, payload) {
     }
 
     if (current.status !== "PENDENTE") {
-        throw new HttpError(409, "Somente pontos com status PENDENTE podem ser editados");
+        throw new HttpError(
+            409,
+            "Somente pontos com status PENDENTE podem ser editados"
+        );
+    }
+
+    
+    if (data.address) {
+        const lat =
+            data.address.latitude ?? current.address?.latitude;
+        const lng =
+            data.address.longitude ?? current.address?.longitude;
+
+        validarCoordenadas(lat, lng);
     }
 
     return repository.updatePoint(id, data);
 }
+
 
 async function removerPontoColeta(rawId) {
     const id = toIntId(rawId);
@@ -115,11 +157,14 @@ async function removerPontoColeta(rawId) {
     }
 
     await repository.deletePoint(id);
+
     return { message: "Ponto de coleta removido com sucesso" };
 }
 
+
 async function atualizarStatusPontoColeta(rawId, payload) {
     const id = toIntId(rawId);
+
     const data = validateStatus({
         status: payload.status,
         reason: payload.reason ?? payload.rejectionReason,
@@ -137,9 +182,12 @@ async function atualizarStatusPontoColeta(rawId, payload) {
 
     return repository.updatePointStatus(id, {
         status: updated.status ?? data.status,
-        rejectionReason: updated.rejectionReason ?? (data.status === "REJEITADO" ? data.reason : null),
+        rejectionReason:
+            updated.rejectionReason ??
+            (data.status === "REJEITADO" ? data.reason : null),
     });
 }
+
 
 async function listarPontosAprovados(filters = {}) {
     return repository.listApprovedPoints(filters);

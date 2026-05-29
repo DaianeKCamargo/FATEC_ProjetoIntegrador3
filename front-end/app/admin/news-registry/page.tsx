@@ -1,10 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "../../../styles/news.module.css";
-
-const API_BASE_URL =
-  "http://localhost:5505/api";
+import { API_BASE_URL } from "@/services/apiBase";
 
 interface Noticia {
   id: number;
@@ -54,7 +53,11 @@ export default function CadastroNoticias() {
     }
   };
   useEffect(() => {
-    carregarNoticias();
+    const timeoutId = window.setTimeout(() => {
+      void carregarNoticias();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
   // =========================
   // INPUTS
@@ -168,6 +171,12 @@ export default function CadastroNoticias() {
 
   return (
     <div className={styles.container}>
+
+      <div className={styles.headerActions}>
+        <Link href="/admin" className={styles.backButton}>
+          Voltar ao menu principal
+        </Link>
+      </div>
 
       {/* FORM */}
       <div className={styles.formCard}>

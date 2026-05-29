@@ -48,17 +48,22 @@ model PointCollection {
 }
 
 model AddressPoint {
-  idAddress         Int             @id @default(autoincrement()) @map("id_address")
-  street            String
-  number            String
-  complement        String?
-  district          String
-  city              String
-  postCode          String          @map("post_code")
-  fkPointCollections Int             @unique @map("fk_point_collections")
+  idAddress          Int    @id @default(autoincrement()) @map("id_address")
+  street             String
+  number             String
+  complement         String?
+  district           String
+  city               String
+  postCode           String @map("post_code")
+
+  latitude           Float
+  longitude          Float
+
+  fkPointCollections Int    @unique @map("fk_point_collections")
   pointCollection    PointCollection @relation(fields: [fkPointCollections], references: [idPc], onDelete: Cascade)
-  createdAt         DateTime        @default(now()) @map("created_at")
-  updatedAt         DateTime        @updatedAt @map("updated_at")
+
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
 
   @@index([city])
   @@map("address_point")

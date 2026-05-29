@@ -4,6 +4,7 @@ const includePointRelations = {
     address: true,
 };
 
+
 async function createPoint(data) {
     return prisma.pointCollection.create({
         data: {
@@ -17,6 +18,7 @@ async function createPoint(data) {
             opensDay: data.opensDay,
             hourInit: data.hourInit,
             hourFinal: data.hourFinal,
+
             address: {
                 create: {
                     street: data.address.street,
@@ -25,12 +27,17 @@ async function createPoint(data) {
                     district: data.address.district,
                     city: data.address.city,
                     postCode: data.address.postCode,
+
+                    
+                    latitude: data.address.latitude,
+                    longitude: data.address.longitude,
                 },
             },
         },
         include: includePointRelations,
     });
 }
+
 
 async function listPoints(filters = {}) {
     const where = {};
@@ -62,12 +69,14 @@ async function listPoints(filters = {}) {
     });
 }
 
+
 async function findPointById(id) {
     return prisma.pointCollection.findUnique({
         where: { idPc: id },
         include: includePointRelations,
     });
 }
+
 
 async function findPointByCpf(cpfUser) {
     return prisma.pointCollection.findUnique({
@@ -76,6 +85,7 @@ async function findPointByCpf(cpfUser) {
     });
 }
 
+
 async function findPointByCnpj(cnpjPoint) {
     return prisma.pointCollection.findUnique({
         where: { cnpjPoint },
@@ -83,8 +93,10 @@ async function findPointByCnpj(cnpjPoint) {
     });
 }
 
+
 async function updatePoint(id, data) {
     const { address, ...rest } = data;
+
     const current = await prisma.pointCollection.findUnique({
         where: { idPc: id },
         include: { address: true },
@@ -100,22 +112,33 @@ async function updatePoint(id, data) {
             ...rest,
             ...(address
                 ? {
-                    address: {
-                        update: {
-                            street: address.street ?? current.address.street,
-                            number: address.number ?? current.address.number,
-                            complement: address.complement ?? current.address.complement,
-                            district: address.district ?? current.address.district,
-                            city: address.city ?? current.address.city,
-                            postCode: address.postCode ?? current.address.postCode,
-                        },
-                    },
-                }
+                      address: {
+                          update: {
+                              street: address.street ?? current.address.street,
+                              number: address.number ?? current.address.number,
+                              complement:
+                                  address.complement ?? current.address.complement,
+                              district:
+                                  address.district ?? current.address.district,
+                              city: address.city ?? current.address.city,
+                              postCode:
+                                  address.postCode ?? current.address.postCode,
+
+                              // ✅ NOVOS CAMPOS
+                              latitude:
+                                  address.latitude ?? current.address.latitude,
+                              longitude:
+                                  address.longitude ??
+                                  current.address.longitude,
+                          },
+                      },
+                  }
                 : {}),
         },
         include: includePointRelations,
     });
 }
+
 
 async function deletePoint(id) {
     return prisma.pointCollection.delete({
@@ -123,6 +146,7 @@ async function deletePoint(id) {
         include: includePointRelations,
     });
 }
+
 
 async function updatePointStatus(id, data) {
     return prisma.pointCollection.update({
@@ -134,6 +158,7 @@ async function updatePointStatus(id, data) {
         include: includePointRelations,
     });
 }
+
 
 async function listApprovedPoints(filters = {}) {
     return listPoints({ ...filters, status: "APROVADO" });

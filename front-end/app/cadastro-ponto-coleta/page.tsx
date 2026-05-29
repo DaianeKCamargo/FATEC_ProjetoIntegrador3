@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "@/styles/cadastro-ponto-coleta.module.css";
-import collectionPointService from "@/services/collectionPointService";
+import { createCollectionPoint } from "@/services/collectionPointService";
 
 type FormState = {
     nameUser: string;
@@ -68,7 +68,7 @@ export default function CadastroPontoColetaPage() {
         setSuccessMessage("");
 
         try {
-            await collectionPointService.create({
+            await createCollectionPoint({
                 nameUser: formData.nameUser,
                 cpfUser: formData.cpfUser,
                 celUser: formData.celUser,

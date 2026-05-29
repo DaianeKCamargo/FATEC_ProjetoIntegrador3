@@ -1,9 +1,12 @@
 .navbar {
     display: flex;
+    align-items: center;
     justify-content: start;
     background-color: #fff;
     border-bottom: 1px solid #e5e7eb;
     height: 80px;
+    position: relative;
+    z-index: 30;
 }
 
 .logotampets {
@@ -15,8 +18,8 @@
 }
 
 .logo {
-    width: 25rem;
-    height: 10rem;
+    width: min(25rem, 42vw);
+    height: auto;
 }
 
 .navitems {
@@ -86,8 +89,6 @@
     gap: 0.4rem;
 }
 
-.dropdownToggle {}
-
 .dropdownToggle:hover {
     font-weight: 600;
     border-bottom: solid 0.3rem #5F81B7;
@@ -120,14 +121,17 @@
 }
 
 .item {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
     text-decoration: none !important;
     color: #333 !important;
     font-size: 1.6rem;
+}
 
-    &:hover {
-        font-weight: 600;
-        border-bottom: solid 0.3rem #5F81B7;
-    }
+.item:hover {
+    font-weight: 600;
+    border-bottom: solid 0.3rem #5F81B7;
 }
 
 .navhamburguer {
@@ -184,13 +188,141 @@
     gap: 2rem;
 }
 
+.mobileOverlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    pointer-events: none;
+    z-index: 40;
+}
+
+.mobileOverlayOpen {
+    display: block;
+    pointer-events: auto;
+}
+
+.backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(16, 24, 40, 0.45);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.mobileOverlayOpen .backdrop {
+    opacity: 1;
+}
+
+.mobileDrawer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(88vw, 38rem);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.6rem;
+    background:
+        radial-gradient(circle at top left, rgba(215, 194, 22, 0.18), transparent 32%),
+        linear-gradient(180deg, #fefefe 0%, #f7fbff 100%);
+    box-shadow: -1.2rem 0 3rem rgba(17, 24, 39, 0.2);
+    transform: translateX(100%);
+    transition: transform 0.28s ease;
+    overflow-y: auto;
+}
+
+.mobileDrawerOpen {
+    transform: translateX(0);
+}
+
+.mobileHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.mobileBrand {
+    display: inline-flex;
+    align-items: center;
+}
+
+.mobileLogo {
+    width: 13rem;
+    height: auto;
+}
+
+.closeButton {
+    width: 4.2rem;
+    height: 4.2rem;
+    border: 0;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    color: #1f2b3d;
+    box-shadow: 0 0.8rem 1.8rem rgba(31, 43, 61, 0.12);
+}
+
+.closeButton svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+
+.mobileBadge,
+.mobileSectionLabel {
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.mobileBadge {
+    background: rgba(215, 194, 22, 0.18);
+    color: #8d7f00;
+}
+
+.mobileSectionLabel {
+    background: rgba(95, 129, 183, 0.12);
+    color: #395a8d;
+}
+
+.mobileNav {
+    display: grid;
+    gap: 0.9rem;
+}
+
+.mobileSocialBlock {
+    margin-top: auto;
+    display: grid;
+    gap: 1rem;
+}
+
+.mobileSocialLinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 @media (max-width: 768px) {
     .navbar {
         justify-content: space-between;
+        padding-inline: 1rem;
+        height: 72px;
     }
 
     .logotampets {
         justify-content: flex-start;
+        padding: 0.5rem 0;
     }
 
     .navitems,
@@ -202,25 +334,15 @@
         display: none;
     }
 
-    .meuoffcanvas {
-        display: flex !important;
-        flex-direction: row !important;
-    }
-
-    .navlateral {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: row;
-        font-size: 1.6rem;
-        color: #333;
+    .mobileOverlay {
+        display: block;
     }
 
     .dropdownMenuMobile {
         position: static;
         min-width: 0;
-        margin-top: 1rem;
-        padding: 0;
+        margin-top: 0.8rem;
+        padding: 0.8rem 0 0 1rem;
         border: 0;
         box-shadow: none;
         background: transparent;
@@ -230,78 +352,57 @@
         font-size: 1.2rem;
     }
 
-    .items {
+    .dropdownToggle {
+        width: 100%;
         display: flex;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: flex-start;
         align-items: center;
-        flex-direction: column;
-        gap: 2rem;
-        padding-top: 1.5rem;
+        gap: 0.6rem;
+        padding: 1.3rem 1.4rem;
+        border-radius: 1.8rem;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(95, 129, 183, 0.14);
+        box-shadow: 0 1rem 2rem rgba(31, 43, 61, 0.06);
+        font-weight: 600;
+    }
+
+    .item {
+        width: 100%;
+        min-height: 5rem;
+        padding: 1.2rem 1.4rem;
+        border-radius: 1.6rem;
+        border: 1px solid rgba(95, 129, 183, 0.14);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 1rem 2rem rgba(31, 43, 61, 0.06);
+        font-size: 1.55rem;
     }
 
     .navhamburguer {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        margin-right: 5rem;
+        justify-content: center;
+        width: 4.4rem;
+        height: 4.4rem;
+        margin-right: 0;
+        border-radius: 999px;
+        background: linear-gradient(135deg, rgba(95, 129, 183, 0.1), rgba(215, 194, 22, 0.18));
+        color: #1f2b3d;
+        box-shadow: 0 0.8rem 1.8rem rgba(31, 43, 61, 0.08);
     }
 
-
-    /* TENTATIVA DE TIRAR O AZUL DO DROPDOWN -V MOBILE */
-    .meuoffcanvas a,
-    .meuoffcanvas .nav-link,
-    .meuoffcanvas .dropdown-item,
-    .meuoffcanvas .dropdown-toggle,
-    .meuoffcanvas .item,
-    .meuoffcanvas .item1,
-    .meuoffcanvas .item * {
-        color: #333 !important;
-        /* cor desejada */
-        text-decoration: none !important;
-        /* tira sublinhado */
-        -webkit-text-fill-color: #333 !important;
-        /* força em iOS */
-        -webkit-tap-highlight-color: transparent;
-        /* remove highlight azul do tap */
-        -webkit-appearance: none;
-        /* previne aparências nativas */
-        appearance: none;
+    .navhamburguer svg {
+        width: 2rem;
+        height: 2rem;
     }
 
-    /* garante estados também */
-    .meuoffcanvas a:visited,
-    .meuoffcanvas .dropdown-item:visited,
-    .meuoffcanvas a:active,
-    .meuoffcanvas .dropdown-item:active,
-    .meuoffcanvas a:focus,
-    .meuoffcanvas .dropdown-item:focus {
-        color: #333 !important;
-        outline: none !important;
-        box-shadow: none !important;
-    }
-
-    /* Se o Bootstrap aplica cor através de classes .nav-link ou .dropdown-item, força também */
-    .meuoffcanvas .nav-link,
-    .meuoffcanvas .dropdown-item {
-        background: transparent !important;
-        border: none !important;
-    }
-
-    /* Se quiser que o link mantenha estilo de hover no mobile */
-    .meuoffcanvas a:hover,
-    .meuoffcanvas .dropdown-item:hover {
-        color: #5F81B7 !important;
-        /* ou a cor que preferir no hover */
-        text-decoration: none !important;
-    }
-
-    /* opcional: garante que o link do Next Link (quando renderiza <a>) herde o estilo */
-    .meuoffcanvas a[role="link"] {
-        color: inherit !important;
-    }
-
-    .mobileButtons {
+    .mobileSocialLinks {
         display: flex;
-        flex-direction: column;
-        gap: 2rem;
+        gap: 0.8rem;
+    }
+
+    .socialLink {
+        width: 4rem;
+        height: 4rem;
     }
 }

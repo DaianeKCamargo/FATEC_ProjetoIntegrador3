@@ -1,10 +1,13 @@
-import api from "./api";
+export async function createCollectionPoint(data: any) {
+    return fetch("http://localhost:3000/pontos", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+}
 
-const collectionPointService = {
-    create: async (data: any) => {
-        const response = await api.post("/collection-point", data);
-        return response.data;
-    },
-};
-
-export default collectionPointService;
+export function create(arg0: { nameUser: string; cpfUser: string; celUser: string; emailUser: string; linkPhoto: string; namePoint: string; cnpjPoint: string; opensDay: string; hourInit: string; hourFinal: string; address: { street: string; number: string; complement: string; district: string; city: string; postCode: string; }; }) {
+    throw new Error("Function not implemented.");
+}

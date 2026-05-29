@@ -1,15 +1,15 @@
 'use client';
 import styles from '@/styles/navbar.module.css';
 import Link from 'next/link';
-import { FaBarsStaggered } from 'react-icons/fa6';
+import { FaBarsStaggered, FaXmark, FaWhatsapp, FaFacebookF, FaInstagram } from 'react-icons/fa6';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import FaixaColorida from '@/components/colorLine';
-import { FaFacebookF, FaInstagram, FaWhatsapp } from 'react-icons/fa6';
 import { BiSolidHomeHeart, BiChevronDown } from "react-icons/bi";
 
 export default function NavbarLogout() {
     const [role, setRole] = useState<string | null>(null);
+    const [openMenu, setOpenMenu] = useState(false);
+
     const socialLinks = [
         {
             href: 'https://wa.me/5515988327955',
@@ -36,8 +36,27 @@ export default function NavbarLogout() {
         setRole(r);
     }, []);
 
-    const [openMenu, setOpenMenu] = useState(false);
-    const router = useRouter();
+    useEffect(() => {
+        if (!openMenu) {
+            document.body.style.overflow = '';
+            return;
+        }
+
+        document.body.style.overflow = 'hidden';
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setOpenMenu(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = '';
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [openMenu]);
 
     const handleFechado = () => setOpenMenu(false);
     const handleAberto = () => setOpenMenu(true);
@@ -103,45 +122,79 @@ export default function NavbarLogout() {
                 </div>
             </nav >
 
-            {/* MOBILE MENU */}
-            {openMenu && (
-                <div className={styles.meuoffcanvas}>
-                    <div className={styles.bodylateral}>
-                        <div className={styles.navlateral}>
-                            <div>
-                                <Link href="/" onClick={handleFechado}>
-                                    <BiSolidHomeHeart size={30} color='#D7C216' />
-                                </Link>
-                            </div>
+            <div className={`${styles.mobileOverlay} ${openMenu ? styles.mobileOverlayOpen : ''}`} aria-hidden={!openMenu}>
+                <button
+                    type="button"
+                    className={styles.backdrop}
+                    onClick={handleFechado}
+                    aria-label="Fechar menu"
+                    tabIndex={openMenu ? 0 : -1}
+                />
 
-                            <div className={styles.items}>
-                                <details className={styles.dropdownMobile}>
-                                    <summary className={styles.dropdownToggle}>
-                                        O Projeto <BiChevronDown className={styles.dropdownIcon} />
-                                    </summary>
-                                    <div className={styles.dropdownMenuMobile}>
-                                        <Link className={styles.item} href="/user/about-us" onClick={handleFechado}>
-                                            Sobre Nós
-                                        </Link>
-                                        <Link className={styles.item} href="/user/news" onClick={handleFechado}>
-                                            Tampets na Mídia
-                                        </Link>
-                                    </div>
-                                </details>
-                                <Link className={styles.item} href="/user/dashboard" onClick={handleFechado}>
-                                    Relatório
+                <aside className={`${styles.mobileDrawer} ${openMenu ? styles.mobileDrawerOpen : ''}`} aria-label="Menu mobile">
+                    <div className={styles.mobileHeader}>
+                        <Link href="/" className={styles.mobileBrand} onClick={handleFechado}>
+                            <img
+                                className={styles.mobileLogo}
+                                src="/logo_tampets.png"
+                                alt="Tampets"
+                                width={140}
+                                height={56}
+                            />
+                        </Link>
+
+                        <button type="button" className={styles.closeButton} onClick={handleFechado} aria-label="Fechar menu">
+                            <FaXmark />
+                        </button>
+                    </div>
+
+
+                    <nav className={styles.mobileNav} aria-label="Menu principal mobile">
+                        <details className={styles.dropdownMobile}>
+                            <summary className={styles.dropdownToggle}>
+                                O Projeto <BiChevronDown className={styles.dropdownIcon} />
+                            </summary>
+                            <div className={styles.dropdownMenuMobile}>
+                                <Link className={styles.item} href="/user/about-us" onClick={handleFechado}>
+                                    Sobre Nós
                                 </Link>
-                                <Link className={styles.item} href="/user/collection-point" onClick={handleFechado}>
-                                    Ponto de Coleta
-                                </Link>
-                                <Link className={styles.item} href="/user/how-donate" onClick={handleFechado}>
-                                    Como Doar
+                                <Link className={styles.item} href="/user/news" onClick={handleFechado}>
+                                    Tampets na Mídia
                                 </Link>
                             </div>
+                        </details>
+
+                        <Link className={styles.item} href="/user/dashboard" onClick={handleFechado}>
+                            Relatório
+                        </Link>
+                        <Link className={styles.item} href="/user/collection-point" onClick={handleFechado}>
+                            Ponto de Coleta
+                        </Link>
+                        <Link className={styles.item} href="/user/how-donate" onClick={handleFechado}>
+                            Como Doar
+                        </Link>
+                    </nav>
+
+                    <div className={styles.mobileSocialBlock}>
+                        <span className={styles.mobileSectionLabel}>Fale conosco</span>
+                        <div className={styles.mobileSocialLinks} aria-label="Redes sociais">
+                            {socialLinks.map((social) => (
+                                <a
+                                    key={social.label}
+                                    className={`${styles.socialLink} ${social.className}`}
+                                    href={social.href}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    aria-label={social.label}
+                                    title={social.label}
+                                >
+                                    {social.icon}
+                                </a>
+                            ))}
                         </div>
                     </div>
-                </div>
-            )}
+                </aside>
+            </div>
         </>
     );
 }

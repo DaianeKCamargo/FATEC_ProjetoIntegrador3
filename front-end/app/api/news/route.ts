@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
-
-const BACKEND_BASE_URL = (
-    process.env.API_BASE_URL ||
-    process.env.NEXT_PUBLIC_API_URL ||
-    "http://localhost:5500/api"
-).replace(/\/$/, "");
+import { API_BASE_URL } from "@/services/apiBase";
 
 export async function GET() {
     try {
-        const response = await fetch(`${BACKEND_BASE_URL}/news`, {
+        const response = await fetch(`${API_BASE_URL}/news`, {
             cache: "no-store",
             headers: {
                 Accept: "application/json",

@@ -17,6 +17,13 @@ const addressSchema = z.object({
         .string()
         .transform(onlyDigits)
         .refine((value) => value.length === 8, "postCode deve ter 8 digitos"),
+
+    latitude: z.number({
+        required_error: "latitude é obrigatória"
+    }),
+    longitude: z.number({
+        required_error: "longitude é obrigatória"
+    }),
 });
 
 const createPointSchema = z.object({
