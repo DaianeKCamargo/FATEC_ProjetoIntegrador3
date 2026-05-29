@@ -3,29 +3,35 @@
 import { useEffect, useState } from 'react';
 import capsService from '@/services/capsService';
 import animalsService from '@/services/animalsService';
-import '@/styles/dashboard.css';
 
-export default function EditPage() {
+export default function DeletePage() {
 
   const [caps, setCaps] = useState<any[]>([]);
   const [animals, setAnimals] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const capsData = await capsService.getAll();
-      const animalsData = await animalsService.getAll();
-
-      setCaps(capsData);
-      setAnimals(animalsData);
+      setCaps(await capsService.getAll());
+      setAnimals(await animalsService.getAll());
     };
 
     fetchData();
   }, []);
 
+  const handleDeleteCap = async (id: number) => {
+    await capsService.remove(String(id));
+    location.reload();
+  };
+
+  const handleDeleteAnimal = async (id: number) => {
+    await animalsService.remove(String(id));
+    location.reload();
+  };
+
   return (
     <div className="adminContainer">
 
-      <h1>Editar Registros</h1>
+      <h1>Excluir Registros</h1>
 
       <div className="adminsplitContainer">
 
@@ -35,19 +41,25 @@ export default function EditPage() {
 
           {caps.map((item) => (
             <div key={item.id} className="adminrow">
-              {item.quantidadeKg} kg - {new Date(item.data).toLocaleDateString()}
+              {item.quantidadeKg} kg
+              <button onClick={() => handleDeleteCap(item.id)}>
+                Excluir
+              </button>
             </div>
           ))}
 
         </div>
 
-        {/* ANIMALS */}
+        {/* ANIMAIS */}
         <div>
           <h2>Animais</h2>
 
           {animals.map((item) => (
             <div key={item.id} className="adminrow">
-              {item.tipoAnimal} - {item.quantidade}
+              {item.tipoAnimal}
+              <button onClick={() => handleDeleteAnimal(item.id)}>
+                Excluir
+              </button>
             </div>
           ))}
 
