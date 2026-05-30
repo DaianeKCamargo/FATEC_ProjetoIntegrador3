@@ -10,52 +10,55 @@ export default function Page() {
   const router = useRouter();
 
   const [caps, setCaps] = useState<any[]>([]);
-  const [animals, setAnimals] = useState<any[]>([]);
+  const [filterCapDate, setFilterCapDate] = useState('');
 
-  const [kg, setKg] = useState('');
+  const [capCreateForm, setCapCreateForm] = useState({
+    data: '',
+    quantidadeKg: ''
+  });
+
   const [previewQtd, setPreviewQtd] = useState<number | null>(null);
+  const [editingCapId, setEditingCapId] = useState<number | null>(null);
 
-  const [filterDate, setFilterDate] = useState('');
+  const [capForm, setCapForm] = useState({
+    data: '',
+    quantidadeKg: ''
+  });
 
-  // ✅ MICRO SERVIÇO (CORRIGIDO)
+  // ✅ MICRO SERVIÇO (tempo real com debounce)
   useEffect(() => {
 
-    if (!kg) {
+    if (!capCreateForm.quantidadeKg) {
       setPreviewQtd(null);
       return;
     }
 
     const timeout = setTimeout(async () => {
-
       try {
         const res = await fetch('http://localhost:5506/converter', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ kg: Number(kg) })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ kg: Number(capCreateForm.quantidadeKg) })
         });
 
         const data = await res.json();
-
         setPreviewQtd(data.quantidade_tampinhas);
 
       } catch {
         setPreviewQtd(null);
       }
-
-    }, 300); // debounce ✅
+    }, 300);
 
     return () => clearTimeout(timeout);
 
-  }, [kg]);
+  }, [capCreateForm.quantidadeKg]);
 
   // ✅ FILTRO
   const filteredCaps = useMemo(() => {
     return caps.filter(c =>
-      !filterDate || c.data.slice(0, 10) === filterDate
+      !filterCapDate || c.data.slice(0, 10) === filterCapDate
     );
-  }, [caps, filterDate]);
+  }, [caps, filterCapDate]);
 
   return (
     <div className={styles.page}>
@@ -71,29 +74,39 @@ export default function Page() {
 
       <div className={styles.grid}>
 
-        {/* ================= TAMPNINHAS ================= */}
+        {/* ========= TAMPNINHAS ========= */}
         <div className={styles.section}>
 
           <h2>Tampinhas</h2>
 
           {/* ✅ CADASTRO */}
           <div className={styles.box}>
-
             <h3>Registrar tampinhas</h3>
 
             <div className={styles.row}>
 
               <div className={styles.field}>
                 <label>Data</label>
-                <input type="date" />
+                <input
+                  type="date"
+                  value={capCreateForm.data}
+                  onChange={(e) =>
+                    setCapCreateForm({ ...capCreateForm, data: e.target.value })
+                  }
+                />
               </div>
 
               <div className={styles.field}>
                 <label>KG</label>
                 <input
                   type="number"
-                  value={kg}
-                  onChange={(e) => setKg(e.target.value)}
+                  value={capCreateForm.quantidadeKg}
+                  onChange={(e) =>
+                    setCapCreateForm({
+                      ...capCreateForm,
+                      quantidadeKg: e.target.value
+                    })
+                  }
                 />
               </div>
 
@@ -105,93 +118,82 @@ export default function Page() {
               </div>
 
             </div>
-
           </div>
 
           {/* ✅ FILTRO */}
           <div className={styles.filter}>
             <input
               type="date"
-              value={filterDate}
-              onChange={(e) => setFilterDate(e.target.value)}
+              value={filterCapDate}
+              onChange={(e) => setFilterCapDate(e.target.value)}
             />
-            <button onClick={() => setFilterDate('')}>Limpar</button>
+            <button onClick={() => setFilterCapDate('')}>Limpar</button>
           </div>
 
           {/* ✅ LISTA */}
           <div className={styles.list}>
+
             {filteredCaps.map(item => {
 
-              const qtd = item.quantidade_tampinhas ?? item.quantidadeKg * 500;
+              const qtd = item.quantidade_tampinhas ??
+                Math.round(item.quantidadeKg * 500);
 
-              return (
-                <div key={item.id} className={styles.card}>
+              const isEditing = editingCapId === item.id;
+
+              return isEditing ? (
+                <div className={styles.card} key={item.id}>
+
+                  <input
+                    type="date"
+                    value={capForm.data}
+                    onChange={(e) =>
+                      setCapForm({ ...capForm, data: e.target.value })
+                    }
+                  />
+
+                  <input
+                    type="number"
+                    value={capForm.quantidadeKg}
+                    onChange={(e) =>
+                      setCapForm({ ...capForm, quantidadeKg: e.target.value })
+                    }
+                  />
+
+                  <div>{qtd}</div>
+
+                </div>
+              ) : (
+                <div className={styles.card} key={item.id}>
 
                   <p><b>Data:</b> {new Date(item.data).toLocaleDateString()}</p>
                   <p><b>Kg:</b> {item.quantidadeKg}</p>
                   <p><b>Qtd:</b> {qtd}</p>
 
                   <div className={styles.actions}>
-                    <button className={styles.edit}>
+
+                    <button
+                      className={styles.editButton}
+                      onClick={() => {
+                        setEditingCapId(item.id);
+                        setCapForm({
+                          data: item.data.slice(0, 10),
+                          quantidadeKg: item.quantidadeKg
+                        });
+                      }}
+                    >
                       <MdEdit /> Editar
                     </button>
 
-                    <button className={styles.delete}>
+                    <button className={styles.deleteButton}>
                       <MdDelete /> Excluir
                     </button>
+
                   </div>
 
                 </div>
-              )
+              );
             })}
-          </div>
 
-        </div>
-
-        {/* ================= ANIMAIS ================= */}
-        <div className={styles.section}>
-          <h2>Animais</h2>
-
-          <div className={styles.box}>
-            <h3>Registrar animais</h3>
-
-            <div className={styles.row}>
-
-              <div className={styles.field}>
-                <label>Data</label>
-                <input type="date" />
-              </div>
-
-              <div className={styles.field}>
-                <label>Tipo</label>
-                <select>
-                  <option>Gato</option>
-                  <option>Cachorro</option>
-                </select>
-              </div>
-
-            </div>
-          </div>
-
-          {/* lista */}
-          <div className={styles.list}>
-            {animals.map(item => (
-              <div key={item.id} className={styles.card}>
-                <p><b>Data:</b> {new Date(item.data).toLocaleDateString()}</p>
-                <p><b>Tipo:</b> {item.tipoAnimal}</p>
-                <p><b>Qtd:</b> {item.quantidade}</p>
-
-                <div className={styles.actions}>
-                  <button className={styles.edit}>
-                    <MdEdit /> Editar
-                  </button>
-
-                  <button className={styles.delete}>
-                    <MdDelete /> Excluir
-                  </button>
-                </div>
-              </div>
-            ))}
           </div>
 
         </div>
