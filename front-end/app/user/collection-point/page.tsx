@@ -425,7 +425,7 @@ export default function CollectionPointsPage() {
 
                 <div className={styles.introCard}>
                     <ol>
-                        <li>Digite seu endereço (rua, número, bairro ou cidade) e clique em "Encontrar ponto".</li>
+                        <li> Digite seu endereço (rua, número, bairro ou cidade) e clique em "Encontrar ponto".</li>
                         <li>O mapa exibirá o ponto mais próximo; confira as sugestões pela foto, endereço e horário de atendimento.</li>
                         <li>Clique em um ponto para selecioná-lo e abrir a rota/direções até o local.</li>
                     </ol>
@@ -477,7 +477,6 @@ export default function CollectionPointsPage() {
                 <div className={styles.nearbySection}>
                     <div className={styles.nearbyHeader}>
                         <h2>Pontos próximos</h2>
-                        <span>Até 3 sugestões ordenadas da mais próxima para a mais distante</span>
                     </div>
 
                     <div className={styles.nearbyList}>
@@ -537,7 +536,7 @@ export default function CollectionPointsPage() {
 
             <section className={styles.bottomCards}>
                 <article className={styles.bottomCard}>
-                    <span className={styles.bottomLabel}>Total de pontos</span>
+                    <span className={styles.bottomLabel}>Total de Pontos Cadastrados</span>
                     <strong>{String(totalPoints).padStart(2, '0')}</strong>
                     <p>Pontos de coleta disponíveis para consulta agora.</p>
                 </article>
