@@ -2,188 +2,66 @@
 
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { MdArrowBack, MdDelete, MdEdit, MdClose, MdSave, MdPets, MdInventory } from 'react-icons/md';
+import { MdArrowBack, MdDelete, MdEdit, MdClose, MdSave } from 'react-icons/md';
 import { FaCat, FaDog } from 'react-icons/fa6';
+
 import capsService from '@/services/capsService';
 import animalsService from '@/services/animalsService';
 import styles from '@/styles/admin-dash-registration-records.module.css';
 
-type CapsRecord = {
-  id: number;
-  data: string;
-  quantidadeKg: number;
-  quantidade_tampinhas?: number;
-};
-
-type AnimalRecord = {
-  id: number;
-  data: string;
-  tipoAnimal: string;
-  quantidade: number;
-};
-
-type CapFormState = {
-  data: string;
-  quantidadeKg: string;
-};
-
-type AnimalFormState = {
-  data: string;
-  tipoAnimal: 'gato' | 'cachorro';
-  quantidade: string;
-};
-
-const emptyCapForm: CapFormState = {
-  data: '',
-  quantidadeKg: '',
-};
-
-const emptyAnimalForm: AnimalFormState = {
-  data: '',
-  tipoAnimal: 'gato',
-  quantidade: '',
-};
-
-function toInputDate(value: string) {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return '';
-  }
-
-  return date.toISOString().slice(0, 10);
-}
-
-function formatDisplayDate(value: string) {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return '-';
-  }
-
-  return date.toLocaleDateString('pt-BR');
-}
-
-function capitalize(value: string) {
-  return value ? value.charAt(0).toUpperCase() + value.slice(1) : '-';
-}
-
 export default function DashRegistration() {
+
   const router = useRouter();
 
-  const [caps, setCaps] = useState<CapsRecord[]>([]);
-  const [animals, setAnimals] = useState<AnimalRecord[]>([]);
+  const [caps, setCaps] = useState<any[]>([]);
+  const [animals, setAnimals] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [savingType, setSavingType] = useState<'caps' | 'animals' | null>(null);
-  const [creatingType, setCreatingType] = useState<'caps' | 'animals' | null>(null);
+
   const [editingCapId, setEditingCapId] = useState<number | null>(null);
   const [editingAnimalId, setEditingAnimalId] = useState<number | null>(null);
-  const [mobileCategory, setMobileCategory] = useState<'caps' | 'animals'>('caps');
-  const [capForm, setCapForm] = useState<CapFormState>(emptyCapForm);
-  const [animalForm, setAnimalForm] = useState<AnimalFormState>(emptyAnimalForm);
-  const [capCreateForm, setCapCreateForm] = useState<CapFormState>(emptyCapForm);
-  const [animalCreateForm, setAnimalCreateForm] = useState<AnimalFormState>(emptyAnimalForm);
 
-  const totalCaps = useMemo(() => caps.length, [caps]);
-  const totalAnimals = useMemo(() => animals.length, [animals]);
-  const totalCapsKg = useMemo(
-    () => caps.reduce((sum, item) => sum + Number(item.quantidadeKg || 0), 0),
-    [caps]
-  );
-  const totalCapsUnits = useMemo(
-    () => caps.reduce((sum, item) => sum + Number(item.quantidade_tampinhas || 0), 0),
-    [caps]
-  );
-  const totalCats = useMemo(
-    () => animals.filter((item) => item.tipoAnimal?.toLowerCase() === 'gato').length,
-    [animals]
-  );
-  const totalDogs = useMemo(
-    () => animals.filter((item) => item.tipoAnimal?.toLowerCase() === 'cachorro').length,
-    [animals]
-  );
+  const [capForm, setCapForm] = useState({ data: '', quantidadeKg: '' });
+  const [animalForm, setAnimalForm] = useState({
+    data: '',
+    tipoAnimal: 'gato',
+    quantidade: '',
+  });
 
-  const loadRecords = async () => {
-    setLoading(true);
+  const [capCreateForm, setCapCreateForm] = useState({ data: '', quantidadeKg: '' });
+  const [animalCreateForm, setAnimalCreateForm] = useState({
+    data: '',
+    tipoAnimal: 'gato',
+    quantidade: '',
+  });
 
+  /* ✅ LOAD */
+  const loadData = async () => {
     try {
-      const [capsList, animalsList] = await Promise.all([
+      setLoading(true);
+
+      const [capsData, animalsData] = await Promise.all([
         capsService.getAll(),
-        animalsService.getAll(),
+        animalsService.getAll()
       ]);
 
-      setCaps(capsList);
-      setAnimals(animalsList);
+      setCaps(capsData);
+      setAnimals(animalsData);
+
+    } catch (err) {
+      console.error(err);
+      alert('Erro ao carregar registros');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadRecords();
+    loadData();
   }, []);
 
-  const startEditCap = (item: CapsRecord) => {
-    setEditingAnimalId(null);
-    setAnimalForm(emptyAnimalForm);
-    setEditingCapId(item.id);
-    setCapForm({
-      data: toInputDate(item.data),
-      quantidadeKg: String(item.quantidadeKg ?? ''),
-    });
-  };
-
-  const startEditAnimal = (item: AnimalRecord) => {
-    setEditingCapId(null);
-    setCapForm(emptyCapForm);
-    setEditingAnimalId(item.id);
-    setAnimalForm({
-      data: toInputDate(item.data),
-      tipoAnimal: item.tipoAnimal as 'gato' | 'cachorro',
-      quantidade: String(item.quantidade ?? ''),
-    });
-  };
-
-  const cancelCapEdit = () => {
-    setEditingCapId(null);
-    setCapForm(emptyCapForm);
-  };
-
-  const cancelAnimalEdit = () => {
-    setEditingAnimalId(null);
-    setAnimalForm(emptyAnimalForm);
-  };
-
-  const handleDeleteCap = async (id: number) => {
-    const confirmed = window.confirm('Deseja excluir este registro de tampinhas?');
-
-    if (!confirmed) {
-      return;
-    }
-
-    await capsService.remove(String(id));
-    await loadRecords();
-  };
-
-  const handleDeleteAnimal = async (id: number) => {
-    const confirmed = window.confirm('Deseja excluir este registro de animais?');
-
-    if (!confirmed) {
-      return;
-    }
-
-    await animalsService.remove(String(id));
-    await loadRecords();
-  };
-
-  const handleCreateCap = async (event: FormEvent) => {
-    event.preventDefault();
-
-    if (!capCreateForm.data || !capCreateForm.quantidadeKg) {
-      return;
-    }
-
-    setCreatingType('caps');
+  /* ✅ CREATE */
+  const createCap = async (e: FormEvent) => {
+    e.preventDefault();
 
     try {
       await capsService.create({
@@ -191,21 +69,16 @@ export default function DashRegistration() {
         quantidadeKg: Number(capCreateForm.quantidadeKg),
       });
 
-      setCapCreateForm(emptyCapForm);
-      await loadRecords();
-    } finally {
-      setCreatingType(null);
+      setCapCreateForm({ data: '', quantidadeKg: '' });
+      loadData();
+
+    } catch {
+      alert('Erro ao criar tampinha');
     }
   };
 
-  const handleCreateAnimal = async (event: FormEvent) => {
-    event.preventDefault();
-
-    if (!animalCreateForm.data || !animalCreateForm.quantidade) {
-      return;
-    }
-
-    setCreatingType('animals');
+  const createAnimal = async (e: FormEvent) => {
+    e.preventDefault();
 
     try {
       await animalsService.create({
@@ -214,402 +87,233 @@ export default function DashRegistration() {
         quantidade: Number(animalCreateForm.quantidade),
       });
 
-      setAnimalCreateForm(emptyAnimalForm);
-      await loadRecords();
-    } finally {
-      setCreatingType(null);
+      setAnimalCreateForm({ data: '', tipoAnimal: 'gato', quantidade: '' });
+      loadData();
+
+    } catch {
+      alert('Erro ao criar animal');
     }
   };
 
-  const handleSubmitCap = async (event: FormEvent) => {
-    event.preventDefault();
-
-    if (!editingCapId) {
-      return;
-    }
-
-    setSavingType('caps');
-
-    try {
-      await capsService.update(String(editingCapId), {
-        data: capForm.data,
-        quantidadeKg: Number(capForm.quantidadeKg),
-      });
-
-      cancelCapEdit();
-      await loadRecords();
-    } finally {
-      setSavingType(null);
-    }
+  /* ✅ DELETE */
+  const deleteCap = async (id: number) => {
+    if (!confirm('Excluir registro?')) return;
+    await capsService.remove(id.toString());
+    loadData();
   };
 
-  const handleSubmitAnimal = async (event: FormEvent) => {
-    event.preventDefault();
-
-    if (!editingAnimalId) {
-      return;
-    }
-
-    setSavingType('animals');
-
-    try {
-      await animalsService.update(String(editingAnimalId), {
-        data: animalForm.data,
-        tipoAnimal: animalForm.tipoAnimal,
-        quantidade: Number(animalForm.quantidade),
-      });
-
-      cancelAnimalEdit();
-      await loadRecords();
-    } finally {
-      setSavingType(null);
-    }
+  const deleteAnimal = async (id: number) => {
+    if (!confirm('Excluir registro?')) return;
+    await animalsService.remove(id.toString());
+    loadData();
   };
+
+  /* ✅ UPDATE */
+  const updateCap = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!editingCapId) return;
+
+    await capsService.update(editingCapId.toString(), {
+      data: capForm.data,
+      quantidadeKg: Number(capForm.quantidadeKg)
+    });
+
+    setEditingCapId(null);
+    setCapForm({ data: '', quantidadeKg: '' });
+    loadData();
+  };
+
+  const updateAnimal = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!editingAnimalId) return;
+
+    await animalsService.update(editingAnimalId.toString(), {
+      data: animalForm.data,
+      tipoAnimal: animalForm.tipoAnimal,
+      quantidade: Number(animalForm.quantidade)
+    });
+
+    setEditingAnimalId(null);
+    setAnimalForm({ data: '', tipoAnimal: 'gato', quantidade: '' });
+    loadData();
+  };
+
+  /* ✅ TOTALS */
+  const totalCats = useMemo(() =>
+    animals.reduce((sum, a) =>
+      a.tipoAnimal === 'gato' ? sum + Number(a.quantidade) : sum
+    , 0)
+  , [animals]);
+
+  const totalDogs = useMemo(() =>
+    animals.reduce((sum, a) =>
+      a.tipoAnimal === 'cachorro' ? sum + Number(a.quantidade) : sum
+    , 0)
+  , [animals]);
 
   return (
     <div className={styles.page}>
-      <div className={styles.topBar}>
-        <button className={styles.backButton} onClick={() => router.push('/admin')}>
-          <MdArrowBack size={20} />
-          Voltar
-        </button>
 
-        <div className={styles.pageHeading}>
-          <span className={styles.kicker}>Painel de registros</span>
-          <h1 className={styles.title}>Tampinhas e animais castrados</h1>
-          <p className={styles.subtitle}>
-            Acesse os cadastros no topo e gerencie a lista de registros logo abaixo, com edição e exclusão por item.
-          </p>
-        </div>
+      {/* VOLTAR */}
+      <button
+        className={styles.backButton}
+        onClick={() => router.push('/admin')}
+      >
+        <MdArrowBack /> Voltar
+      </button>
 
-        <div className={styles.summaryCards}>
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryCardHeader}>
-              <span className={styles.summaryCardTitle}>Tampinhas</span>
-              <strong>{totalCaps}</strong>
-            </div>
-            <div className={styles.summaryCardBody}>
-              <div className={styles.summaryStatItem}>
-                <span>Kg</span>
-                <strong>{totalCapsKg.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong>
-              </div>
-              <div className={styles.summaryStatItem}>
-                <span>Unidades</span>
-                <strong>{totalCapsUnits.toLocaleString('pt-BR')}</strong>
-              </div>
-            </div>
-          </div>
-          <div className={styles.summaryCard}>
-            <div className={styles.summaryCardHeader}>
-              <span className={styles.summaryCardTitle}>Animais</span>
-              <strong>{totalAnimals}</strong>
-            </div>
-            <div className={styles.summaryCardBody}>
-              <div className={styles.summaryStatItem}>
-                <span>Gatos</span>
-                <strong>{totalCats}</strong>
-              </div>
-              <div className={styles.summaryStatItem}>
-                <span>Cachorros</span>
-                <strong>{totalDogs}</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {loading ? (
+        <p>Carregando...</p>
+      ) : (
+        <>
+          {/* ✅ CAPS */}
+          <h2>Tampinhas</h2>
 
-      <div className={styles.mobileSelector}>
-        <label className={styles.mobileSelectorLabel}>
-          <span>Escolha o registro</span>
-          <select value={mobileCategory} onChange={(event) => setMobileCategory(event.target.value as 'caps' | 'animals')}>
-            <option value="caps">Tampinhas</option>
-            <option value="animals">Animais</option>
-          </select>
-        </label>
-      </div>
+          <form onSubmit={createCap}>
+            <input
+              type="date"
+              value={capCreateForm.data}
+              onChange={e => setCapCreateForm({ ...capCreateForm, data: e.target.value })}
+            />
 
-      <div className={styles.grid}>
-        <div className={`${styles.categoryGroup} ${mobileCategory !== 'caps' ? styles.categoryHidden : ''}`}>
-          <section className={styles.panel}>
-            <form className={styles.rowForm} onSubmit={handleCreateCap}>
-               <div className={styles.panelHeader}>
-                <div>
-                  <h2 className={styles.panelTitle}>Registro de Tampinhas</h2>
-                </div>
-            </div>
-              <div className={styles.rowFields}>
-                <label className={styles.field}>
-                  <span>Data</span>
-                  <input
-                    type="date"
-                    value={capCreateForm.data}
-                    onChange={(event) => setCapCreateForm((current) => ({ ...current, data: event.target.value }))}
-                  />
-                </label>
-                <label className={styles.field}>
-                  <span>Quantidade kg</span>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={capCreateForm.quantidadeKg}
-                    onChange={(event) => setCapCreateForm((current) => ({ ...current, quantidadeKg: event.target.value }))}
-                  />
-                </label>
-                <div className={styles.readOnlyField}>
-                  <span>Qtd. unidade</span>
-                  <strong>{capCreateForm.quantidadeKg ? Math.round(Number(capCreateForm.quantidadeKg) * 500).toLocaleString('pt-BR') : '-'}</strong>
-                </div>
-              </div>
+            <input
+              type="number"
+              value={capCreateForm.quantidadeKg}
+              onChange={e => setCapCreateForm({ ...capCreateForm, quantidadeKg: e.target.value })}
+            />
 
-              <div className={styles.actions}>
-                <button type="submit" className={styles.primaryButton} disabled={creatingType === 'caps'}>
-                  <MdInventory size={18} />
-                  {creatingType === 'caps' ? 'Salvando...' : 'Cadastrar tampinhas'}
+            <button type="submit">Cadastrar</button>
+          </form>
+
+          {caps.map(item =>
+            editingCapId === item.id ? (
+              <form key={item.id} onSubmit={updateCap}>
+                <input
+                  type="date"
+                  value={capForm.data}
+                  onChange={e => setCapForm({ ...capForm, data: e.target.value })}
+                />
+
+                <input
+                  type="number"
+                  value={capForm.quantidadeKg}
+                  onChange={e => setCapForm({ ...capForm, quantidadeKg: e.target.value })}
+                />
+
+                <button><MdSave /> Salvar</button>
+                <button type="button" onClick={() => setEditingCapId(null)}>
+                  <MdClose /> Cancelar
+                </button>
+              </form>
+            ) : (
+              <div key={item.id} className={styles.card}>
+                <p>{new Date(item.data).toLocaleDateString()}</p>
+                <p>{item.quantidadeKg} kg</p>
+
+                <button onClick={() => {
+                  setEditingCapId(item.id);
+                  setCapForm({
+                    data: item.data.slice(0, 10),
+                    quantidadeKg: String(item.quantidadeKg)
+                  });
+                }}>
+                  <MdEdit /> Editar
+                </button>
+
+                <button onClick={() => deleteCap(item.id)}>
+                  <MdDelete /> Excluir
                 </button>
               </div>
-            </form>
+            )
+          )}
 
-            <section className={styles.panel}>
-              <div className={styles.panelHeader}>
-                <div>
-                  <span className={styles.panelTag}>Tampinhas</span>
-                  <h2 className={styles.panelTitle}>Histórico de tampinhas</h2>
-                </div>
-                <span className={styles.panelHint}>Data, quantidade em kg e quantidade em unidades.</span>
-              </div>
+          {/* ✅ ANIMALS */}
+          <h2>Animais</h2>
 
-              {loading ? (
-                <p className={styles.emptyState}>Carregando registros...</p>
-              ) : caps.length === 0 ? (
-                <p className={styles.emptyState}>Nenhum registro de tampinhas encontrado.</p>
-              ) : (
-                <div className={styles.list}>
-                  {caps.map((item) => {
-                    const isEditing = editingCapId === item.id;
+          <form onSubmit={createAnimal}>
+            <input
+              type="date"
+              value={animalCreateForm.data}
+              onChange={e => setAnimalCreateForm({ ...animalCreateForm, data: e.target.value })}
+            />
 
-                    return isEditing ? (
-                      <form key={item.id} className={styles.rowForm} onSubmit={handleSubmitCap}>
-                        <div className={styles.rowFields}>
-                          <label className={styles.field}>
-                            <span>Data</span>
-                            <input
-                              type="date"
-                              value={capForm.data}
-                              onChange={(event) => setCapForm((current) => ({ ...current, data: event.target.value }))}
-                            />
-                          </label>
-                          <label className={styles.field}>
-                            <span>Quantidade kg</span>
-                            <input
-                              type="number"
-                              min="0"
-                              step="0.01"
-                              value={capForm.quantidadeKg}
-                              onChange={(event) => setCapForm((current) => ({ ...current, quantidadeKg: event.target.value }))}
-                            />
-                          </label>
-                          <div className={styles.readOnlyField}>
-                            <span>Qtd. unidade</span>
-                            <strong>{item.quantidade_tampinhas?.toLocaleString('pt-BR') ?? '-'}</strong>
-                          </div>
-                        </div>
+            <select
+              value={animalCreateForm.tipoAnimal}
+              onChange={e => setAnimalCreateForm({ ...animalCreateForm, tipoAnimal: e.target.value })}
+            >
+              <option value="gato">Gato</option>
+              <option value="cachorro">Cachorro</option>
+            </select>
 
-                        <div className={styles.actions}>
-                          <button type="button" className={styles.secondaryButton} onClick={cancelCapEdit}>
-                            <MdClose size={18} />
-                            Cancelar
-                          </button>
-                          <button type="submit" className={styles.primaryButton} disabled={savingType === 'caps'}>
-                            <MdSave size={18} />
-                            {savingType === 'caps' ? 'Salvando...' : 'Salvar'}
-                          </button>
-                        </div>
-                      </form>
-                    ) : (
-                      <article key={item.id} className={styles.rowCard}>
-                        <div className={styles.rowFields}>
-                          <div className={styles.readOnlyField}>
-                            <span>Data</span>
-                            <strong>{formatDisplayDate(item.data)}</strong>
-                          </div>
-                          <div className={styles.readOnlyField}>
-                            <span>Quantidade kg</span>
-                            <strong>{Number(item.quantidadeKg).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</strong>
-                          </div>
-                          <div className={styles.readOnlyField}>
-                            <span>Qtd. unidade</span>
-                            <strong>{item.quantidade_tampinhas?.toLocaleString('pt-BR') ?? '-'}</strong>
-                          </div>
-                        </div>
+            <input
+              type="number"
+              value={animalCreateForm.quantidade}
+              onChange={e => setAnimalCreateForm({ ...animalCreateForm, quantidade: e.target.value })}
+            />
 
-                        <div className={styles.actions}>
-                          <button type="button" className={styles.secondaryButton} onClick={() => startEditCap(item)}>
-                            <MdEdit size={18} />
-                            Editar
-                          </button>
-                          <button type="button" className={styles.dangerButton} onClick={() => handleDeleteCap(item.id)}>
-                            <MdDelete size={18} />
-                            Excluir
-                          </button>
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              )}
-            </section>
-          </section>
-        </div>
+            <button type="submit">Cadastrar</button>
+          </form>
 
-        <div className={`${styles.categoryGroup} ${mobileCategory !== 'animals' ? styles.categoryHidden : ''}`}>
-          <section className={styles.panel}>
+          {animals.map(item =>
+            editingAnimalId === item.id ? (
+              <form key={item.id} onSubmit={updateAnimal}>
+                <input
+                  type="date"
+                  value={animalForm.data}
+                  onChange={e => setAnimalForm({ ...animalForm, data: e.target.value })}
+                />
 
+                <select
+                  value={animalForm.tipoAnimal}
+                  onChange={e => setAnimalForm({ ...animalForm, tipoAnimal: e.target.value })}
+                >
+                  <option value="gato">Gato</option>
+                  <option value="cachorro">Cachorro</option>
+                </select>
 
-            <form className={styles.rowForm} onSubmit={handleCreateAnimal}>
-                <div className={styles.panelHeader}>
-              <div>
-                <h2 className={styles.panelTitle}>Registro de Animais</h2>
-              </div>
-            </div>
-              <div className={styles.rowFields}>
-                <label className={styles.field}>
-                  <span>Data</span>
-                  <input
-                    type="date"
-                    value={animalCreateForm.data}
-                    onChange={(event) => setAnimalCreateForm((current) => ({ ...current, data: event.target.value }))}
-                  />
-                </label>
-                <label className={styles.field}>
-                  <span>Tipo animal</span>
-                  <select
-                    value={animalCreateForm.tipoAnimal}
-                    onChange={(event) => setAnimalCreateForm((current) => ({ ...current, tipoAnimal: event.target.value as 'gato' | 'cachorro' }))}
-                  >
-                    <option value="gato">Gato</option>
-                    <option value="cachorro">Cachorro</option>
-                  </select>
-                </label>
-                <label className={styles.field}>
-                  <span>Quantidade</span>
-                  <input
-                    type="number"
-                    min="1"
-                    value={animalCreateForm.quantidade}
-                    onChange={(event) => setAnimalCreateForm((current) => ({ ...current, quantidade: event.target.value }))}
-                  />
-                </label>
-              </div>
+                <input
+                  type="number"
+                  value={animalForm.quantidade}
+                  onChange={e => setAnimalForm({ ...animalForm, quantidade: e.target.value })}
+                />
 
-              <div className={styles.actions}>
-                <button type="submit" className={styles.primaryButton} disabled={creatingType === 'animals'}>
-                  <MdPets size={18} />
-                  {creatingType === 'animals' ? 'Salvando...' : 'Cadastrar animais'}
+                <button><MdSave /> Salvar</button>
+                <button type="button" onClick={() => setEditingAnimalId(null)}>
+                  <MdClose /> Cancelar
+                </button>
+              </form>
+            ) : (
+              <div key={item.id} className={styles.card}>
+                <p>{new Date(item.data).toLocaleDateString()}</p>
+
+                <p>
+                  {item.tipoAnimal === 'cachorro' ? <FaDog /> : <FaCat />}
+                  {item.tipoAnimal}
+                </p>
+
+                <p>{item.quantidade}</p>
+
+                <button onClick={() => {
+                  setEditingAnimalId(item.id);
+                  setAnimalForm({
+                    data: item.data.slice(0, 10),
+                    tipoAnimal: item.tipoAnimal,
+                    quantidade: String(item.quantidade)
+                  });
+                }}>
+                  <MdEdit /> Editar
+                </button>
+
+                <button onClick={() => deleteAnimal(item.id)}>
+                  <MdDelete /> Excluir
                 </button>
               </div>
-            </form>
-
-            <section className={styles.panel}>
-              <div className={styles.panelHeader}>
-                <div>
-                  <span className={styles.panelTag}>Animais</span>
-                  <h2 className={styles.panelTitle}>Histórico de animais</h2>
-                </div>
-                <span className={styles.panelHint}>Data, tipo do animal e quantidade registrada.</span>
-              </div>
-
-              {loading ? (
-                <p className={styles.emptyState}>Carregando registros...</p>
-              ) : animals.length === 0 ? (
-                <p className={styles.emptyState}>Nenhum registro de animais encontrado.</p>
-              ) : (
-                <div className={styles.list}>
-                  {animals.map((item) => {
-                    const isEditing = editingAnimalId === item.id;
-
-                    return isEditing ? (
-                      <form key={item.id} className={styles.rowForm} onSubmit={handleSubmitAnimal}>
-                        <div className={styles.rowFields}>
-                          <label className={styles.field}>
-                            <span>Data</span>
-                            <input
-                              type="date"
-                              value={animalForm.data}
-                              onChange={(event) => setAnimalForm((current) => ({ ...current, data: event.target.value }))}
-                            />
-                          </label>
-                          <label className={styles.field}>
-                            <span>Tipo animal</span>
-                            <select
-                              value={animalForm.tipoAnimal}
-                              onChange={(event) => setAnimalForm((current) => ({ ...current, tipoAnimal: event.target.value as 'gato' | 'cachorro' }))}
-                            >
-                              <option value="gato">Gato</option>
-                              <option value="cachorro">Cachorro</option>
-                            </select>
-                          </label>
-                          <label className={styles.field}>
-                            <span>Quantidade</span>
-                            <input
-                              type="number"
-                              min="1"
-                              value={animalForm.quantidade}
-                              onChange={(event) => setAnimalForm((current) => ({ ...current, quantidade: event.target.value }))}
-                            />
-                          </label>
-                        </div>
-
-                        <div className={styles.actions}>
-                          <button type="button" className={styles.secondaryButton} onClick={cancelAnimalEdit}>
-                            <MdClose size={18} />
-                            Cancelar
-                          </button>
-                          <button type="submit" className={styles.primaryButton} disabled={savingType === 'animals'}>
-                            <MdSave size={18} />
-                            {savingType === 'animals' ? 'Salvando...' : 'Salvar'}
-                          </button>
-                        </div>
-                      </form>
-                    ) : (
-                      <article key={item.id} className={styles.rowCard}>
-                        <div className={styles.rowFields}>
-                          <div className={styles.readOnlyField}>
-                            <span>Data</span>
-                            <strong>{formatDisplayDate(item.data)}</strong>
-                          </div>
-                          <div className={styles.readOnlyField}>
-                            <span>Tipo animal</span>
-                            <strong className={styles.animalTypeValue}>
-                              {item.tipoAnimal?.toLowerCase() === 'cachorro' ? <FaDog size={16} /> : <FaCat size={16} />}
-                              {capitalize(item.tipoAnimal)}
-                            </strong>
-                          </div>
-                          <div className={styles.readOnlyField}>
-                            <span>Quantidade</span>
-                            <strong>{Number(item.quantidade).toLocaleString('pt-BR')}</strong>
-                          </div>
-                        </div>
-
-                        <div className={styles.actions}>
-                          <button type="button" className={styles.secondaryButton} onClick={() => startEditAnimal(item)}>
-                            <MdEdit size={18} />
-                            Editar
-                          </button>
-                          <button type="button" className={styles.dangerButton} onClick={() => handleDeleteAnimal(item.id)}>
-                            <MdDelete size={18} />
-                            Excluir
-                          </button>
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              )}
-            </section>
-          </section>
-        </div>
-      </div>
+            )
+          )}
+        </>
+      )}
     </div>
   );
 }
