@@ -1,22 +1,22 @@
 .adminContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f8f1d0 0%, #fdf8ea 100%);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
-        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-        'Helvetica Neue', sans-serif;
-    padding: 1.5rem 1rem;
+    background:
+        radial-gradient(circle at top left, rgba(234, 198, 76, 0.16), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(46, 125, 50, 0.10), transparent 30%),
+        linear-gradient(135deg, #f8f3e1 0%, #fffdf6 100%);
+    padding: 1.5rem;
 }
 
 .adminContent {
-    background: #ffffff;
-    padding: 2rem;
-    border-radius: 22px;
-    box-shadow: 0 10px 30px rgba(120, 98, 32, 0.12);
     width: 100%;
-    max-width: 1000px;
+    max-width: 1280px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(214, 178, 37, 0.20);
+    border-radius: 28px;
+    box-shadow: 0 24px 60px rgba(104, 84, 21, 0.10);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
     animation: slideIn 0.3s ease-in-out;
 }
 
@@ -32,32 +32,129 @@
     }
 }
 
-.adminTitle {
-    font-size: 3rem;
+.heroStats,
+.requestPanel,
+.listPanel {
+    background: #fffef9;
+    border: 1px solid #efe1af;
+    border-radius: 24px;
+    box-shadow: 0 12px 30px rgba(103, 81, 18, 0.08);
+}
+
+
+.kicker,
+.sectionTag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(214, 178, 37, 0.12);
+    color: #8b6d0a;
+    font-size: 0.82rem;
     font-weight: 700;
-    color: #333;
-    margin-bottom: 0.5rem;
-    text-align: center;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.adminTitle {
+    margin-top: 1rem;
+    margin-bottom: 0.8rem;
+    font-size: clamp(2.1rem, 3vw, 3.2rem);
+    line-height: 1.08;
+    color: #2c2410;
+    text-align: left;
 }
 
 .adminSubtitle {
-    font-size: 1.5rem;
-    color: #666;
-    margin-bottom: 2rem;
-    text-align: center;
+    margin-bottom: 1.4rem;
+    font-size: 1.08rem;
+    line-height: 1.65;
+    color: #5d5238;
+    text-align: left;
+}
+
+
+.primaryAction,
+.secondaryAction,
+.cardButton,
+.pointAction,
+.acceptButton,
+.rejectButton {
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.primaryAction,
+.secondaryAction {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.95rem 1.2rem;
+    font-size: 0.98rem;
+}
+
+.primaryAction {
+    color: #fff;
+    background: linear-gradient(135deg, #dabe25 0%, #b89210 100%);
+    box-shadow: 0 10px 22px rgba(190, 151, 10, 0.24);
+}
+
+.secondaryAction {
+    color: #5a4a15;
+    background: rgba(214, 178, 37, 0.12);
+    border: 1px solid rgba(214, 178, 37, 0.26);
+}
+
+.primaryAction:hover,
+.secondaryAction:hover,
+.cardButton:hover,
+.pointAction:hover,
+.acceptButton:hover,
+.rejectButton:hover {
+    transform: translateY(-2px);
+}
+
+
+.statCard {
+    display: grid;
+    gap: 0.45rem;
+    padding: 1rem 1rem 1rem 1.1rem;
+    background: linear-gradient(180deg, #ffffff 0%, #fff9e7 100%);
+    border: 1px solid #f0e4b8;
+    border-radius: 18px;
+    color: #463a1d;
+}
+
+.statCard svg {
+    font-size: 1.15rem;
+    color: #c49f11;
+}
+
+.statCard strong {
+    font-size: 1rem;
+}
+
+.statCard span {
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: #655a3f;
 }
 
 .cardsGrid {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
 }
 
 .card {
     background: #fffdf7;
-    border: 2px solid #f1e2a6;
-    border-radius: 20px;
+    border: 1px solid #f1e2a6;
+    border-radius: 22px;
     padding: 1.5rem;
     display: flex;
     align-items: center;
@@ -89,30 +186,36 @@
     flex: 1;
 }
 
+.cardHeading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.3rem;
+}
+
 .cardTitle {
     font-size: 1.75rem;
     font-weight: 600;
     color: #333;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0;
 }
 
 .cardDescription {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: #666;
     line-height: 1.4;
 }
 
 .cardButton {
-    margin: 0;
-    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    padding: 0.75rem 1.35rem;
     background: linear-gradient(135deg, #dabe25 0%, #c5a51a 100%);
     color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: 1.2rem;
     cursor: pointer;
-    transition: all 0.3s ease;
     white-space: nowrap;
 }
 
@@ -125,6 +228,211 @@
     transform: scale(0.98);
 }
 
+.reviewActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-left: auto;
+}
+
+.reviewBadge,
+.requestStatus,
+.pointStatus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.reviewBadge {
+    color: #8d1f1f;
+    background: rgba(186, 28, 28, 0.14);
+    border: 1px solid rgba(186, 28, 28, 0.28);
+}
+
+.requestStatus {
+    color: #876a0c;
+    background: rgba(214, 178, 37, 0.14);
+}
+
+.requestPanel,
+.listPanel {
+    margin-top: 1.5rem;
+    padding: 1.4rem;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.sectionTitle {
+    margin-top: 0.45rem;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #2d2616;
+}
+
+.sectionHint {
+    max-width: 340px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #6a5f43;
+}
+
+.reviewGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.requestCard {
+    padding: 1rem;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #ffffff 0%, #fff9e7 100%);
+    border: 1px solid #f0e2ae;
+}
+
+.requestTopRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.requestTopRow h3,
+.pointHeading h3 {
+    margin: 0;
+    color: #2f2818;
+    font-size: 1rem;
+}
+
+.requestTopRow p,
+.requestDescription,
+.pointInfo p {
+    color: #685f46;
+    line-height: 1.55;
+    font-size: 0.92rem;
+}
+
+.requestDescription {
+    margin: 0.8rem 0 1rem;
+}
+
+.requestActions {
+    display: flex;
+    gap: 0.65rem;
+}
+
+.acceptButton,
+.rejectButton {
+    flex: 1;
+    padding: 0.8rem 0.9rem;
+    font-size: 0.92rem;
+}
+
+.acceptButton {
+    color: #fff;
+    background: linear-gradient(135deg, #2f8f46 0%, #1f6d34 100%);
+}
+
+.rejectButton {
+    color: #7b2f27;
+    background: rgba(188, 102, 86, 0.12);
+}
+
+.pointsList {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.pointRow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1rem 1rem 1.1rem;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid #efe1af;
+}
+
+.pointIcon {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #dabe25 0%, #c5a51a 100%);
+    color: #fff;
+}
+
+.pointInfo {
+    flex: 1;
+}
+
+.pointHeading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.pointMeta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 1rem;
+    margin-top: 0.6rem;
+    color: #7a6f52;
+    font-size: 0.88rem;
+}
+
+.pointMeta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.pointAction {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+    color: #4e4216;
+    background: rgba(214, 178, 37, 0.14);
+    border: 1px solid rgba(214, 178, 37, 0.22);
+    cursor: pointer;
+}
+
+.aprovado {
+    color: #1f6d34;
+    background: rgba(47, 143, 70, 0.12);
+}
+
+.pendente {
+    color: #875f08;
+    background: rgba(214, 178, 37, 0.16);
+}
+
+.rejeitado {
+    color: #7b2f27;
+    background: rgba(188, 102, 86, 0.12);
+}
+
+.requestStatus,
+.pointStatus {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
 /* TABLET */
 @media (max-width: 768px) {
     .adminContainer {
@@ -132,8 +440,21 @@
     }
 
     .adminContent {
-        padding: 1.5rem;
-        border-radius: 18px;
+        padding: 1.2rem;
+        border-radius: 22px;
+    }
+
+    .hero,
+    .cardsGrid,
+    .reviewGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .heroCopy,
+    .heroStats,
+    .requestPanel,
+    .listPanel {
+        border-radius: 20px;
     }
 
     .adminTitle {
@@ -141,7 +462,15 @@
     }
 
     .adminSubtitle {
-        font-size: 1rem;
+        font-size: 0.98rem;
+    }
+
+    .sectionHeader,
+    .pointRow,
+    .requestTopRow,
+    .pointHeading {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
     .card {
@@ -167,6 +496,16 @@
         font-size: 0.95rem;
         padding: 0.8rem 1.2rem;
     }
+
+    .reviewActions,
+    .requestActions {
+        width: 100%;
+    }
+
+    .pointAction {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 /* CELULAR */
@@ -176,8 +515,8 @@
     }
 
     .adminContent {
-        padding: 1rem;
-        border-radius: 16px;
+        padding: 0.9rem;
+        border-radius: 18px;
     }
 
     .adminTitle {
@@ -225,5 +564,29 @@
         font-size: 1rem;
         padding: 0.9rem;
         border-radius: 10px;
+    }
+
+    .heroCopy,
+    .heroStats,
+    .requestPanel,
+    .listPanel {
+        padding: 1rem;
+    }
+
+    .heroActions,
+    .requestActions {
+        flex-direction: column;
+    }
+
+    .primaryAction,
+    .secondaryAction,
+    .acceptButton,
+    .rejectButton {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pointRow {
+        padding: 0.9rem;
     }
 }

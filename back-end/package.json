@@ -49,8 +49,5 @@
     "url": "https://github.com/DaianeKCamargo/FATEC_ProjetoIntegrador3/issues"
   },
   "homepage": "https://github.com/DaianeKCamargo/FATEC_ProjetoIntegrador3#readme",
-  "type": "commonjs",
-  "prisma": {
-    "schema": "./lib/prisma/schema.prisma"
-  }
+  "type": "commonjs"
 }
