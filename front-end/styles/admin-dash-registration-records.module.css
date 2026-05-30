@@ -4,7 +4,6 @@
     background: linear-gradient(135deg, #f8f3e1, #fffdf6);
 }
 
-/* topo */
 .topBar {
     max-width: 1200px;
     margin: auto;
@@ -14,7 +13,7 @@
     background: #dabe25;
     color: white;
     border: none;
-    padding: 0.7rem 1rem;
+    padding: 0.7rem;
     border-radius: 10px;
     cursor: pointer;
 }
@@ -28,10 +27,9 @@
 }
 
 .subtitle {
-    color: #666;
+    color: gray;
 }
 
-/* layout */
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -39,83 +37,47 @@
     margin-top: 1rem;
 }
 
-/* painel */
 .panel {
     background: white;
     padding: 1rem;
-    border-radius: 12px;
+    border-radius: 10px;
 }
 
-.panelTitle {
+.rowFields {
+    display: flex;
+    gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
-/* card */
-.rowCard {
+.input {
+    padding: 0.5rem;
+}
+
+.preview {
+    background: #eee;
+    padding: 0.5rem;
+}
+
+.filterBar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.card {
+    border: 1px solid #ddd;
     padding: 0.8rem;
-    border: 1px solid #eee;
     border-radius: 10px;
     margin-bottom: 0.5rem;
 }
 
-/* ações */
 .actions {
     display: flex;
     gap: 0.5rem;
     margin-top: 0.5rem;
 }
 
-.dangerButton {
-    background: #dc2626;
+.delete {
+    background: red;
     color: white;
-    border: none;
-    padding: 0.5rem;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-/* animal */
-.animalTypeValue {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-/* ✅ FILTROS */
-.filterBar {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-}
-
-.filterItem {
-    display: flex;
-    flex-direction: column;
-}
-
-.filterItem span {
-    font-size: 0.75rem;
-}
-
-.filterItem input,
-.filterItem select {
-    padding: 0.4rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-.clearFilter {
-    background: #eee;
-    border: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-/* responsivo */
-@media (max-width: 768px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
 }
