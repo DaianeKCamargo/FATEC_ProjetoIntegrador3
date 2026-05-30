@@ -97,6 +97,11 @@
 .gridImages p {
   font-size: 14px;
 }
+.gridImages img {
+  width: 300px;
+  height: auto;
+  align-content: center;
+}
 
 /* ===== IMAGEM ===== */
 .Image-banner {
