@@ -151,18 +151,23 @@ export default function CreateCollectionPoint() {
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        if (!form.address.latitude || !form.address.longitude) {
-            alert("Please select a valid address!");
+        if (
+            form.address.latitude === null ||
+            form.address.longitude === null
+        ) {
+            alert("Selecione um endereço válido");
             return;
         }
 
-        const res = await fetch("http://localhost:3000/pontos", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(form),
-        });
+        const res = await fetch(
+            "http://localhost:5501/api/collection-point",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(form),
+            });
 
         if (res.ok) {
             alert("Successfully submitted!");
@@ -206,15 +211,15 @@ export default function CreateCollectionPoint() {
                         value={query}
                         onChange={(e) => fetchAddress(e.target.value)} />
 
-                {loading && <p>Procurando...</p>}
+                    {loading && <p>Procurando...</p>}
 
-                <ul className={styles.list}>
-                    {results.map((item, i) => (
-                        <li key={i} onClick={() => selectAddress(item)}>
-                            {item.display_name}
-                        </li>
-                    ))}
-                </ul>
+                    <ul className={styles.list}>
+                        {results.map((item, i) => (
+                            <li key={i} onClick={() => selectAddress(item)}>
+                                {item.display_name}
+                            </li>
+                        ))}
+                    </ul>
 
                     <div className={styles.fieldGrid}>
                         <input

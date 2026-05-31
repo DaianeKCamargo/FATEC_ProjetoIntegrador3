@@ -124,7 +124,7 @@ F9: Cadastro de notícias (imagem, título e link);
 
 ```bash
 # Terminal 1 - Microsserviço de Conversão de Tampinhas
-cd microsservicos/caps-conversion-service
+cd microservice/caps-conversion-service
 npm install
 npm start
 # Rodará na porta 5506
@@ -133,19 +133,28 @@ npm start
 
 ```bash
 # Terminal 2 - Microsserviço de Ponto de Coleta
-cd microsservicos/collection-point-review-service
+cd microservice/collection-point-review-service
 npm install
 npm start
 # Rodará na porta 5507
 # Teste: GET http://localhost:5507/health
 ```
-
 Esse microsserviço é voltado para revisão de pontos de coleta: consulta de aprovados e alteração de status para `APROVADO` ou `REJEITADO`.
+
+```bash
+# Terminal 3 - Microsserviço de Conversão de CO2
+cd microservice/co2-conversion-service
+npm install
+npm start
+# Rodará na porta 5508
+# Teste: GET http://localhost:5508/health
+```
 
 **APIs que são parte da aplicação** (use npm scripts a partir da pasta back-end-admin):
 <code>npm run start:ms:admin-users</code> - gerenciamento de usuários admin (porta 5502) <br>
-<code>npm run start:ms:animal-registration</code> - registro de animais (porta 5503) <br>
+<code>npm run start:ms:animals-registration</code> - registro de animais (porta 5503) <br>
 <code>npm run start:ms:caps-registration</code> - cadastro de tampinhas (porta 5504) <br>
+<code>npm run start:ms:collection-point</code> - pontos de coleta (porta 5501) <br>
 <code>npm run start:ms:news</code> - notícias (porta 5505) <br>
 
 ## Documentação Postman

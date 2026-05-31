@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const collectionPointRoute = require("./routes/collection-pointRoute");
 
 const app = express();
+app.use(cors());
 const PORT = process.env.PONTO_COLETA_PORT || 5501;
 
 app.use(express.json());

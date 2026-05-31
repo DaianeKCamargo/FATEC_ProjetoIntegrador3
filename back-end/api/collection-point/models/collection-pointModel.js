@@ -123,8 +123,6 @@ async function updatePoint(id, data) {
                               city: address.city ?? current.address.city,
                               postCode:
                                   address.postCode ?? current.address.postCode,
-
-                              // ✅ NOVOS CAMPOS
                               latitude:
                                   address.latitude ?? current.address.latitude,
                               longitude:
