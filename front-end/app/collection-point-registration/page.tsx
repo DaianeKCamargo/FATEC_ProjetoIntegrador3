@@ -1,9 +1,35 @@
-"use client";
+'use client';
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import styles from "@/styles/cadastro-ponto-coleta.module.css";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+import styles from "@/styles/collection-point-registration.module.css";
 import { createCollectionPoint } from "@/services/collectionPointService";
+
+interface Address {
+    street: string;
+    number: string;
+    district: string;
+    city: string;
+    postCode: string;
+    latitude: number | null;
+    longitude: number | null;
+}
+
+interface AddressSuggestion {
+    display_name: string;
+    lat: string;
+    lon: string;
+    address?: {
+        house_number?: string;
+        road?: string;
+        suburb?: string;
+        neighbourhood?: string;
+        city?: string;
+        town?: string;
+        village?: string;
+        postcode?: string;
+    };
+}
 
 type FormState = {
     nameUser: string;
@@ -16,182 +42,299 @@ type FormState = {
     opensDay: string;
     hourInit: string;
     hourFinal: string;
-    street: string;
-    number: string;
-    complement: string;
-    district: string;
-    city: string;
-    postCode: string;
-};
-
-const initialFormState: FormState = {
-    nameUser: "",
-    cpfUser: "",
-    celUser: "",
-    emailUser: "",
-    linkPhoto: "",
-    namePoint: "",
-    cnpjPoint: "",
-    opensDay: "",
-    hourInit: "",
-    hourFinal: "",
-    street: "",
-    number: "",
-    complement: "",
-    district: "",
-    city: "",
-    postCode: "",
+    address: Address;
 };
 
 export default function CadastroPontoColetaPage() {
-    const [formData, setFormData] = useState<FormState>(initialFormState);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const [formData, setFormData] = useState<FormState>({
+        nameUser: "",
+        cpfUser: "",
+        celUser: "",
+        emailUser: "",
+        linkPhoto: "",
+        namePoint: "",
+        cnpjPoint: "",
+        opensDay: "",
+        hourInit: "",
+        hourFinal: "",
+        address: {
+            street: "",
+            number: "",
+            district: "",
+            city: "",
+            postCode: "",
+            latitude: null,
+            longitude: null,
+        },
+    });
+
+    const [query, setQuery] = useState("");
+    const [results, setResults] = useState<AddressSuggestion[]>([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setSuccessMessage("");
-        setErrorMessage("");
+        setResults([]);
     }, []);
 
-    const handleChange = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        const { name, value } = event.target;
-        setFormData((current) => ({ ...current, [name]: value }));
-    };
+    async function fetchAddress(q: string) {
+        setQuery(q);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setIsSubmitting(true);
-        setErrorMessage("");
-        setSuccessMessage("");
+        if (q.trim().length < 3) {
+            setResults([]);
+            return;
+        }
+
+        setLoading(true);
 
         try {
-            await createCollectionPoint({
-                nameUser: formData.nameUser,
-                cpfUser: formData.cpfUser,
-                celUser: formData.celUser,
-                emailUser: formData.emailUser,
-                linkPhoto: formData.linkPhoto,
-                namePoint: formData.namePoint,
-                cnpjPoint: formData.cnpjPoint,
-                opensDay: formData.opensDay,
-                hourInit: formData.hourInit,
-                hourFinal: formData.hourFinal,
-                address: {
-                    street: formData.street,
-                    number: formData.number,
-                    complement: formData.complement,
-                    district: formData.district,
-                    city: formData.city,
-                    postCode: formData.postCode,
+            const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=5&countrycodes=br&q=${encodeURIComponent(q)}`;
+
+            const res = await fetch(url, {
+                headers: {
+                    "Accept-Language": "pt-BR,pt;q=0.9",
                 },
             });
 
-            setSuccessMessage("Cadastro enviado com sucesso. Seu ponto de coleta ficará pendente para aprovação do admin.");
-            setFormData(initialFormState);
-        } catch (error: any) {
-            const message = error?.response?.data?.message || "Não foi possível cadastrar o ponto de coleta.";
-            setErrorMessage(message);
+            const data = await res.json();
+            setResults(Array.isArray(data) ? data : []);
+        } catch (err) {
+            console.error(err);
+            setResults([]);
         } finally {
-            setIsSubmitting(false);
+            setLoading(false);
+        }
+    }
+
+    function selectAddress(item: AddressSuggestion) {
+        const addr = item.address || {};
+
+        const number = addr.house_number || "";
+        const road = addr.road || "";
+
+        setFormData((prev) => ({
+            ...prev,
+            address: {
+                street: [road, number].filter(Boolean).join(" "),
+                number,
+                district: addr.suburb || addr.neighbourhood || "",
+                city: addr.city || addr.town || addr.village || "",
+                postCode: addr.postcode || "",
+                latitude: parseFloat(item.lat),
+                longitude: parseFloat(item.lon),
+            },
+        }));
+
+        setQuery(item.display_name);
+        setResults([]);
+    }
+
+    function handleChange(
+        e: ChangeEvent<HTMLInputElement>
+    ) {
+        const { name, value } = e.target;
+
+        if (name.startsWith("address.")) {
+            const field = name.split(".")[1];
+
+            setFormData((prev) => ({
+                ...prev,
+                address: {
+                    ...prev.address,
+                    [field]: value,
+                },
+            }));
+            return;
+        }
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    }
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!formData.address.latitude || !formData.address.longitude) {
+            alert("Selecione um endereço válido da lista");
+            return;
+        }
+
+        try {
+            await createCollectionPoint({
+                ...formData,
+            });
+
+            alert("Cadastro enviado com sucesso!");
+        } catch (err: any) {
+            alert(err?.response?.data?.message || "Erro ao cadastrar");
         }
     };
 
     return (
         <main className={styles.page}>
             <section className={styles.hero}>
-                <span className={styles.tag}>Cadastro de Ponto de Coleta</span>
-                <h1>Preencha o formulário e envie seu local para análise do admin</h1>
-                <p>
-                    Este cadastro salva suas informações no sistema com status pendente.
-                    Depois disso, a equipe administrativa poderá aprovar o ponto de coleta.
-                </p>
-                <Link href="/" className={styles.backLink}>
-                    Voltar para a página inicial
-                </Link>
+                <h1>Cadastro de Ponto de Coleta</h1>
+                <Link href="/">Voltar</Link>
             </section>
 
-            <section className={styles.formSection}>
-                <form className={styles.formCard} onSubmit={handleSubmit}>
-                    <div className={styles.formGrid}>
-                        <div className={styles.field}>
-                            <label>Seu nome</label>
-                            <input name="nameUser" value={formData.nameUser} onChange={handleChange} placeholder="Nome completo" required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>CPF</label>
-                            <input name="cpfUser" value={formData.cpfUser} onChange={handleChange} placeholder="000.000.000-00" required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Celular</label>
-                            <input name="celUser" value={formData.celUser} onChange={handleChange} placeholder="(00) 00000-0000" required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>E-mail</label>
-                            <input name="emailUser" type="email" value={formData.emailUser} onChange={handleChange} placeholder="email@exemplo.com" required />
-                        </div>
-                        <div className={styles.fieldWide}>
-                            <label>Link da foto</label>
-                            <input name="linkPhoto" type="url" value={formData.linkPhoto} onChange={handleChange} placeholder="https://..." required />
-                        </div>
-                        <div className={styles.fieldWide}>
-                            <label>Nome do ponto</label>
-                            <input name="namePoint" value={formData.namePoint} onChange={handleChange} placeholder="Nome do estabelecimento" required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>CNPJ</label>
-                            <input name="cnpjPoint" value={formData.cnpjPoint} onChange={handleChange} placeholder="00.000.000/0000-00" required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Dias de funcionamento</label>
-                            <input name="opensDay" value={formData.opensDay} onChange={handleChange} placeholder="Segunda a sexta" required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Hora de abertura</label>
-                            <input name="hourInit" type="time" value={formData.hourInit} onChange={handleChange} required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Hora de fechamento</label>
-                            <input name="hourFinal" type="time" value={formData.hourFinal} onChange={handleChange} required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Rua</label>
-                            <input name="street" value={formData.street} onChange={handleChange} required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Número</label>
-                            <input name="number" value={formData.number} onChange={handleChange} required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Complemento</label>
-                            <input name="complement" value={formData.complement} onChange={handleChange} />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Bairro</label>
-                            <input name="district" value={formData.district} onChange={handleChange} required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>Cidade</label>
-                            <input name="city" value={formData.city} onChange={handleChange} required />
-                        </div>
-                        <div className={styles.field}>
-                            <label>CEP</label>
-                            <input name="postCode" value={formData.postCode} onChange={handleChange} placeholder="00000-000" required />
-                        </div>
+            <form className={styles.formCard} onSubmit={handleSubmit}>
+                <h2 className={styles.sectionTitle}>Informações do Proprietário</h2>
+
+                <div className={styles.formGrid}>
+                    <div className={styles.field}>
+                        <input
+                            name="nameUser"
+                            placeholder="Nome"
+                            value={formData.nameUser}
+                            onChange={handleChange}
+                        />
                     </div>
 
-                    {errorMessage ? <p className={styles.errorMessage}>{errorMessage}</p> : null}
-                    {successMessage ? <p className={styles.successMessage}>{successMessage}</p> : null}
-
-                    <div className={styles.btnArea}>
-                        <button type="submit" className={styles.sendBtn} disabled={isSubmitting}>
-                            {isSubmitting ? "Enviando..." : "Cadastrar"}
-                        </button>
+                    <div className={styles.field}>
+                        <input
+                            name="cpfUser"
+                            placeholder="CPF"
+                            value={formData.cpfUser}
+                            onChange={handleChange}
+                        />
                     </div>
-                </form>
-            </section>
+
+                    <div className={styles.field}>
+                        <input
+                            name="celUser"
+                            placeholder="Celular"
+                            value={formData.celUser}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <input
+                            name="emailUser"
+                            placeholder="Email"
+                            value={formData.emailUser}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+
+                <h2 className={styles.sectionTitle}>Informações do Ponto de Coleta</h2>
+
+                <div className={styles.formGrid}>
+                    <div className={styles.field}>
+                        <input
+                            name="namePoint"
+                            placeholder="Nome do Ponto de Coleta"
+                            value={formData.namePoint}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <input
+                            name="cnpjPoint"
+                            placeholder="CNPJ"
+                            value={formData.cnpjPoint}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <input
+                            name="linkPhoto"
+                            placeholder="Link da Foto"
+                            value={formData.linkPhoto}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <input
+                            name="opensDay"
+                            placeholder="Dias de Funcionamento"
+                            value={formData.opensDay}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <input
+                            type="time"
+                            name="hourInit"
+                            placeholder="Início"
+                            value={formData.hourInit}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <input
+                            type="time"
+                            name="hourFinal"
+                            placeholder="Final"
+                            value={formData.hourFinal}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+
+                <h2 className={styles.sectionTitle}>Endereço</h2>
+
+                <div className={styles.field}>
+                <input
+                    className={styles.searchInput}
+                    placeholder="Procurar Endereço"
+                    value={query}
+                    onChange={(e) => fetchAddress(e.target.value)}
+                />
+                </div>
+
+                <div className={styles.formGrid}>
+                    <div className={styles.field}>
+                        <input
+                            name="address.number"
+                            placeholder="Número"
+                            value={formData.address.number}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <input
+                            name="address.district"
+                            placeholder="Bairro"
+                            value={formData.address.district}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <input
+                            name="address.city"
+                            placeholder="Cidade"
+                            value={formData.address.city}
+                            onChange={handleChange}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <input
+                            name="address.postCode"
+                            placeholder="CEP"
+                            value={formData.address.postCode}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.btnArea}>
+                    <button type="submit" className={styles.sendBtn}>
+                        Cadastrar
+                    </button>
+                </div>
+
+            </form>
         </main>
     );
-}
+}   

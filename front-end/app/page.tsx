@@ -385,7 +385,7 @@ export default function Home() {
             <SwapCards
               imagem={"/collection-point.png"}
               titulo={"Seja um Ponto de Coleta"}
-              src={"/cadastro-ponto-coleta"}
+              src={"/collection-point-registration"}
             />
           </div>
           <div className={styles.parceiro}>
