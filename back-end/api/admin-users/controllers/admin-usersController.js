@@ -1,7 +1,7 @@
 const axios = require("axios");
 const model = require("../models/admin-usersModels");
 
-const RESET_PASS_EMAIL_SERVICE_URL = (process.env.PASSWORD_RESET_EMAIL_SERVICE_URL || "http://localhost:5508").replace(/\/$/, "");
+const RESET_PASS_EMAIL_SERVICE_URL = (process.env.PASSWORD_RESET_EMAIL_SERVICE_URL || "http://localhost:5509").replace(/\/$/, "");
 
 async function enviarTokenRecuperacaoPorEmail({ emailUser, resetToken }) {
     await axios.post(
