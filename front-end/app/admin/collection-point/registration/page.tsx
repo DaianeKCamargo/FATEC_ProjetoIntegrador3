@@ -491,6 +491,8 @@ export default function CreateCollectionPoint() {
 
                     {searchLoading && <p className={styles.statusMessage}>Buscando sugestoes...</p>}
 
+                    <div className={styles.divider} />
+
                     {addressSuggestions.length > 0 && (
                         <ul className={styles.list}>
                             {addressSuggestions.map((suggestion) => (
