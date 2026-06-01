@@ -6,6 +6,7 @@ import styles from "@/styles/admin-collection-point-registration.module.css";
 interface Address {
     street: string;
     number: string;
+    complement: string;
     district: string;
     city: string;
     state: string;
@@ -57,6 +58,7 @@ export default function CreateCollectionPoint() {
         address: {
             street: "",
             number: "",
+            complement: "",
             district: "",
             city: "",
             state: "",
@@ -260,6 +262,7 @@ export default function CreateCollectionPoint() {
             address: {
                 street: form.address.street,
                 number: form.address.number,
+                complement: form.address.complement,
                 district: form.address.district,
                 city: form.address.city,
                 postCode: form.address.postCode,
@@ -339,6 +342,13 @@ export default function CreateCollectionPoint() {
                         />
                         <input
                             className={styles.input}
+                            name="address.complement"
+                            placeholder="Complemento"
+                            value={form.address.complement}
+                            onChange={handleChange}
+                        />
+                        <input
+                            className={styles.input}
                             name="address.district"
                             placeholder="Bairro"
                             value={form.address.district}
@@ -349,13 +359,6 @@ export default function CreateCollectionPoint() {
                             name="address.city"
                             placeholder="Cidade"
                             value={form.address.city}
-                            onChange={handleChange}
-                        />
-                        <input
-                            className={styles.input}
-                            name="address.state"
-                            placeholder="Estado"
-                            value={form.address.state}
                             onChange={handleChange}
                         />
                     </div>
