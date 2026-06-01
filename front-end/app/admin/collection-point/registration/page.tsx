@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { Search } from "lucide-react";
 import styles from "@/styles/admin-collection-point-registration.module.css";
 
 interface Address {
@@ -21,6 +22,8 @@ interface ViaCepResponse {
     bairro: string;
     localidade: string;
     uf: string;
+    latitude?: number | null;
+    longitude?: number | null;
     erro?: boolean;
 }
 
@@ -69,7 +72,15 @@ export default function CreateCollectionPoint() {
     });
 
     const [loading, setLoading] = useState(false);
+    const [searchLoading, setSearchLoading] = useState(false);
     const [addressStatus, setAddressStatus] = useState("");
+    const [addressLookup, setAddressLookup] = useState({
+        state: "",
+        city: "",
+        street: "",
+    });
+    const [addressSuggestions, setAddressSuggestions] = useState<ViaCepResponse[]>([]);
+    const [showAddressLookup, setShowAddressLookup] = useState(false);
 
     function onlyDigits(value: string) {
         return value.replace(/\D/g, "");
@@ -83,6 +94,53 @@ export default function CreateCollectionPoint() {
         }
 
         return digits;
+    }
+
+    function getStateUf(state?: string) {
+        if (!state) {
+            return "";
+        }
+
+        if (state.length === 2) {
+            return state.toUpperCase();
+        }
+
+        const states: Record<string, string> = {
+            acre: "AC",
+            alagoas: "AL",
+            amapa: "AP",
+            amazonas: "AM",
+            bahia: "BA",
+            ceara: "CE",
+            distrito: "DF",
+            "distrito federal": "DF",
+            "espirito santo": "ES",
+            goias: "GO",
+            maranhao: "MA",
+            "mato grosso": "MT",
+            "mato grosso do sul": "MS",
+            "minas gerais": "MG",
+            para: "PA",
+            paraiba: "PB",
+            parana: "PR",
+            pernambuco: "PE",
+            piaui: "PI",
+            "rio de janeiro": "RJ",
+            "rio grande do norte": "RN",
+            "rio grande do sul": "RS",
+            rondonia: "RO",
+            roraima: "RR",
+            "santa catarina": "SC",
+            "sao paulo": "SP",
+            sergipe: "SE",
+            tocantins: "TO",
+        };
+        const normalizedState = state
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+
+        return states[normalizedState] || "";
     }
 
     async function geocodeAddress(address: Address) {
@@ -101,13 +159,7 @@ export default function CreateCollectionPoint() {
         }
 
         try {
-            const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=br&accept-language=pt-BR&q=${encodeURIComponent(searchAddress)}`;
-
-            const res = await fetch(url, {
-                headers: {
-                    "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
-                },
-            });
+            const res = await fetch(`/api/address/geocode?q=${encodeURIComponent(searchAddress)}`);
 
             if (!res.ok) {
                 throw new Error(`Falha ao buscar geolocalizacao (${res.status})`);
@@ -140,7 +192,7 @@ export default function CreateCollectionPoint() {
         setAddressStatus("Buscando endereco pelo CEP...");
 
         try {
-            const response = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
+            const response = await fetch(`/api/address/cep?cep=${cleanCep}`);
 
             if (!response.ok) {
                 throw new Error(`Falha ao buscar CEP (${response.status})`);
@@ -172,11 +224,13 @@ export default function CreateCollectionPoint() {
                 city: data.localidade || "",
                 state: data.uf || "",
                 postCode: formatCep(data.cep || cleanCep),
-                latitude: null,
-                longitude: null,
+                latitude: data.latitude ?? null,
+                longitude: data.longitude ?? null,
             };
 
-            const coordinates = await geocodeAddress(addressFromCep);
+            const coordinates = addressFromCep.latitude !== null && addressFromCep.longitude !== null
+                ? { latitude: addressFromCep.latitude, longitude: addressFromCep.longitude }
+                : await geocodeAddress(addressFromCep);
 
             setForm((prev) => ({
                 ...prev,
@@ -196,6 +250,72 @@ export default function CreateCollectionPoint() {
         } finally {
             setLoading(false);
         }
+    }
+
+    function handleAddressLookupChange(e: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = e.target;
+
+        setAddressLookup((prev) => ({
+            ...prev,
+            [name]: name === "state" ? value.toUpperCase().slice(0, 2) : value,
+        }));
+    }
+
+    async function fetchAddressSuggestions() {
+        const uf = getStateUf(addressLookup.state);
+        const city = addressLookup.city.trim();
+        const street = addressLookup.street.trim();
+
+        if (!uf || city.length < 3 || street.length < 3) {
+            setAddressSuggestions([]);
+            setAddressStatus("Informe UF, cidade e rua para buscar sugestoes.");
+            return;
+        }
+
+        setSearchLoading(true);
+        setAddressStatus("Buscando sugestoes pelo endereco...");
+
+        try {
+            const response = await fetch(`/api/address/cep?uf=${encodeURIComponent(uf)}&city=${encodeURIComponent(city)}&street=${encodeURIComponent(street)}`);
+
+            if (!response.ok) {
+                setAddressSuggestions([]);
+                setAddressStatus("Nao foi possivel buscar sugestoes. Confira UF, cidade e rua.");
+                return;
+            }
+
+            const data = await response.json() as ViaCepResponse[];
+            const suggestions = Array.isArray(data) ? data : [];
+
+            setAddressSuggestions(suggestions);
+            setAddressStatus(suggestions.length > 0
+                ? "Selecione uma sugestao de endereco."
+                : "Nenhuma sugestao encontrada para esse endereco.");
+        } catch (error) {
+            console.error("Erro ao buscar sugestoes de endereco:", error);
+            setAddressSuggestions([]);
+            setAddressStatus("Nao foi possivel buscar sugestoes. Tente informar o CEP.");
+        } finally {
+            setSearchLoading(false);
+        }
+    }
+
+    async function selectAddressSuggestion(suggestion: ViaCepResponse) {
+        const nextAddress: Address = {
+            ...form.address,
+            street: suggestion.logradouro || "",
+            district: suggestion.bairro || "",
+            city: suggestion.localidade || "",
+            state: suggestion.uf || "",
+            postCode: formatCep(suggestion.cep || ""),
+            latitude: null,
+            longitude: null,
+        };
+
+        await fetchAddressByCep(nextAddress.postCode, nextAddress);
+
+        setAddressSuggestions([]);
+        setShowAddressLookup(false);
     }
 
     async function updateCurrentGeolocation(address: Address) {
@@ -253,7 +373,12 @@ export default function CreateCollectionPoint() {
             form.address.latitude === null ||
             form.address.longitude === null
         ) {
-            alert("Informe um CEP valido para carregar a geolocalizacao do endereco.");
+            alert("Informe um CEP valido ou selecione um endereco pela busca para carregar a geolocalizacao.");
+            return;
+        }
+
+        if (onlyDigits(form.address.postCode).length !== 8) {
+            alert("O endereco selecionado nao retornou um CEP valido. Escolha outra sugestao ou informe o CEP manualmente.");
             return;
         }
 
@@ -292,7 +417,7 @@ export default function CreateCollectionPoint() {
         <div className={styles.container}>
             <div className={styles.panel}>
                 <h1 className={styles.title}>Cadastrar Ponto de Coleta</h1>
-                <p className={styles.subtitle}>Preencha as informacoes do ponto e informe o CEP para completar o endereco automaticamente.</p>
+                <p className={styles.subtitle}>Preencha as informacoes do ponto e informe o CEP ou busque pelo endereco para completar os dados automaticamente.</p>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <h2 className={styles.sectionTitle}>Informacoes do Proprietario</h2>
@@ -316,6 +441,68 @@ export default function CreateCollectionPoint() {
                     </div>
 
                     <h2 className={styles.sectionTitle}>Endereco</h2>
+
+                    <button
+                        className={styles.lookupToggle}
+                        type="button"
+                        onClick={() => setShowAddressLookup((prev) => !prev)}
+                    >
+                        {showAddressLookup ? "Buscar pelo CEP" : "Nao sei o CEP"}
+                    </button>
+
+                    {showAddressLookup && (
+                        <div className={styles.lookupArea}>
+                            <div className={styles.fieldGrid}>
+                                <input
+                                    className={styles.input}
+                                    name="state"
+                                    placeholder="UF"
+                                    value={addressLookup.state}
+                                    onChange={handleAddressLookupChange}
+                                />
+                                <input
+                                    className={styles.input}
+                                    name="city"
+                                    placeholder="Cidade"
+                                    value={addressLookup.city}
+                                    onChange={handleAddressLookupChange}
+                                />
+                            </div>
+
+                            <div className={styles.searchField}>
+                                <input
+                                    className={styles.searchInput}
+                                    name="street"
+                                    placeholder="Buscar por rua ou avenida"
+                                    value={addressLookup.street}
+                                    onChange={handleAddressLookupChange}
+                                />
+                                <button
+                                    className={styles.searchButton}
+                                    type="button"
+                                    onClick={fetchAddressSuggestions}
+                                    aria-label="Buscar endereco"
+                                >
+                                    <Search size={20} aria-hidden="true" />
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {searchLoading && <p className={styles.statusMessage}>Buscando sugestoes...</p>}
+
+                    {addressSuggestions.length > 0 && (
+                        <ul className={styles.list}>
+                            {addressSuggestions.map((suggestion) => (
+                                <li
+                                    key={`${suggestion.cep}-${suggestion.logradouro}-${suggestion.bairro}`}
+                                    onClick={() => selectAddressSuggestion(suggestion)}
+                                >
+                                    {[suggestion.logradouro, suggestion.bairro, suggestion.localidade, suggestion.uf, formatCep(suggestion.cep)].filter(Boolean).join(", ")}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
 
                     <div className={styles.fieldGrid}>
                         <input

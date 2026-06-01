@@ -44,6 +44,8 @@ model AddressPoint {
   district           String
   city               String
   postCode           String          @map("post_code")
+  latitude           Float
+  longitude          Float
   fkPointCollections Int             @unique @map("fk_point_collections")
   pointCollection    PointCollection @relation(fields: [fkPointCollections], references: [idPc], onDelete: Cascade)
   createdAt          DateTime        @default(now()) @map("created_at")

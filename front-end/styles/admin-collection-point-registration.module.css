@@ -87,6 +87,64 @@
   margin-bottom: 0.25rem;
 }
 
+.lookupToggle {
+  align-self: flex-start;
+  border: none;
+  background: transparent;
+  color: #8a7414;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.2rem 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lookupToggle:hover {
+  color: #6e5c10;
+}
+
+.lookupArea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.searchField {
+  display: flex;
+  width: 100%;
+}
+
+.searchField .searchInput {
+  margin-bottom: 0;
+  border-radius: 12px 0 0 12px;
+}
+
+.searchButton {
+  width: 52px;
+  flex: 0 0 52px;
+  border: 1px solid #e4d49e;
+  border-left: none;
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(135deg, #dabe25 0%, #c5a51a 100%);
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchButton:hover {
+  filter: brightness(0.98);
+  box-shadow: 0 8px 18px rgba(212, 178, 37, 0.18);
+}
+
+.searchButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 178, 37, 0.18);
+}
+
 .statusMessage {
   margin: -0.25rem 0 0;
   color: #5f5428;
@@ -109,6 +167,12 @@
 .submitButton:hover {
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(212, 178, 37, 0.25);
+}
+
+.divider {
+  height: 1px;
+  background: #f3ecd5;
+  margin: 1.5rem 0;
 }
 
 .list {
