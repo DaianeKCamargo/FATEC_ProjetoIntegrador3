@@ -6,7 +6,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 const app = express();
 app.use(express.json());
 
-const PORT = Number(process.env.MS_RESET_PASS_EMAIL_PORT || 5508);
+const PORT = Number(process.env.MS_RESET_PASS_EMAIL_PORT || 5509);
 const APP_NAME = process.env.APP_NAME || 'Tampets';
 const EMAIL_DRY_RUN = String(process.env.EMAIL_DRY_RUN || 'false').toLowerCase() === 'true';
 

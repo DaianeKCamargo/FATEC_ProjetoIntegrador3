@@ -1,8 +1,9 @@
 "use client"
 
-import Link from 'next/link'
+import { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { authApi } from '@/services/api'
 import styles from '../../../styles/login.module.css'
 
 type ResetStep = 'email' | 'token' | 'password'
@@ -36,43 +37,85 @@ export default function ResetPasswordPage() {
     const [loading, setLoading] = useState(false)
     const router = useRouter()
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setMessage('')
 
-        if (step === 'email') {
-            setMessage('')
-            setStep('token')
-            return
-        }
+        try {
+            if (step === 'email') {
+                setLoading(true)
 
-        if (step === 'token') {
-            if (!token.trim()) {
-                setMessage('Informe o token recebido por e-mail.')
+                await authApi.post('/credentials/recuperacao/solicitar', {
+                    emailUser: email,
+                })
+
+                setMessage('Token enviado para o e-mail cadastrado.')
+                setStep('token')
                 return
             }
 
-            setMessage('')
-            setStep('password')
-            return
-        }
+            if (step === 'token') {
+                setLoading(true)
 
-        if (password.length < 6) {
-            setMessage('A nova senha deve ter pelo menos 6 caracteres.')
-            return
-        }
+                await authApi.post('/credentials/recuperacao/validar', {
+                    emailUser: email,
+                    resetToken: token,
+                })
 
-        if (password !== confirmPassword) {
-            setMessage('A confirmação de senha precisa ser igual à nova senha.')
-            return
-        }
+                setMessage('Token validado com sucesso.')
+                setStep('password')
+                return
+            }
 
-        setLoading(true)
-        setMessage('Senha atualizada com sucesso. Redirecionando para o login...')
+            if (password.length < 6) {
+                setMessage('A nova senha deve ter pelo menos 6 caracteres.')
+                return
+            }
 
-        window.setTimeout(() => {
+            if (password !== confirmPassword) {
+                setMessage('A confirmação de senha precisa ser igual à nova senha.')
+                return
+            }
+
+            setLoading(true)
+
+            await authApi.post('/credentials/recuperacao/redefinir', {
+                emailUser: email,
+                resetToken: token,
+                novaSenha: password,
+            })
+
+            setMessage('Senha atualizada com sucesso. Redirecionando para o login...')
+            window.setTimeout(() => {
+                setLoading(false)
+                router.push('/login')
+            }, 900)
+        } catch (error: unknown) {
+            let fallbackMessage = 'Não foi possível concluir a recuperação de senha.'
+
+            if (error instanceof AxiosError) {
+                const status = error.response?.status
+                const backendMessage = error.response?.data?.message
+
+                if (status === 404) {
+                    fallbackMessage = backendMessage || 'E-mail não encontrado.'
+                } else if (status === 401) {
+                    fallbackMessage = backendMessage || 'Token inválido ou senha incorreta.'
+                } else if (status === 400) {
+                    fallbackMessage = backendMessage || 'Dados inválidos para continuar.'
+                } else if (status === 502) {
+                    fallbackMessage = backendMessage || 'Falha ao enviar o e-mail de recuperação.'
+                } else if (!error.response) {
+                    fallbackMessage = 'Não foi possível conectar à API de autenticação.'
+                } else {
+                    fallbackMessage = backendMessage || `Falha ao processar a solicitação. Status HTTP ${status ?? 'desconhecido'}.`
+                }
+            }
+
+            setMessage(fallbackMessage)
+        } finally {
             setLoading(false)
-            router.push('/login')
-        }, 900)
+        }
     }
 
     return (
@@ -235,7 +278,6 @@ export default function ResetPasswordPage() {
                         </button>
                     </div>
                 </form>
-
             </div>
         </div>
     )
