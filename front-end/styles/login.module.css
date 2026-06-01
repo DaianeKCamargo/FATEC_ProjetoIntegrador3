@@ -272,23 +272,27 @@
     align-items: center;
     justify-content: center;
     min-height: 3.15rem;
-    padding: 0.85rem 1.1rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #5f81b7 0%, #82b0e3 100%);
+    color: white;
+    border: none;
     border-radius: 6px;
-    border: 1px solid rgba(95, 129, 183, 0.18);
-    background: rgba(255, 255, 255, 0.88);
-    color: #2c4d7d;
-    font-size: 1rem;
+    font-size: 1.3rem;
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
     white-space: nowrap;
+    margin-top: 0.5rem;
 }
 
 .resetSecondaryButton:hover {
-    border-color: rgba(95, 129, 183, 0.34);
-    box-shadow: 0 8px 20px rgba(80, 80, 80, 0.06);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(95, 129, 183, 0.24);
+}
+
+.resetSecondaryButton:active {
+    transform: translateY(0);
 }
 
 .resetPrimaryButton {
