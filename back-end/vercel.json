@@ -2,6 +2,10 @@
     "version": 2,
     "rewrites": [
         {
+            "source": "/api/reset-pass-email/:path*",
+            "destination": "/api/reset-pass-email/index"
+        },
+        {
             "source": "/(.*)",
             "destination": "/api/index"
         }
