@@ -2,6 +2,7 @@
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Search } from "lucide-react";
+import Link from "next/link";
 import styles from "@/styles/admin-collection-point-registration.module.css";
 
 interface Address {
@@ -415,6 +416,11 @@ export default function CreateCollectionPoint() {
 
     return (
         <div className={styles.container}>
+            <div className={styles.headerActions}>
+                <Link href="/admin" className={styles.backButton}>
+                    Voltar ao menu principal
+                </Link>
+            </div>
             <div className={styles.panel}>
                 <h1 className={styles.title}>Cadastrar Ponto de Coleta</h1>
                 <p className={styles.subtitle}>Preencha as informacoes do ponto e informe o CEP ou busque pelo endereco para completar os dados automaticamente.</p>
