@@ -1,4 +1,22 @@
+const axios = require("axios");
 const model = require("../models/admin-usersModels");
+
+const RESET_PASS_EMAIL_SERVICE_URL = (process.env.PASSWORD_RESET_EMAIL_SERVICE_URL || "http://localhost:5508").replace(/\/$/, "");
+
+async function enviarTokenRecuperacaoPorEmail({ emailUser, resetToken }) {
+    await axios.post(
+        `${RESET_PASS_EMAIL_SERVICE_URL}/api/reset-pass-email/send-token`,
+        {
+            email: emailUser,
+            token: resetToken,
+            expiresInMinutes: 60,
+            subject: "Token de recuperacao de senha - Tampets",
+        },
+        {
+            timeout: 10000,
+        }
+    );
+}
 
 
 async function listar(req, res) {
@@ -119,15 +137,25 @@ async function solicitarRecuperacao(req, res) {
 
         const resetToken = await model.gerarTokenRecuperacao(emailUser);
 
-        // TODO: Enviar email com link de recuperação
-        // const linkRecuperacao = `${process.env.APP_URL}/recuperar-senha?email=${emailUser}&token=${resetToken}`;
-        // await enviarEmail(emailUser, linkRecuperacao);
+        try {
+            await enviarTokenRecuperacaoPorEmail({ emailUser, resetToken });
+        } catch (erroEmail) {
+            await model.limparTokenRecuperacao(emailUser);
+
+            return res.status(502).json({
+                message: "Não foi possível enviar o e-mail de recuperação. Tente novamente em instantes.",
+                error: erroEmail.message,
+            });
+        }
 
         return res.status(200).json({
-            message: "Email de recuperação enviado (implementar envio de email)",
-            resetToken // Remover em produção
+            message: "Token de recuperação enviado para o e-mail cadastrado.",
         });
     } catch (erro) {
+        if (erro.message === "Email não encontrado") {
+            return res.status(404).json({ message: erro.message });
+        }
+
         return res.status(400).json({ message: erro.message });
     }
 }

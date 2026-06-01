@@ -174,6 +174,18 @@ async function redefinirSenha(emailUser, resetToken, novaSenha) {
     return sanitizarAdmin(admin);
 }
 
+async function limparTokenRecuperacao(emailUser) {
+    await prisma.adminUser.update({
+        where: { emailUser },
+        data: {
+            resetToken: null,
+            resetTokenExpiry: null,
+        },
+    });
+
+    return true;
+}
+
 async function atualizar(idAdmin, dados) {
     const admin = await prisma.adminUser.findUnique({
         where: { idAdmin }
@@ -246,6 +258,7 @@ module.exports = {
     gerarTokenRecuperacao,
     validarTokenRecuperacao,
     redefinirSenha,
+    limparTokenRecuperacao,
     atualizar,
     remover
 };
