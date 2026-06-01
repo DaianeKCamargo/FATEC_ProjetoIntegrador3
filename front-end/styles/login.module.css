@@ -74,6 +74,11 @@
     animation: slideIn 0.45s ease-in-out;
 }
 
+.resetForm {
+    composes: loginForm;
+    max-width: 560px;
+}
+
 .welcomePanel {
     display: flex;
     flex-direction: column;
@@ -91,6 +96,34 @@
     min-height: 100%;
     position: relative;
     overflow: hidden;
+}
+
+.resetInfoPanel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 3rem;
+    border-radius: 32px;
+    color: #1f2b3d;
+    background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.94)),
+        rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(95, 129, 183, 0.16);
+    box-shadow: 0 18px 40px rgba(80, 80, 80, 0.08);
+    min-height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.resetForm::before {
+    content: '';
+    position: absolute;
+    inset: 14px auto 14px 12px;
+    width: 6px;
+    background: linear-gradient(180deg, #5f81b7 0%, #c06ad8 100%);
+    border-radius: 999px;
 }
 
 .welcomePanel::before {
@@ -147,6 +180,139 @@
     text-transform: none;
     min-height: 4.4rem;
     animation: phraseReveal 0.45s ease;
+}
+
+.resetStepList {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+    width: 100%;
+    max-width: 34rem;
+}
+
+.resetStepItem,
+.resetStepItemActive {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1rem 1rem 1rem 1.1rem;
+    border-radius: 18px;
+    border: 1px solid rgba(95, 129, 183, 0.16);
+    background: rgba(255, 255, 255, 0.76);
+    box-shadow: 0 10px 24px rgba(80, 80, 80, 0.05);
+    color: #31435c;
+}
+
+.resetStepItem strong,
+.resetStepItemActive strong {
+    font-size: 1.05rem;
+    line-height: 1.2;
+}
+
+.resetStepItem span,
+.resetStepItemActive span {
+    font-size: 0.98rem;
+    line-height: 1.45;
+    color: #5a6678;
+}
+
+.resetStepItemActive {
+    border-color: rgba(95, 129, 183, 0.4);
+    background: linear-gradient(135deg, rgba(95, 129, 183, 0.12), rgba(192, 106, 216, 0.1));
+}
+
+.resetHeader {
+    display: grid;
+    gap: 0.55rem;
+    margin-bottom: 1.25rem;
+}
+
+.resetEyebrow {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2c4d7d;
+}
+
+.resetFormTitle {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.8vw, 2rem);
+    line-height: 1.15;
+    color: #1f2b3d;
+}
+
+.resetFormText {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.55;
+    color: #5a6678;
+}
+
+.resetFields {
+    display: grid;
+    gap: 0.05rem;
+}
+
+.resetActions {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.resetSecondaryButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.15rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: 6px;
+    border: 1px solid rgba(95, 129, 183, 0.18);
+    background: rgba(255, 255, 255, 0.88);
+    color: #2c4d7d;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.resetSecondaryButton:hover {
+    border-color: rgba(95, 129, 183, 0.34);
+    box-shadow: 0 8px 20px rgba(80, 80, 80, 0.06);
+    transform: translateY(-1px);
+}
+
+.resetPrimaryButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.15rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, #9d43c2 0%, #c06ad8 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.resetPrimaryButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(157, 67, 194, 0.24);
+}
+
+.resetPrimaryButton:active {
+    transform: translateY(0);
 }
 
 @keyframes phraseReveal {
@@ -257,6 +423,20 @@
     .welcomePanel {
         padding: 2rem;
     }
+
+    .resetInfoPanel {
+        padding: 2rem;
+    }
+
+    .resetActions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .resetSecondaryButton,
+    .loginButton {
+        width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -272,6 +452,17 @@
     .welcomePanel {
         padding: 1.5rem;
         border-radius: 22px;
+    }
+
+    .resetInfoPanel {
+        padding: 1.25rem 1.25rem 1.4rem;
+        border-radius: 20px;
+    }
+
+    .resetForm::before {
+        inset: 10px auto 10px 10px;
+        width: 5px;
+        border-radius: 999px;
     }
 
     .loginLabel {
