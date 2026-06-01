@@ -3,8 +3,8 @@
 import { usePathname, useRouter } from 'next/navigation'
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState, ReactNode } from 'react'
 
-const SESSION_DURATION_MS = 30 * 60 * 1000
-const SESSION_COOKIE_MAX_AGE = 30 * 60
+const SESSION_DURATION_MS = 12 * 60 * 60 * 1000
+const SESSION_COOKIE_MAX_AGE = 12 * 60 * 60
 const SESSION_EXPIRES_AT_KEY = 'tampets_admin_auth_expiresAt'
 
 interface AuthContextType {
