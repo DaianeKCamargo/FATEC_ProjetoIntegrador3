@@ -87,6 +87,12 @@
   margin-bottom: 0.25rem;
 }
 
+.statusMessage {
+  margin: -0.25rem 0 0;
+  color: #5f5428;
+  font-size: 0.92rem;
+}
+
 .submitButton {
   margin-top: 0.5rem;
   padding: 0.9rem 1.2rem;
