@@ -414,6 +414,28 @@
     line-height: 1.45;
 }
 
+.loginFeedbackSuccess {
+    margin: 0.25rem 0 0.9rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: rgba(46, 125, 50, 0.12);
+    color: #1f6a32;
+    border: 1px solid rgba(46, 125, 50, 0.2);
+    font-size: 1rem;
+    line-height: 1.45;
+}
+
+.loginFeedbackError {
+    margin: 0.25rem 0 0.9rem;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    background: rgba(192, 106, 216, 0.12);
+    color: #8a2d46;
+    border: 1px solid rgba(192, 106, 216, 0.18);
+    font-size: 1rem;
+    line-height: 1.45;
+}
+
 @media (max-width: 980px) {
     .loginContainer {
         padding: 1rem;

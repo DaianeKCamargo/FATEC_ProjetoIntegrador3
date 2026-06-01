@@ -34,12 +34,14 @@ export default function ResetPasswordPage() {
     const [activeTab, setActiveTab] = useState<'login' | 'reset'>('reset')
     const [step, setStep] = useState<ResetStep>('email')
     const [message, setMessage] = useState('')
+    const [messageType, setMessageType] = useState<'success' | 'error'>('success')
     const [loading, setLoading] = useState(false)
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setMessage('')
+        setMessageType('success')
 
         try {
             if (step === 'email') {
@@ -50,6 +52,7 @@ export default function ResetPasswordPage() {
                 })
 
                 setMessage('Token enviado para o e-mail cadastrado.')
+                setMessageType('success')
                 setStep('token')
                 return
             }
@@ -63,6 +66,7 @@ export default function ResetPasswordPage() {
                 })
 
                 setMessage('Token validado com sucesso.')
+                setMessageType('success')
                 setStep('password')
                 return
             }
@@ -86,6 +90,7 @@ export default function ResetPasswordPage() {
             })
 
             setMessage('Senha atualizada com sucesso. Redirecionando para o login...')
+            setMessageType('success')
             window.setTimeout(() => {
                 setLoading(false)
                 router.push('/login')
@@ -113,6 +118,7 @@ export default function ResetPasswordPage() {
             }
 
             setMessage(fallbackMessage)
+            setMessageType('error')
         } finally {
             setLoading(false)
         }
@@ -177,7 +183,10 @@ export default function ResetPasswordPage() {
                     </div>
 
                     {message && (
-                        <p className={styles.loginFeedback} role="alert">
+                        <p
+                            className={messageType === 'success' ? styles.loginFeedbackSuccess : styles.loginFeedbackError}
+                            role="alert"
+                        >
                             {message}
                         </p>
                     )}

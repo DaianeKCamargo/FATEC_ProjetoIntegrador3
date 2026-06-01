@@ -87,7 +87,8 @@ app.post('/api/reset-pass-email/send-token', async (req, res) => {
         }
 
         const transporter = createTransporter();
-        const from = process.env.MAIL_FROM?.trim() || process.env.SMTP_USER?.trim();
+        const from = process.env.SMTP_USER?.trim() || process.env.MAIL_FROM?.trim();
+        const replyTo = process.env.MAIL_FROM?.trim() || from;
 
         if (!from) {
             return res.status(500).json({ message: 'MAIL_FROM ou SMTP_USER nao configurado.' });
@@ -95,6 +96,7 @@ app.post('/api/reset-pass-email/send-token', async (req, res) => {
 
         const info = await transporter.sendMail({
             from,
+            replyTo,
             to: email,
             subject,
             html,
