@@ -1,90 +1,148 @@
 .container {
   min-height: 100vh;
-  background-color: #eef3f8;
-  padding: 60px 40px;
+  padding: 4rem;
+  background: linear-gradient(to right, #ffffff, #ffffff, #edf6ff);
+  color: #1f2b3d;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
 }
 
 .header {
+  width: min(100%, 1240px);
+  margin: 0 auto 2rem;
+  padding: 3rem;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(95, 129, 183, 0.12);
+  box-shadow: 0 18px 40px rgba(80, 80, 80, 0.08);
   text-align: center;
-  margin-bottom: 50px;
+  backdrop-filter: blur(10px);
 }
 
 .header h1 {
-  font-size: 42px;
-  color: #1f2937;
-  margin-bottom: 16px;
+  margin: 0;
+  color: #1f2b3d;
+  font-size: clamp(3rem, 5vw, 5.2rem);
+  line-height: 1.05;
+  font-weight: 800;
 }
 
 .header p {
-  font-size: 18px;
-  color: #4b5563;
+  max-width: 64rem;
+  margin: 1.2rem auto 0;
+  color: #4f5d72;
+  font-size: 1.55rem;
+  line-height: 1.6;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(320px, 1fr)
-  );
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.6rem;
+  width: min(100%, 1240px);
+  margin: 0 auto;
+}
+
+.grid > p {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 2rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(95, 129, 183, 0.12);
+  box-shadow: 0 14px 30px rgba(80, 80, 80, 0.08);
+  color: #4f5d72;
+  font-size: 1.35rem;
+  text-align: center;
 }
 
 .card {
-  background-color: white;
-  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
   overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-
-  transition: 0.3s;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(95, 129, 183, 0.12);
+  box-shadow: 0 14px 30px rgba(80, 80, 80, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(80, 80, 80, 0.12);
 }
 
 .imagem {
   width: 100%;
-  height: 240px;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
+  background: rgba(95, 129, 183, 0.08);
 }
 
 .cardBody {
-  padding: 22px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding: 1.5rem;
 }
 
 .cardBody h2 {
-  font-size: 22px;
-  color: #1f2937;
-  margin-bottom: 20px;
+  margin: 0;
+  color: #1f2b3d;
+  font-size: 1.65rem;
+  line-height: 1.25;
+  font-weight: 800;
 }
 
 .botao {
-  display: inline-block;
-
-  background-color: #16a34a;
-  color: white;
-
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 4rem;
+  margin-top: auto;
+  padding: 0.95rem 1.5rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #9d43c2, #5f81b7);
+  color: #fff;
+  box-shadow: 0 14px 28px rgba(95, 129, 183, 0.28);
+  font-size: 1.2rem;
+  font-weight: 800;
   text-decoration: none;
-
-  padding: 12px 20px;
-
-  border-radius: 10px;
-
-  transition: 0.3s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .botao:hover {
-  background-color: #15803d;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 32px rgba(95, 129, 183, 0.32);
 }
 
 @media (max-width: 768px) {
-
   .container {
-    padding: 30px 20px;
+    padding: 1rem;
   }
 
-  .header h1 {
-    font-size: 32px;
+  .header {
+    padding: 2rem 1.5rem;
+    border-radius: 24px;
   }
 
+  .header p {
+    font-size: 1.18rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cardBody h2 {
+    font-size: 1.4rem;
+  }
+
+  .botao {
+    width: 100%;
+  }
 }

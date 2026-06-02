@@ -9,6 +9,7 @@ import { BiSolidHomeHeart, BiChevronDown } from "react-icons/bi";
 export default function NavbarLogout() {
     const [role, setRole] = useState<string | null>(null);
     const [openMenu, setOpenMenu] = useState(false);
+    const [openProjectDropdown, setOpenProjectDropdown] = useState(false);
 
     const socialLinks = [
         {
@@ -60,6 +61,7 @@ export default function NavbarLogout() {
 
     const handleFechado = () => setOpenMenu(false);
     const handleAberto = () => setOpenMenu(true);
+    const handleProjectLinkClick = () => setOpenProjectDropdown(false);
 
 
     return (
@@ -81,15 +83,19 @@ export default function NavbarLogout() {
 
                 {/* DESKTOP */}
                 <div className={styles.navitems}>
-                    <details className={styles.dropdown}>
+                    <details
+                        className={styles.dropdown}
+                        open={openProjectDropdown}
+                        onToggle={(event) => setOpenProjectDropdown(event.currentTarget.open)}
+                    >
                         <summary className={styles.dropdownToggle}>
                             O Projeto <BiChevronDown className={styles.dropdownIcon} />
                         </summary>
                         <div className={styles.dropdownMenu}>
-                            <Link className={styles.item} href="/user/about-us">
+                            <Link className={styles.item} href="/user/about-us" onClick={handleProjectLinkClick}>
                                 Sobre Nós
                             </Link>
-                            <Link className={styles.item} href="/user/news">
+                            <Link className={styles.item} href="/user/news" onClick={handleProjectLinkClick}>
                                 Tampets na Mídia
                             </Link>
                         </div>
