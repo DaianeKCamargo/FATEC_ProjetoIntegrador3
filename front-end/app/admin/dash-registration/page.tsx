@@ -367,7 +367,7 @@ export default function DashRegistration() {
                   <div key={item.id} className={styles.card}>
 
                     <div className={styles.inlineField}>
-                      <label>Data:</label>
+                      <h5>Data:</h5>
                       <input
                         type="date"
                         value={animalForm.data}
@@ -376,7 +376,7 @@ export default function DashRegistration() {
                     </div>
 
                     <div className={styles.inlineField}>
-                      <label>Tipo:</label>
+                      <h5>Tipo:</h5>
                       <select
                         value={animalForm.tipoAnimal}
                         onChange={e=>setAnimalForm({...animalForm,tipoAnimal:e.target.value})}
@@ -387,7 +387,7 @@ export default function DashRegistration() {
                     </div>
 
                     <div className={styles.inlineField}>
-                      <label>Qtd:</label>
+                      <h5>Qtd:</h5>
                       <input
                         type="number"
                         value={animalForm.quantidade}
@@ -413,17 +413,17 @@ export default function DashRegistration() {
                 <div key={item.id} className={styles.card}>
 
                   <div className={styles.inlineField}>
-                    <label>Data:</label>
+                    <h5>Data:</h5>
                     <span>{new Date(item.data).toLocaleDateString()}</span>
                   </div>
 
                   <div className={styles.inlineField}>
-                    <label>Tipo:</label>
+                    <h5>Tipo:</h5>
                     <span>{item.tipoAnimal}</span>
                   </div>
 
                   <div className={styles.inlineField}>
-                    <label>Qtd:</label>
+                    <h5>Qtd:</h5>
                     <span>{item.quantidade}</span>
                   </div>
 
