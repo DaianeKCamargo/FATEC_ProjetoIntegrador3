@@ -166,11 +166,14 @@
 }
 
 .filter {
-    justify-content: space-between;
-    padding: 0.85rem;
+    justify-content: center;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.3rem;
     border: 1px solid rgba(214, 178, 37, 0.18);
-    border-radius: 18px;
+    border-radius: 999px;
     background: rgba(214, 178, 37, 0.10);
+    justify-self: center;
 }
 
 .filterItem,
@@ -181,6 +184,10 @@
     justify-content: center;
     gap: 0.3rem;
     text-align: center;
+}
+
+.filterItem {
+    padding: 0 0.35rem 0 0.75rem;
 }
 
 .inlineField {
@@ -213,6 +220,13 @@
     background: #fff;
     font: inherit;
     font-size: 1.1rem;
+}
+
+.filter input,
+.filter select {
+    min-width: 9rem;
+    border-radius: 999px;
+    background: #fffef9;
 }
 
 .inlineField input,
@@ -251,6 +265,17 @@
     font-weight: 800;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.filter button {
+    border-radius: 999px;
+    color: #5a4a15;
+    background: transparent;
+}
+
+.filter button:hover {
+    color: #fff;
+    background: linear-gradient(135deg, #dabe25 0%, #c5a51a 100%);
 }
 
 .row button:hover,
@@ -359,6 +384,12 @@
     .filter button,
     .actions button {
         width: 100%;
+    }
+
+    .filter {
+        width: 100%;
+        border-radius: 18px;
+        padding: 0.75rem;
     }
 
     .inlineField,

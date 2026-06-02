@@ -6,6 +6,18 @@ import capsService from '@/services/capsService';
 import animalsService from '@/services/animalsService';
 import styles from '@/styles/admin-dash-registration-records.module.css';
 
+function formatLocalDate(value: string) {
+  if (!value) return '';
+
+  const [year, month, day] = value.slice(0, 10).split('-').map(Number);
+
+  if (!year || !month || !day) {
+    return value;
+  }
+
+  return new Date(year, month - 1, day).toLocaleDateString('pt-BR');
+}
+
 export default function DashRegistration() {
   // ✅ DADOS
   const [caps, setCaps] = useState<any[]>([]);
@@ -120,17 +132,21 @@ export default function DashRegistration() {
 
   // ✅ FILTROS
   const filteredCaps = useMemo(() => {
-    return caps.filter(c =>
-      !filterCapDate || c.data.slice(0,7) === filterCapDate
-    );
+    return caps
+      .filter(c =>
+        !filterCapDate || c.data.slice(0,7) === filterCapDate
+      )
+      .sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
   },[caps,filterCapDate]);
 
   const filteredAnimals = useMemo(() => {
-    return animals.filter(a => {
-      const byDate = !filterAnimalDate || a.data.slice(0,7) === filterAnimalDate;
-      const byType = filterType === 'todos' || a.tipoAnimal === filterType;
-      return byDate && byType;
-    });
+    return animals
+      .filter(a => {
+        const byDate = !filterAnimalDate || a.data.slice(0,7) === filterAnimalDate;
+        const byType = filterType === 'todos' || a.tipoAnimal === filterType;
+        return byDate && byType;
+      })
+      .sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
   },[animals,filterAnimalDate,filterType]);
 
   const summary = useMemo(() => {
@@ -173,7 +189,7 @@ export default function DashRegistration() {
       {loading ? <p>Carregando...</p> : (
 
       <div className={styles.panel}>
-        <h1 className={styles.mainTitle}>Registro</h1>
+        <h1 className={styles.mainTitle}>Registros </h1>
 
         <section className={styles.summaryPanel}>
           <h2 className={styles.summaryTitle}>Quantidades</h2>
@@ -295,7 +311,7 @@ export default function DashRegistration() {
 
                   <div className={styles.inlineField}>
                     <label>Data:</label>
-                    <span>{new Date(item.data).toLocaleDateString()}</span>
+                    <span>{formatLocalDate(item.data)}</span>
                   </div>
 
                   <div className={styles.inlineField}>
@@ -463,7 +479,7 @@ export default function DashRegistration() {
 
                   <div className={styles.inlineField}>
                     <label>Data:</label>
-                    <span>{new Date(item.data).toLocaleDateString()}</span>
+                    <span>{formatLocalDate(item.data)}</span>
                   </div>
 
                   <div className={styles.inlineField}>

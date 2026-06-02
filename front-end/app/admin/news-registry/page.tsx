@@ -23,9 +23,9 @@ export default function CadastroNoticias() {
   const [noticias, setNoticias] = useState<Noticia[]>([]);
   const [editandoId, setEditandoId] = useState<number | null>(null);
 
-  // =========================
+
   // CARREGAR NOTÍCIAS
-  // =========================
+
   const carregarNoticias = async () => {
     try {
 
@@ -59,9 +59,9 @@ export default function CadastroNoticias() {
 
     return () => window.clearTimeout(timeoutId);
   }, []);
-  // =========================
+ 
   // INPUTS
-  // =========================
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -71,9 +71,8 @@ export default function CadastroNoticias() {
     });
   };
 
-  // =========================
+
   // SALVAR
-  // =========================
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -121,9 +120,9 @@ export default function CadastroNoticias() {
     }
   };
 
-  // =========================
+
   // EDITAR
-  // =========================
+  
   const editarNoticia = (noticia: Noticia) => {
 
     setEditandoId(noticia.id);
@@ -135,9 +134,9 @@ export default function CadastroNoticias() {
     });
   };
 
-  // =========================
+ 
   // EXCLUIR
-  // =========================
+
   const excluirNoticia = async (id: number) => {
 
     const confirmar = confirm(
@@ -172,12 +171,6 @@ export default function CadastroNoticias() {
   return (
     <div className={styles.container}>
 
-      <div className={styles.headerActions}>
-        <Link href="/admin" className={styles.backButton}>
-          Voltar ao menu principal
-        </Link>
-      </div>
-
       {/* FORM */}
       <div className={styles.formCard}>
 
@@ -187,7 +180,7 @@ export default function CadastroNoticias() {
             : "Cadastro de Notícias"}
         </h2>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.formGrid}>
 
           <div className={styles.inputGroup}>
             <label>Título</label>
@@ -242,7 +235,7 @@ export default function CadastroNoticias() {
 
       </div>
 
-      {/* LISTA */}
+      {/* LISTA  */}
       <div>
 
         <h3 className={styles.subtitulo}>

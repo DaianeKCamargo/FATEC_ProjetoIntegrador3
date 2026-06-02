@@ -16,7 +16,7 @@
 }
 
 .formCard {
-    width: min(100%, 72rem);
+    width: min(100%, 118rem);
     margin: 0 auto 3.2rem;
     background-color: #fff;
     padding: 2.4rem;
@@ -36,20 +36,28 @@
 .subtitulo {
     margin: 0 0 1.6rem;
     color: var(--muted-color);
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 700;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(14rem, 0.7fr);
+    gap: 1.4rem;
+    align-items: end;
 }
 
 .inputGroup {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1.6rem;
+    margin-bottom: 0;
 }
 
 .inputGroup label {
     margin-bottom: 0.8rem;
     font-weight: 700;
     color: var(--text-color);
+    font-size: 1.4rem;
 }
 
 .inputGroup input,
@@ -87,6 +95,12 @@
     display: block;
     font-weight: 700;
     font-size: 1.6rem;
+}
+
+.formGrid .botaoCadastrar,
+.formGrid .botaoEditar {
+    grid-column: auto;
+    margin-top: 0;
 }
 
 .botaoCadastrar {
@@ -128,36 +142,33 @@
 
 .cardBody {
     padding: 1.6rem;
+    text-align: center;
 }
 
-.headerActions {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 1.6rem;
+.cardBody h5 {
+    margin: 0 0 1rem;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.25;
 }
 
-.backButton {
+.cardBody .botaoLink,
+.cardBody .botaoEditar,
+.cardBody .botaoExcluir {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem 1.4rem;
-    border-radius: 999px;
-    background: rgba(95, 129, 183, 0.1);
-    color: #2c4d7d;
-    border: 1px solid rgba(95, 129, 183, 0.18);
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    width: auto;
+    min-width: 9rem;
+    margin-top: 1rem;
+    margin-right: 0.6rem;
+    padding: 0.9rem 1rem;
+    font-size: 1.35rem;
 }
 
-.backButton:hover {
-    transform: translateY(-1px);
-    background: rgba(95, 129, 183, 0.14);
-    box-shadow: 0 6px 16px rgba(44, 61, 85, 0.08);
-}
-
-.backButton:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(95, 129, 183, 0.18);
+@media (max-width: 900px) {
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
 }
