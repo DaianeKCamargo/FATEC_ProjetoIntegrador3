@@ -10,7 +10,6 @@ const capsService = {
     const response = await api.get(`/caps-registration/${id}`);
     return response.data;
   },
-
   create: async (data: any) => {
     const response = await api.post("/caps-registration", data);
     return response.data;

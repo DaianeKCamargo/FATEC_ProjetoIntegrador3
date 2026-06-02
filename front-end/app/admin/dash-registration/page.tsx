@@ -127,13 +127,13 @@ export default function DashRegistration() {
   // ✅ FILTROS
   const filteredCaps = useMemo(() => {
     return caps.filter(c =>
-      !filterCapDate || c.data.slice(0,10) === filterCapDate
+      !filterCapDate || c.data.slice(0,7) === filterCapDate
     );
   },[caps,filterCapDate]);
 
   const filteredAnimals = useMemo(() => {
     return animals.filter(a => {
-      const byDate = !filterAnimalDate || a.data.slice(0,10) === filterAnimalDate;
+      const byDate = !filterAnimalDate || a.data.slice(0,7) === filterAnimalDate;
       const byType = filterType === 'todos' || a.tipoAnimal === filterType;
       return byDate && byType;
     });
@@ -162,26 +162,37 @@ export default function DashRegistration() {
             <h3>Cadastrar</h3>
 
             <form onSubmit={createCap} className={styles.row}>
-              <input type="date"
-                value={capCreateForm.data}
-                onChange={e=>setCapCreateForm({...capCreateForm,data:e.target.value})}
-              />
 
-              <input type="number"
-                value={capCreateForm.quantidadeKg}
-                onChange={e=>setCapCreateForm({...capCreateForm,quantidadeKg:e.target.value})}
-              />
+              <div className={styles.inlineField}>
+                <h5>Data:</h5>
+                <input type="date"
+                  value={capCreateForm.data}
+                  onChange={e=>setCapCreateForm({...capCreateForm,data:e.target.value})}
+                />
+              </div>
+
+              <div className={styles.inlineField}>
+                <h5>Kg:</h5>
+                <input type="number"
+                  value={capCreateForm.quantidadeKg}
+                  onChange={e=>setCapCreateForm({...capCreateForm,quantidadeKg:e.target.value})}
+                />
+              </div>
 
               <button type="submit">Salvar</button>
+
             </form>
           </div>
 
           {/* FILTER */}
           <div className={styles.filter}>
-            <input type="date"
-              value={filterCapDate}
-              onChange={e=>setFilterCapDate(e.target.value)}
-            />
+            <div className={styles.filterItem}>
+              <h5>Mês:</h5>
+              <input type="month"
+                value={filterCapDate}
+                onChange={e=>setFilterCapDate(e.target.value)}
+              />
+            </div>
             <button onClick={()=>setFilterCapDate('')}>Limpar</button>
           </div>
 
@@ -189,57 +200,93 @@ export default function DashRegistration() {
           <div className={styles.list}>
             {filteredCaps.map(item => {
 
-              const qtd = item.quantidade_tampinhas ?? Math.round(item.quantidadeKg * 500);
+              const qtd = 
+                item.quantidade_tampinhas ??
+                Math.round(Number(item.quantidadeKg || 0) * 500);
 
-              return editingCapId === item.id ? (
+              if (editingCapId === item.id) {
+                return (
+                  <div key={item.id} className={styles.card}>
+
+                    <div className={styles.inlineField}>
+                      <h5>Data:</h5>
+                      <input
+                        type="date"
+                        value={capForm.data}
+                        onChange={e=>setCapForm({...capForm,data:e.target.value})}
+                      />
+                    </div>
+
+                    <div className={styles.inlineField}>
+                      <h5>Kg:</h5>
+                      <input
+                        type="number"
+                        value={capForm.quantidadeKg}
+                        onChange={e=>setCapForm({...capForm,quantidadeKg:e.target.value})}
+                      />
+                    </div>
+
+                    <div className={styles.inlineField}>
+                      <h5>Qtd:</h5>
+                      <span>{qtd}</span>
+                    </div>
+
+                    <div className={styles.actions}>
+                      <button type="button" onClick={updateCap}>
+                        <MdSave/> Salvar
+                      </button>
+
+                      <button type="button" onClick={() => setEditingCapId(null)}>
+                        <MdClose/> Cancelar
+                      </button>
+                    </div>
+
+                  </div>
+                );
+              }  return (
                 <div key={item.id} className={styles.card}>
 
-                  <input type="date"
-                    value={capForm.data}
-                    onChange={e=>setCapForm({...capForm,data:e.target.value})}
-                  />
+                  <div className={styles.inlineField}>
+                    <label>Data:</label>
+                    <span>{new Date(item.data).toLocaleDateString()}</span>
+                  </div>
 
-                  <input type="number"
-                    value={capForm.quantidadeKg}
-                    onChange={e=>setCapForm({...capForm,quantidadeKg:e.target.value})}
-                  />
+                  <div className={styles.inlineField}>
+                    <label>Kg:</label>
+                    <span>{item.quantidadeKg}</span>
+                  </div>
 
-                  <p>Qtd: {qtd}</p>
+                  <div className={styles.inlineField}>
+                    <label>Qtd:</label>
+                    <span>{qtd}</span>
+                  </div>
 
-                  <button onClick={updateCap}><MdSave/>Salvar</button>
-                  <button onClick={()=>setEditingCapId(null)}><MdClose/>Cancelar</button>
+                  <div className={styles.actions}>
+                    <button
+                      className={styles.editButton}
+                      onClick={()=>{
+                        setEditingCapId(item.id);
+                        setCapForm({
+                          data:item.data.slice(0,10),
+                          quantidadeKg:String(item.quantidadeKg)
+                        });
+                      }}
+                    >
+                      <MdEdit/> Editar
+                    </button>
+
+                    <button
+                      className={styles.deleteButton}
+                      onClick={()=>deleteCap(item.id)}
+                    >
+                      <MdDelete/> Excluir
+                    </button>
+                  </div>
 
                 </div>
-              ) : (
-
-              <div key={item.id} className={styles.card}>
-                <p><b>Data:</b> {new Date(item.data).toLocaleDateString()}</p>
-                <p><b>Kg:</b> {item.quantidadeKg}</p>
-                <p><b>Qtd:</b> {qtd}</p>
-
-                <div className={styles.actions}>
-                  <button
-                    className={styles.editButton}
-                    onClick={()=>{
-                      setEditingCapId(item.id);
-                      setCapForm({
-                        data:item.data.slice(0,10),
-                        quantidadeKg:item.quantidadeKg
-                      });
-                    }}
-                  >
-                    <MdEdit/> Editar
-                  </button>
-
-                  <button
-                    className={styles.deleteButton}
-                    onClick={()=>deleteCap(item.id)}
-                  >
-                    <MdDelete/> Excluir
-                  </button>
-                </div>
-              </div>);
+              );
             })}
+            
           </div>
         </div>
 
@@ -252,23 +299,32 @@ export default function DashRegistration() {
             <h3>Cadastrar</h3>
 
             <form onSubmit={createAnimal} className={styles.row}>
-              <input type="date"
-                value={animalCreateForm.data}
-                onChange={e=>setAnimalCreateForm({...animalCreateForm,data:e.target.value})}
-              />
+              <div className={styles.inlineField}>
+                <h5>Data:</h5>
+                <input type="date"
+                  value={animalCreateForm.data}
+                  onChange={e=>setAnimalCreateForm({...animalCreateForm,data:e.target.value})}
+                />
+              </div>
 
-              <select
-                value={animalCreateForm.tipoAnimal}
-                onChange={e=>setAnimalCreateForm({...animalCreateForm,tipoAnimal:e.target.value})}
-              >
-                <option value="gato">Gato</option>
-                <option value="cachorro">Cachorro</option>
-              </select>
+              <div className={styles.inlineField}>
+                <h5>Tipo animal:</h5>
+                <select
+                  value={animalCreateForm.tipoAnimal}
+                  onChange={e=>setAnimalCreateForm({...animalCreateForm,tipoAnimal:e.target.value})}
+                >
+                  <option value="gato">Gato</option>
+                  <option value="cachorro">Cachorro</option>
+                </select>
+              </div>
 
-              <input type="number"
-                value={animalCreateForm.quantidade}
-                onChange={e=>setAnimalCreateForm({...animalCreateForm,quantidade:e.target.value})}
-              />
+              <div className={styles.inlineField}>
+                <h5>Quantidade:</h5>
+                <input type="number"
+                  value={animalCreateForm.quantidade}
+                  onChange={e=>setAnimalCreateForm({...animalCreateForm,quantidade:e.target.value})}
+                />
+              </div>
 
               <button type="submit">Salvar</button>
             </form>
@@ -276,19 +332,25 @@ export default function DashRegistration() {
 
           {/* FILTER */}
           <div className={styles.filter}>
-            <input type="date"
-              value={filterAnimalDate}
-              onChange={e=>setFilterAnimalDate(e.target.value)}
-            />
+            <div className={styles.filterItem}>
+              <h5>Mês:</h5>
+              <input type="month"
+                value={filterAnimalDate}
+                onChange={e=>setFilterAnimalDate(e.target.value)}
+              />
+            </div>
 
-            <select
-              value={filterType}
-              onChange={e=>setFilterType(e.target.value as any)}
-            >
-              <option value="todos">Todos</option>
-              <option value="gato">Gato</option>
-              <option value="cachorro">Cachorro</option>
-            </select>
+            <div className={styles.filterItem}>
+              <h5>Tipo animal:</h5>
+              <select
+                value={filterType}
+                onChange={e=>setFilterType(e.target.value as any)}
+              >
+                <option value="todos">Todos</option>
+                <option value="gato">Gato</option>
+                <option value="cachorro">Cachorro</option>
+              </select>
+            </div>
 
             <button onClick={()=>{
               setFilterAnimalDate('');
@@ -302,57 +364,96 @@ export default function DashRegistration() {
           <div className={styles.list}>
             {filteredAnimals.map(item => {
 
-              return editingAnimalId === item.id ? (
+              if (editingAnimalId === item.id) {
+                return (
+                  <div key={item.id} className={styles.card}>
+
+                    <div className={styles.inlineField}>
+                      <label>Data:</label>
+                      <input
+                        type="date"
+                        value={animalForm.data}
+                        onChange={e=>setAnimalForm({...animalForm,data:e.target.value})}
+                      />
+                    </div>
+
+                    <div className={styles.inlineField}>
+                      <label>Tipo:</label>
+                      <select
+                        value={animalForm.tipoAnimal}
+                        onChange={e=>setAnimalForm({...animalForm,tipoAnimal:e.target.value})}
+                      >
+                        <option value="gato">Gato</option>
+                        <option value="cachorro">Cachorro</option>
+                      </select>
+                    </div>
+
+                    <div className={styles.inlineField}>
+                      <label>Qtd:</label>
+                      <input
+                        type="number"
+                        value={animalForm.quantidade}
+                        onChange={e=>setAnimalForm({...animalForm,quantidade:e.target.value})}
+                      />
+                    </div>
+
+                    <div className={styles.actions}>
+                      <button type="button" onClick={updateAnimal}>
+                        <MdSave/> Salvar
+                      </button>
+
+                      <button type="button" onClick={() => setEditingAnimalId(null)}>
+                        <MdClose/> Cancelar
+                      </button>
+                    </div>
+
+                  </div>
+                );
+              }
+
+              return (
                 <div key={item.id} className={styles.card}>
 
-                  <input type="date"
-                    value={animalForm.data}
-                    onChange={e=>setAnimalForm({...animalForm,data:e.target.value})}
-                  />
+                  <div className={styles.inlineField}>
+                    <label>Data:</label>
+                    <span>{new Date(item.data).toLocaleDateString()}</span>
+                  </div>
 
-                  <select
-                    value={animalForm.tipoAnimal}
-                    onChange={e=>setAnimalForm({...animalForm,tipoAnimal:e.target.value})}
-                  >
-                    <option value="gato">Gato</option>
-                    <option value="cachorro">Cachorro</option>
-                  </select>
+                  <div className={styles.inlineField}>
+                    <label>Tipo:</label>
+                    <span>{item.tipoAnimal}</span>
+                  </div>
 
-                  <input type="number"
-                    value={animalForm.quantidade}
-                    onChange={e=>setAnimalForm({...animalForm,quantidade:e.target.value})}
-                  />
+                  <div className={styles.inlineField}>
+                    <label>Qtd:</label>
+                    <span>{item.quantidade}</span>
+                  </div>
 
-                  <button onClick={updateAnimal}><MdSave/>Salvar</button>
-                  <button onClick={()=>setEditingAnimalId(null)}><MdClose/>Cancelar</button>
+                  <div className={styles.actions}>
+                    <button
+                      className={styles.editButton}
+                      onClick={()=>{
+                        setEditingAnimalId(item.id);
+                        setAnimalForm({
+                          data:item.data.slice(0,10),
+                          tipoAnimal:item.tipoAnimal,
+                          quantidade:String(item.quantidade)
+                        });
+                      }}
+                    >
+                      <MdEdit/> Editar
+                    </button>
+
+                    <button
+                      className={styles.deleteButton}
+                      onClick={()=>deleteAnimal(item.id)}
+                    >
+                      <MdDelete/> Excluir
+                    </button>
+                  </div>
+
                 </div>
-
-              ) : (
-
-              <div key={item.id} className={styles.card}>
-                <p><b>Data:</b> {new Date(item.data).toLocaleDateString()}</p>
-                <p><b>Tipo:</b> {item.tipoAnimal}</p>
-                <p><b>Qtd:</b> {item.quantidade}</p>
-
-                <div className={styles.actions}>
-                  <button className={styles.editButton}
-                    onClick={()=>{
-                      setEditingAnimalId(item.id);
-                      setAnimalForm({
-                        data:item.data.slice(0,10),
-                        tipoAnimal:item.tipoAnimal,
-                        quantidade:item.quantidade
-                      });
-                    }}>
-                    <MdEdit/> Editar
-                  </button>
-
-                  <button className={styles.deleteButton}
-                    onClick={()=>deleteAnimal(item.id)}>
-                    <MdDelete/> Excluir
-                  </button>
-                </div>
-              </div>);
+              );
             })}
           </div>
 

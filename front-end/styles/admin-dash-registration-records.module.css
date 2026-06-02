@@ -27,6 +27,11 @@
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
 }
+@media (max-width: 900px){
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* sections */
 .section {
@@ -121,4 +126,111 @@
     padding: 6px 10px;
     border-radius: 6px;
     cursor: pointer;
+}
+
+/* LABEL PADRÃO */
+.field label,
+.filter label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+/* MELHOR ORGANIZAÇÃO DOS FILTROS */
+.filter {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+/* CADA ITEM DO FILTRO (input + label) */
+.filterItem {
+    display: flex;
+    flex-direction: column;
+}
+
+/* INPUT MAIS BONITO */
+.field input,
+.field select,
+.filter input,
+.filter select {
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: 0.2s;
+}
+
+/* FOCUS (quando clica no campo) */
+.field input:focus,
+.field select:focus,
+.filter input:focus,
+.filter select:focus {
+    outline: none;
+    border: 1px solid #dabe25;
+    box-shadow: 0 0 0 2px rgba(218, 190, 37, 0.2);
+}
+/* ✅ INLINE FIELD (NOVO FORMATO EM LINHA) */
+.inlineField {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    flex: 1 1 10rem; /* para crescer e encolher, mas ter um mínimo */
+    min-width: 8rem;
+}
+
+/* labels inline */
+.inlineField label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+}
+
+/* inputs inline */
+.inlineField input,
+.inlineField select {
+    height: 34px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* linha do form */
+.row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+/* botão alinhado */
+.row button {
+    height: 34px;
+    padding: 0 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background: #dabe25;
+    color: white;
+}
+
+/* histórico em linha */
+.card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* span do histórico */
+.card span {
+    font-size: 0.9rem;
+}
+
+/* ações lado a lado */
+.actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 0;
 }
