@@ -4,7 +4,7 @@
     --accent-blue-opaque: rgba(95, 129, 183, 0.12);
     --text-color: #25324b;
     --muted-color: #666666;
-    --page-bg: linear-gradient(135deg, #f4e4a6 0%, #fef3c7 100%);
+    --page-bg: linear-gradient(to right, #ffffff, #ffffff, #edf6ff);
 }
 
 .adminContainer {
@@ -65,7 +65,7 @@
 
 .card {
     background: white;
-    border: 2px solid #fef3c7;
+    border: 2px solid rgba(95, 129, 183, 0.12);
     border-radius: 12px;
     padding: 1.5rem 2rem;
     display: flex;
@@ -78,8 +78,8 @@
 
 .card:hover {
     transform: translateY(-8px);
-    border-color: #dabe25;
-    box-shadow: 0 12px 24px rgba(218, 180, 37, 0.12);
+    border-color: rgba(157, 67, 194, 0.28);
+    box-shadow: 0 12px 24px rgba(95, 129, 183, 0.16);
 }
 
 .cardIcon {

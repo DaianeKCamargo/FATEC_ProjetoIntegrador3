@@ -1,5 +1,5 @@
 .container {
-  --primary-gradient: linear-gradient(135deg, #dabe25 0%, #c5a51a 100%);
+  --page-bg: linear-gradient(to right, #ffffff, #ffffff, #edf6ff);
   --accent-blue: #5f81b7;
   --accent-blue-opaque: rgba(95, 129, 183, 0.12);
   --text-color: #25324b;
@@ -87,8 +87,8 @@
 .input:focus,
 .searchInput:focus {
   outline: none;
-  border-color: #d4b225;
-  box-shadow: 0 0 0 3px rgba(212, 178, 37, 0.18);
+  border-color: #5f81b7;
+  box-shadow: 0 0 0 3px rgba(95, 129, 183, 0.16);
 }
 
 .searchInput {

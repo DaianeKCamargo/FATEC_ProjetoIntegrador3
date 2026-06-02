@@ -1,18 +1,21 @@
-.container {
+:root {
     --primary-gradient: linear-gradient(135deg, #dabe25 0%, #c5a51a 100%);
     --accent-blue: #5f81b7;
     --accent-blue-opaque: rgba(95, 129, 183, 0.12);
     --text-color: #25324b;
-    --muted-color: #5b6678;
-    --page-bg: #fefbf1;
+    --muted-color: #666666;
+    --page-bg: linear-gradient(to right, #ffffff, #ffffff, #edf6ff);
     --card-radius: 16px;
+    
+}
 
-    min-height: 100vh;
+.container {
+    background: var(--page-bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
     padding: 4rem;
-    background-color: var(--page-bg);
-    color: var(--text-color);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    font-size: 1.6rem;
+
 }
 
 .formCard {
