@@ -38,38 +38,6 @@
   }
 }
 
-.headerActions {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 1.6rem;
-}
-
-.backButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 1.4rem;
-  border-radius: 999px;
-  background: rgba(95, 129, 183, 0.1);
-  color: #2c4d7d;
-  border: 1px solid rgba(95, 129, 183, 0.18);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 1.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-
-.backButton:hover {
-  transform: translateY(-1px);
-  background: rgba(95, 129, 183, 0.14);
-  box-shadow: 0 6px 16px rgba(44, 61, 85, 0.08);
-}
-
-.backButton:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(95, 129, 183, 0.18);
-}
-
 .title {
   margin: 0 0 0.5rem;
   text-align: center;

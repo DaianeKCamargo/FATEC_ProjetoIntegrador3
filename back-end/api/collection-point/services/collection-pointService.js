@@ -43,11 +43,6 @@ async function criarPontoColeta(payload) {
         data.address.longitude
     );
 
-    const duplicateCpf = await repository.findPointByCpf(data.cpfUser);
-    if (duplicateCpf) {
-        throw new HttpError(409, "cpfUser ja cadastrado");
-    }
-
     const duplicateCnpj = await repository.findPointByCnpj(data.cnpjPoint);
     if (duplicateCnpj) {
         throw new HttpError(409, "cnpjPoint ja cadastrado");

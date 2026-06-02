@@ -28,7 +28,7 @@ async function fetchNominatimGeocode(query: string) {
 }
 
 async function fetchPhotonGeocode(query: string) {
-    const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(`${query}, Brasil`)}&limit=1&lang=pt`;
+    const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(`${query}, Brasil`)}&limit=1&lang=default`;
 
     const response = await fetch(url, {
         cache: "no-store",
@@ -85,11 +85,6 @@ export async function GET(request: NextRequest) {
         errors.push(error instanceof Error ? error.message : "Erro desconhecido no Photon");
     }
 
-    return NextResponse.json(
-        {
-            message: "Nao foi possivel buscar geolocalizacao",
-            details: errors,
-        },
-        { status: 502 }
-    );
+    console.warn("Nao foi possivel buscar geolocalizacao:", errors);
+    return NextResponse.json([], { status: 200 });
 }

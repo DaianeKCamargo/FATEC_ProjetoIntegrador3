@@ -2,7 +2,6 @@
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Search } from "lucide-react";
-import Link from "next/link";
 import styles from "@/styles/admin-collection-point-registration.module.css";
 
 interface Address {
@@ -47,30 +46,40 @@ interface FormState {
     address: Address;
 }
 
+type ApiErrorResponse = {
+    message?: string;
+    errors?: {
+        field?: string;
+        message?: string;
+    }[];
+};
+
+const initialForm: FormState = {
+    nameUser: "",
+    cpfUser: "",
+    celUser: "",
+    emailUser: "",
+    namePoint: "",
+    cnpjPoint: "",
+    opensDay: "",
+    hourInit: "",
+    hourFinal: "",
+    linkPhoto: "",
+    address: {
+        street: "",
+        number: "",
+        complement: "",
+        district: "",
+        city: "",
+        state: "",
+        postCode: "",
+        latitude: null,
+        longitude: null,
+    },
+};
+
 export default function CreateCollectionPoint() {
-    const [form, setForm] = useState<FormState>({
-        nameUser: "",
-        cpfUser: "",
-        celUser: "",
-        emailUser: "",
-        namePoint: "",
-        cnpjPoint: "",
-        opensDay: "",
-        hourInit: "",
-        hourFinal: "",
-        linkPhoto: "",
-        address: {
-            street: "",
-            number: "",
-            complement: "",
-            district: "",
-            city: "",
-            state: "",
-            postCode: "",
-            latitude: null,
-            longitude: null,
-        },
-    });
+    const [form, setForm] = useState<FormState>(initialForm);
 
     const [loading, setLoading] = useState(false);
     const [searchLoading, setSearchLoading] = useState(false);
@@ -144,41 +153,105 @@ export default function CreateCollectionPoint() {
         return states[normalizedState] || "";
     }
 
-    async function geocodeAddress(address: Address) {
-        const searchAddress = [
-            address.street,
-            address.number,
-            address.district,
-            address.city,
-            address.state,
-            address.postCode,
-            "Brasil",
-        ].filter(Boolean).join(", ");
+    function getGeocodeQueries(address: Address) {
+        return [
+            [
+                address.street,
+                address.number,
+                address.district,
+                address.city,
+                address.state,
+                address.postCode,
+                "Brasil",
+            ],
+            [
+                address.postCode,
+                address.number,
+                address.city,
+                address.state,
+                "Brasil",
+            ],
+            [
+                address.street,
+                address.district,
+                address.city,
+                address.state,
+                "Brasil",
+            ],
+            [
+                address.postCode,
+                address.city,
+                "Brasil",
+            ],
+        ]
+            .map((parts) => parts.filter(Boolean).join(", "))
+            .filter(Boolean);
+    }
 
-        if (!address.street || !address.city || !address.state) {
+    async function geocodeAddress(address: Address) {
+        const queries = getGeocodeQueries(address);
+
+        if (!address.city || (!address.street && !address.postCode)) {
             return { latitude: null, longitude: null };
         }
 
+        for (const query of queries) {
+            try {
+                const res = await fetch(`/api/address/geocode?q=${encodeURIComponent(query)}`);
+
+                if (!res.ok) {
+                    continue;
+                }
+
+                const data = await res.json() as GeocodeResult[];
+                const firstResult = Array.isArray(data) ? data[0] : null;
+                const latitude = firstResult ? Number(firstResult.lat) : null;
+                const longitude = firstResult ? Number(firstResult.lon) : null;
+
+                if (latitude !== null && longitude !== null && !Number.isNaN(latitude) && !Number.isNaN(longitude)) {
+                    return { latitude, longitude };
+                }
+            } catch {
+                continue;
+            }
+        }
+
+        return { latitude: null, longitude: null };
+    }
+
+    async function resolveAddressByCep(address: Address) {
+        const cleanCep = onlyDigits(address.postCode);
+
+        if (cleanCep.length !== 8) {
+            return address;
+        }
+
         try {
-            const res = await fetch(`/api/address/geocode?q=${encodeURIComponent(searchAddress)}`);
+            const response = await fetch(`/api/address/cep?cep=${cleanCep}`);
 
-            if (!res.ok) {
-                throw new Error(`Falha ao buscar geolocalizacao (${res.status})`);
+            if (!response.ok) {
+                return address;
             }
 
-            const data = await res.json() as GeocodeResult[];
-            const firstResult = Array.isArray(data) ? data[0] : null;
-            const latitude = firstResult ? Number(firstResult.lat) : null;
-            const longitude = firstResult ? Number(firstResult.lon) : null;
+            const data = await response.json() as ViaCepResponse;
 
-            if (latitude === null || longitude === null || Number.isNaN(latitude) || Number.isNaN(longitude)) {
-                return { latitude: null, longitude: null };
+            if (data.erro) {
+                return address;
             }
 
-            return { latitude, longitude };
+            return {
+                ...address,
+                street: data.logradouro || address.street,
+                district: data.bairro || address.district,
+                city: data.localidade || address.city,
+                state: data.uf || address.state,
+                postCode: formatCep(data.cep || cleanCep),
+                latitude: data.latitude ?? address.latitude,
+                longitude: data.longitude ?? address.longitude,
+            };
         } catch (error) {
-            console.error("Erro ao buscar geolocalizacao:", error);
-            return { latitude: null, longitude: null };
+            console.error("Erro ao resolver CEP no envio:", error);
+            return address;
         }
     }
 
@@ -190,7 +263,7 @@ export default function CreateCollectionPoint() {
         }
 
         setLoading(true);
-        setAddressStatus("Buscando endereco pelo CEP...");
+        setAddressStatus("Buscando endereço pelo CEP...");
 
         try {
             const response = await fetch(`/api/address/cep?cep=${cleanCep}`);
@@ -202,7 +275,7 @@ export default function CreateCollectionPoint() {
             const data = await response.json() as ViaCepResponse;
 
             if (data.erro) {
-                setAddressStatus("CEP nao encontrado.");
+                setAddressStatus("CEP não encontrado.");
                 setForm((prev) => ({
                     ...prev,
                     address: {
@@ -243,11 +316,11 @@ export default function CreateCollectionPoint() {
             }));
 
             setAddressStatus(coordinates.latitude !== null && coordinates.longitude !== null
-                ? "Endereco preenchido automaticamente."
-                : "Endereco preenchido. Informe o numero e confira os dados para localizar melhor.");
+                ? "Endereço preenchido automaticamente."
+                : "Endereço preenchido. Informe o número e confira os dados para localizar melhor.");
         } catch (error) {
             console.error("Erro ao buscar CEP:", error);
-            setAddressStatus("Nao foi possivel buscar o CEP informado.");
+            setAddressStatus("Não foi possível buscar o CEP informado.");
         } finally {
             setLoading(false);
         }
@@ -269,19 +342,19 @@ export default function CreateCollectionPoint() {
 
         if (!uf || city.length < 3 || street.length < 3) {
             setAddressSuggestions([]);
-            setAddressStatus("Informe UF, cidade e rua para buscar sugestoes.");
+            setAddressStatus("Informe UF, cidade e rua para buscar sugestões.");
             return;
         }
 
         setSearchLoading(true);
-        setAddressStatus("Buscando sugestoes pelo endereco...");
+        setAddressStatus("Buscando sugestões pelo endereço...");
 
         try {
             const response = await fetch(`/api/address/cep?uf=${encodeURIComponent(uf)}&city=${encodeURIComponent(city)}&street=${encodeURIComponent(street)}`);
 
             if (!response.ok) {
                 setAddressSuggestions([]);
-                setAddressStatus("Nao foi possivel buscar sugestoes. Confira UF, cidade e rua.");
+                setAddressStatus("Não foi possível buscar sugestões. Confira UF, cidade e rua.");
                 return;
             }
 
@@ -290,12 +363,12 @@ export default function CreateCollectionPoint() {
 
             setAddressSuggestions(suggestions);
             setAddressStatus(suggestions.length > 0
-                ? "Selecione uma sugestao de endereco."
-                : "Nenhuma sugestao encontrada para esse endereco.");
+                ? "Selecione uma sugestão de endereço."
+                : "Nenhuma sugestão encontrada para esse endereço.");
         } catch (error) {
-            console.error("Erro ao buscar sugestoes de endereco:", error);
+            console.error("Erro ao buscar sugestões de endereço:", error);
             setAddressSuggestions([]);
-            setAddressStatus("Nao foi possivel buscar sugestoes. Tente informar o CEP.");
+            setAddressStatus("Nao foi possivel buscar sugestões. Tente informar o CEP.");
         } finally {
             setSearchLoading(false);
         }
@@ -331,7 +404,7 @@ export default function CreateCollectionPoint() {
         }));
 
         if (coordinates.latitude !== null && coordinates.longitude !== null) {
-            setAddressStatus("Geolocalizacao do endereco atualizada.");
+            setAddressStatus("Geolocalizacao do endereço atualizada.");
         }
     }
 
@@ -367,38 +440,84 @@ export default function CreateCollectionPoint() {
         }));
     }
 
+    async function getApiErrorMessage(response: Response) {
+        const contentType = response.headers.get("content-type") || "";
+
+        if (!contentType.includes("application/json")) {
+            const text = await response.text();
+            return text || `Erro ${response.status}: ${response.statusText}`;
+        }
+
+        const data = await response.json() as ApiErrorResponse;
+        const details = Array.isArray(data.errors)
+            ? data.errors
+                .map((error) => [error.field, error.message].filter(Boolean).join(": "))
+                .filter(Boolean)
+                .join("\n")
+            : "";
+
+        return [
+            data.message || `Erro ${response.status}: ${response.statusText}`,
+            details,
+        ].filter(Boolean).join("\n");
+    }
+
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
+        let addressToSubmit = await resolveAddressByCep(form.address);
+
         if (
-            form.address.latitude === null ||
-            form.address.longitude === null
+            addressToSubmit.latitude === null ||
+            addressToSubmit.longitude === null
         ) {
-            alert("Informe um CEP valido ou selecione um endereco pela busca para carregar a geolocalizacao.");
-            return;
+            const coordinates = await geocodeAddress(addressToSubmit);
+
+            if (
+                coordinates.latitude === null ||
+                coordinates.longitude === null
+            ) {
+                alert("Não foi possível carregar a geolocalizacao. Confira CEP, numero e cidade ou selecione outro endereço pela busca.");
+                return;
+            }
+
+            addressToSubmit = {
+                ...addressToSubmit,
+                ...coordinates,
+            };
+
+            setForm((prev) => ({
+                ...prev,
+                address: addressToSubmit,
+            }));
+        } else if (addressToSubmit !== form.address) {
+            setForm((prev) => ({
+                ...prev,
+                address: addressToSubmit,
+            }));
         }
 
-        if (onlyDigits(form.address.postCode).length !== 8) {
-            alert("O endereco selecionado nao retornou um CEP valido. Escolha outra sugestao ou informe o CEP manualmente.");
+        if (onlyDigits(addressToSubmit.postCode).length !== 8) {
+            alert("O endereco selecionado nãoo retornou um CEP válido. Escolha outra sugestão ou informe o CEP manualmente.");
             return;
         }
 
         const payload = {
             ...form,
             address: {
-                street: form.address.street,
-                number: form.address.number,
-                complement: form.address.complement,
-                district: form.address.district,
-                city: form.address.city,
-                postCode: form.address.postCode,
-                latitude: form.address.latitude,
-                longitude: form.address.longitude,
+                street: addressToSubmit.street,
+                number: addressToSubmit.number,
+                complement: addressToSubmit.complement,
+                district: addressToSubmit.district,
+                city: addressToSubmit.city,
+                postCode: addressToSubmit.postCode,
+                latitude: addressToSubmit.latitude,
+                longitude: addressToSubmit.longitude,
             },
         };
 
         const res = await fetch(
-            "http://localhost:5501/api/collection-point",
+            `${process.env.NEXT_PUBLIC_API_URL}/collection-point`,
             {
                 method: "POST",
                 headers: {
@@ -409,18 +528,23 @@ export default function CreateCollectionPoint() {
 
         if (res.ok) {
             alert("Cadastro enviado com sucesso!");
+            setForm(initialForm);
+            setAddressLookup({
+                state: "",
+                city: "",
+                street: "",
+            });
+            setAddressSuggestions([]);
+            setAddressStatus("");
+            setShowAddressLookup(false);
         } else {
-            alert("Erro ao enviar cadastro.");
+            const errorMessage = await getApiErrorMessage(res);
+            alert(`Erro ao enviar cadastro:\n${errorMessage}`);
         }
     }
 
     return (
         <div className={styles.container}>
-            <div className={styles.headerActions}>
-                <Link href="/admin" className={styles.backButton}>
-                    Voltar ao menu principal
-                </Link>
-            </div>
             <div className={styles.panel}>
                 <h1 className={styles.title}>Cadastrar Ponto de Coleta</h1>
                 <p className={styles.subtitle}>Preencha as informacoes do ponto e informe o CEP ou busque pelo endereco para completar os dados automaticamente.</p>
@@ -429,21 +553,21 @@ export default function CreateCollectionPoint() {
                     <h2 className={styles.sectionTitle}>Informacoes do Proprietario</h2>
 
                     <div className={styles.fieldGrid}>
-                        <input className={styles.input} name="nameUser" placeholder="Nome" onChange={handleChange} />
-                        <input className={styles.input} name="cpfUser" placeholder="CPF" onChange={handleChange} />
-                        <input className={styles.input} name="celUser" placeholder="Celular" onChange={handleChange} />
-                        <input className={styles.input} name="emailUser" placeholder="Email" onChange={handleChange} />
+                        <input className={styles.input} name="nameUser" placeholder="Nome" value={form.nameUser} onChange={handleChange} />
+                        <input className={styles.input} name="cpfUser" placeholder="CPF" value={form.cpfUser} onChange={handleChange} />
+                        <input className={styles.input} name="celUser" placeholder="Celular" value={form.celUser} onChange={handleChange} />
+                        <input className={styles.input} name="emailUser" placeholder="Email" value={form.emailUser} onChange={handleChange} />
                     </div>
 
                     <h2 className={styles.sectionTitle}>Informacoes do Ponto de Coleta</h2>
 
                     <div className={styles.fieldGrid}>
-                        <input className={styles.input} name="namePoint" placeholder="Nome do Ponto de Coleta" onChange={handleChange} />
-                        <input className={styles.input} name="cnpjPoint" placeholder="CNPJ" onChange={handleChange} />
-                        <input className={styles.input} name="linkPhoto" placeholder="Link da Foto" onChange={handleChange} />
-                        <input className={styles.input} name="opensDay" placeholder="Dias de Funcionamento" onChange={handleChange} />
-                        <input className={styles.input} name="hourInit" placeholder="Inicio (HH:mm)" onChange={handleChange} />
-                        <input className={styles.input} name="hourFinal" placeholder="Final (HH:mm)" onChange={handleChange} />
+                        <input className={styles.input} name="namePoint" placeholder="Nome do Ponto de Coleta" value={form.namePoint} onChange={handleChange} />
+                        <input className={styles.input} name="cnpjPoint" placeholder="CNPJ" value={form.cnpjPoint} onChange={handleChange} />
+                        <input className={styles.input} name="linkPhoto" placeholder="Link da Foto" value={form.linkPhoto} onChange={handleChange} />
+                        <input className={styles.input} name="opensDay" placeholder="Dias de Funcionamento" value={form.opensDay} onChange={handleChange} />
+                        <input className={styles.input} name="hourInit" placeholder="Inicio (HH:mm)" value={form.hourInit} onChange={handleChange} />
+                        <input className={styles.input} name="hourFinal" placeholder="Final (HH:mm)" value={form.hourFinal} onChange={handleChange} />
                     </div>
 
                     <h2 className={styles.sectionTitle}>Endereco</h2>
@@ -487,7 +611,7 @@ export default function CreateCollectionPoint() {
                                     className={styles.searchButton}
                                     type="button"
                                     onClick={fetchAddressSuggestions}
-                                    aria-label="Buscar endereco"
+                                    aria-label="Buscar endereço"
                                 >
                                     <Search size={20} aria-hidden="true" />
                                 </button>
@@ -495,7 +619,7 @@ export default function CreateCollectionPoint() {
                         </div>
                     )}
 
-                    {searchLoading && <p className={styles.statusMessage}>Buscando sugestoes...</p>}
+                    {searchLoading && <p className={styles.statusMessage}>Buscando sugestões...</p>}
 
                     <div className={styles.divider} />
 
@@ -526,11 +650,12 @@ export default function CreateCollectionPoint() {
                             placeholder="Rua"
                             value={form.address.street}
                             onChange={handleChange}
+                            readOnly
                         />
                         <input
                             className={styles.input}
                             name="address.number"
-                            placeholder="Numero"
+                            placeholder="Número"
                             value={form.address.number}
                             onBlur={() => updateCurrentGeolocation(form.address)}
                             onChange={handleChange}
@@ -548,6 +673,7 @@ export default function CreateCollectionPoint() {
                             placeholder="Bairro"
                             value={form.address.district}
                             onChange={handleChange}
+                            readOnly
                         />
                         <input
                             className={styles.input}
@@ -555,10 +681,11 @@ export default function CreateCollectionPoint() {
                             placeholder="Cidade"
                             value={form.address.city}
                             onChange={handleChange}
+                            readOnly
                         />
                     </div>
 
-                    {loading && <p className={styles.statusMessage}>Buscando endereco...</p>}
+                    {loading && <p className={styles.statusMessage}>Buscando endereço...</p>}
                     {addressStatus && !loading && <p className={styles.statusMessage}>{addressStatus}</p>}
 
                     <button className={styles.submitButton} type="submit">Cadastrar</button>

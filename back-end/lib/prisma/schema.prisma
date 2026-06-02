@@ -29,7 +29,7 @@ model PointCollection {
   status          PointCollectionStatus @default(PENDENTE)
   rejectionReason String?               @map("rejection_reason")
   nameUser        String                @map("name_user")
-  cpfUser         String                @unique @map("cpf_user")
+  cpfUser         String                @map("cpf_user")
   celUser         String                @map("cel_user")
   emailUser       String                @map("email_user")
   linkPhoto       String                @map("link_photo")

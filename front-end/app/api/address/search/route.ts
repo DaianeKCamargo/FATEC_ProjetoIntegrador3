@@ -39,7 +39,7 @@ async function fetchNominatimSuggestions(query: string) {
 }
 
 async function fetchPhotonSuggestions(query: string) {
-    const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(`${query}, Brasil`)}&limit=5&lang=pt`;
+    const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(`${query}, Brasil`)}&limit=5&lang=default`;
 
     const response = await fetch(url, {
         cache: "no-store",

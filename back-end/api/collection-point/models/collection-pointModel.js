@@ -18,6 +18,7 @@ async function createPoint(data) {
             opensDay: data.opensDay,
             hourInit: data.hourInit,
             hourFinal: data.hourFinal,
+            status: "PENDENTE",
 
             address: {
                 create: {

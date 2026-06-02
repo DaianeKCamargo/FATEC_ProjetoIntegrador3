@@ -175,7 +175,7 @@ async function geocodeAddress(address: EditableAddress) {
         const response = await fetch(`/api/address/geocode?q=${encodeURIComponent(searchAddress)}`);
 
         if (!response.ok) {
-            throw new Error(`Falha ao buscar geolocalizacao (${response.status})`);
+            return { latitude: null, longitude: null };
         }
 
         const data = await response.json() as GeocodeResult[];
@@ -188,8 +188,7 @@ async function geocodeAddress(address: EditableAddress) {
         }
 
         return { latitude, longitude };
-    } catch (error) {
-        console.error("Erro ao buscar geolocalizacao:", error);
+    } catch {
         return { latitude: null, longitude: null };
     }
 }
