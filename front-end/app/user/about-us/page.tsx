@@ -1,10 +1,8 @@
 'use client'
 
 import style from '@/styles/about-us.module.css';
-import Image from 'next/image';
 
-import { PawPrint, Recycle, Info } from "lucide-react";
-import { div } from 'framer-motion/client';
+import { Recycle, Info } from "lucide-react";
 
 export default function SobreNos() {
     return (
@@ -61,7 +59,7 @@ export default function SobreNos() {
             </p>
 
             <p>
-                Todos os recursos obtidos com a venda das tampinhas são destinados <strong>direta e exclusivamente</strong>
+                Todos os recursos obtidos com a venda das tampinhas são destinados <strong>direta e exclusivamente </strong>
                 aos responsáveis pelos atendimentos — ONGs, abrigos e clínicas veterinárias parceiras.
             </p>
 

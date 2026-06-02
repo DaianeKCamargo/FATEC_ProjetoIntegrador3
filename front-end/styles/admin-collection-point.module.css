@@ -448,6 +448,12 @@
     gap: 0.75rem;
 }
 
+.detailFooterActions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #efe1af;
+}
+
 .detailGrid {
     display: grid;
     gap: 0.85rem;

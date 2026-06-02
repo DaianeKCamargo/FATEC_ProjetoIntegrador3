@@ -142,30 +142,8 @@ export default function Home() {
   const [gatosCastrados, setGatosCastrados] = useState(0);
   const [cachorrosCastrados, setCachorrosCastrados] = useState(0);
   const [tampinhasUnidades, setTampinhasUnidades] = useState(0);
-  const [mesTitulo, setMesTitulo] = useState("");
 
   useEffect(() => {
-    const now = new Date();
-    const month = now.getMonth();
-    const year = now.getFullYear();
-
-    const monthNames = [
-      "Janeiro",
-      "Fevereiro",
-      "Março",
-      "Abril",
-      "Maio",
-      "Junho",
-      "Julho",
-      "Agosto",
-      "Setembro",
-      "Outubro",
-      "Novembro",
-      "Dezembro",
-    ];
-
-    setMesTitulo(monthNames[month]);
-
     async function loadResumo() {
       try {
         const [caps, animals] = await Promise.all([
@@ -173,31 +151,27 @@ export default function Home() {
           animalsService.getAll(),
         ]);
 
-        // Tampinhas: soma o campo quantidade_tampinhas quando disponível,
-        // fallback para conversão a partir de quantidadeKg usando fator 500
+        const today = new Date();
+        today.setHours(23, 59, 59, 999);
+
+        const isUntilToday = (value: string) => {
+          const date = new Date(value);
+          return !Number.isNaN(date.getTime()) && date <= today;
+        };
+
         const tampinhasSum = caps
-          .filter((it: any) => {
-            const d = new Date(it.data);
-            return d.getMonth() === month && d.getFullYear() === year;
-          })
+          .filter((it: any) => isUntilToday(it.data))
           .reduce((s: number, it: any) => {
             const unidades = it.quantidade_tampinhas ?? Math.round((Number(it.quantidadeKg) || 0) * 500);
             return s + unidades;
           }, 0);
 
-        // Animais: soma por tipo
         const gatosSum = animals
-          .filter((it: any) => {
-            const d = new Date(it.data);
-            return d.getMonth() === month && d.getFullYear() === year;
-          })
+          .filter((it: any) => isUntilToday(it.data))
           .reduce((s: number, it: any) => s + ((String(it.tipoAnimal).toLowerCase() === "gato") ? (Number(it.quantidade) || 0) : 0), 0);
 
         const cachorrosSum = animals
-          .filter((it: any) => {
-            const d = new Date(it.data);
-            return d.getMonth() === month && d.getFullYear() === year;
-          })
+          .filter((it: any) => isUntilToday(it.data))
           .reduce((s: number, it: any) => s + ((String(it.tipoAnimal).toLowerCase() === "cachorro") ? (Number(it.quantidade) || 0) : 0), 0);
 
         setTampinhasUnidades(tampinhasSum);
@@ -306,7 +280,7 @@ export default function Home() {
           <div className={styles.donateIntro}>
             <span className={styles.sectionTag}>Como doar</span>
             <Section>Doe suas tampinhas em poucos passos</Section>
-            <p>Uma forma simples de ajudar: leve tampinhas limpas, escolha o ponto de coleta e acompanhe o impacto da sua entrega.</p>
+            <p>Tire suas dúvidas de como você pode doar suas tampinhas e contribuir para o bem-estar dos animais.</p>
 
             <div className={styles.donateHighlights}>
               <span>Prático</span>
@@ -314,7 +288,7 @@ export default function Home() {
               <span>Solidário</span>
             </div>
 
-            <Link className={styles.btn14} href="/cadastro">Quero doar agora</Link>
+            <Link className={styles.btn14} href="/user/how-donate">Como Doar</Link>
           </div>
 
           <div className={styles.donateSteps}>
@@ -349,7 +323,7 @@ export default function Home() {
             <Section>Encontre o local ideal para entregar suas tampinhas</Section>
             <p>Veja pontos parceiros, horários de atendimento e informações essenciais para realizar sua entrega com facilidade.</p>
 
-            <Link className={styles.btnOutline} href="/ponto-coleta">Ver pontos de coleta</Link>
+            <Link className={styles.btnOutline} href="/user/collection-point">Ver pontos de coleta</Link>
           </div>
 
           <div className={styles.pickupDetails}>
@@ -384,7 +358,7 @@ export default function Home() {
             <SwapCards
               imagem={"/collection-point.png"}
               titulo={"Seja um Ponto de Coleta"}
-              src={"/collection-point-registration"}
+              src={"/collection-point-registration"} 
             />
           </div>
           <div className={styles.parceiro}>
@@ -424,7 +398,7 @@ export default function Home() {
 
       <div className={styles.resumoRelatorio}>
         <div className={styles.texto2}>
-          <Section> Resultados do Mês de {mesTitulo} </Section>
+          <Section> Resultados do Projeto até Hoje </Section>
         </div>
 
         <a className={styles.paginas} href="/relatorio">

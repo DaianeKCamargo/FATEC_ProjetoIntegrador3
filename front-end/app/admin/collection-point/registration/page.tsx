@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import styles from "@/styles/admin-collection-point-registration.module.css";
 
@@ -46,6 +47,11 @@ interface FormState {
     address: Address;
 }
 
+interface CollectionPointCreateResponse {
+    idPc?: number;
+    status?: string;
+}
+
 type ApiErrorResponse = {
     message?: string;
     errors?: {
@@ -78,7 +84,16 @@ const initialForm: FormState = {
     },
 };
 
-export default function CreateCollectionPoint() {
+interface CreateCollectionPointProps {
+    redirectAfterSuccess?: string;
+    initialStatus?: "APROVADO" | "PENDENTE";
+}
+
+export default function CreateCollectionPoint({
+    redirectAfterSuccess,
+    initialStatus = "APROVADO",
+}: CreateCollectionPointProps = {}) {
+    const router = useRouter();
     const [form, setForm] = useState<FormState>(initialForm);
 
     const [loading, setLoading] = useState(false);
@@ -504,6 +519,7 @@ export default function CreateCollectionPoint() {
 
         const payload = {
             ...form,
+            status: initialStatus,
             address: {
                 street: addressToSubmit.street,
                 number: addressToSubmit.number,
@@ -527,6 +543,27 @@ export default function CreateCollectionPoint() {
             });
 
         if (res.ok) {
+            const createdPoint = await res.json() as CollectionPointCreateResponse;
+
+            if (initialStatus === "APROVADO" && createdPoint.idPc && createdPoint.status !== "APROVADO") {
+                const statusResponse = await fetch(
+                    `${process.env.NEXT_PUBLIC_API_URL}/collection-point/${createdPoint.idPc}/status`,
+                    {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ status: "APROVADO" }),
+                    }
+                );
+
+                if (!statusResponse.ok) {
+                    const errorMessage = await getApiErrorMessage(statusResponse);
+                    alert(`Cadastro criado, mas nao foi possivel aprovar automaticamente:\n${errorMessage}`);
+                    return;
+                }
+            }
+
             alert("Cadastro enviado com sucesso!");
             setForm(initialForm);
             setAddressLookup({
@@ -537,6 +574,10 @@ export default function CreateCollectionPoint() {
             setAddressSuggestions([]);
             setAddressStatus("");
             setShowAddressLookup(false);
+
+            if (redirectAfterSuccess) {
+                router.push(redirectAfterSuccess);
+            }
         } else {
             const errorMessage = await getApiErrorMessage(res);
             alert(`Erro ao enviar cadastro:\n${errorMessage}`);

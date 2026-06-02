@@ -530,60 +530,6 @@ export default function RegistrationReview() {
                                     </h3>
                                 </div>
 
-                                <div className={styles.detailActions}>
-                                    {isEditing ? (
-                                        <>
-                                            <button
-                                                className={styles.pointAction}
-                                                type="button"
-                                                onClick={salvarEdicao}
-                                                disabled={saving}
-                                            >
-                                                <FaSave /> {saving ? "Salvando..." : "Salvar"}
-                                            </button>
-                                            <button
-                                                className={styles.pointAction}
-                                                type="button"
-                                                onClick={() => {
-                                                    setEditForm(createEditForm(selectedPoint));
-                                                    setIsEditing(false);
-                                                }}
-                                            >
-                                                Cancelar
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <button
-                                            className={styles.pointAction}
-                                            type="button"
-                                            onClick={() => setIsEditing(true)}
-                                        >
-                                            <FaEdit /> Editar
-                                        </button>
-                                    )}
-
-                                    <button
-                                        className={styles.pointAction}
-                                        type="button"
-                                        onClick={fecharDetalhes}
-                                    >
-                                        Fechar
-                                    </button>
-                                    <button
-                                        className={`${styles.pointAction} ${styles.successAction}`}
-                                        type="button"
-                                        onClick={() => alterarStatus(selectedPoint.idPc, "APROVADO")}
-                                    >
-                                        <FaCheck /> Aprovar
-                                    </button>
-                                    <button
-                                        className={`${styles.pointAction} ${styles.dangerAction}`}
-                                        type="button"
-                                        onClick={() => alterarStatus(selectedPoint.idPc, "REJEITADO")}
-                                    >
-                                        <FaTimes /> Recusar
-                                    </button>
-                                </div>
                             </div>
 
                             <div className={styles.detailGrid}>
@@ -661,6 +607,61 @@ export default function RegistrationReview() {
                                         )}
                                     </section>
                                 ))}
+                            </div>
+
+                            <div className={`${styles.detailActions} ${styles.detailFooterActions}`}>
+                                {isEditing ? (
+                                    <>
+                                        <button
+                                            className={styles.pointAction}
+                                            type="button"
+                                            onClick={salvarEdicao}
+                                            disabled={saving}
+                                        >
+                                            <FaSave /> {saving ? "Salvando..." : "Salvar"}
+                                        </button>
+                                        <button
+                                            className={styles.pointAction}
+                                            type="button"
+                                            onClick={() => {
+                                                setEditForm(createEditForm(selectedPoint));
+                                                setIsEditing(false);
+                                            }}
+                                        >
+                                            Cancelar
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button
+                                        className={styles.pointAction}
+                                        type="button"
+                                        onClick={() => setIsEditing(true)}
+                                    >
+                                        <FaEdit /> Editar
+                                    </button>
+                                )}
+
+                                <button
+                                    className={styles.pointAction}
+                                    type="button"
+                                    onClick={fecharDetalhes}
+                                >
+                                    Fechar
+                                </button>
+                                <button
+                                    className={`${styles.pointAction} ${styles.successAction}`}
+                                    type="button"
+                                    onClick={() => alterarStatus(selectedPoint.idPc, "APROVADO")}
+                                >
+                                    <FaCheck /> Aprovar
+                                </button>
+                                <button
+                                    className={`${styles.pointAction} ${styles.dangerAction}`}
+                                    type="button"
+                                    onClick={() => alterarStatus(selectedPoint.idPc, "REJEITADO")}
+                                >
+                                    <FaTimes /> Recusar
+                                </button>
                             </div>
                             </article>
                         </div>

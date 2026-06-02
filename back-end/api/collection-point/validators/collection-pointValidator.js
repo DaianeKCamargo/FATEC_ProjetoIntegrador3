@@ -46,6 +46,7 @@ const createPointSchema = z.object({
     opensDay: z.string().trim().min(3, "opensDay e obrigatorio"),
     hourInit: z.string().trim().regex(timeRegex, "hourInit deve estar em HH:mm"),
     hourFinal: z.string().trim().regex(timeRegex, "hourFinal deve estar em HH:mm"),
+    status: z.enum(["APROVADO", "PENDENTE"]).optional(),
     address: addressSchema,
 });
 
