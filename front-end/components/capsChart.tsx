@@ -4,10 +4,10 @@ import {
   BarChart,
   Bar,
   XAxis,
-  YAxis,
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
+  LabelList,
 } from 'recharts';
 
 interface Props {
@@ -20,15 +20,16 @@ interface Props {
 export default function CapsChart({ data }: Props) {
   return (
     <div className="chartContainer">
-      <h2>Tampinhas por mês</h2>
+      <h2>Tampinhas por mês (un)</h2>
 
-      <ResponsiveContainer width="100%" height={350}>
-        <BarChart data={data}>
+      <ResponsiveContainer width="100%" height={410}>
+        <BarChart data={data} margin={{ top: 28, right: 18, left: 18, bottom: 8 }}>
           <CartesianGrid strokeDasharray="5 5" />
           <XAxis dataKey="month" />
-          <YAxis />
           <Tooltip />
-          <Bar dataKey="total" fill="#1e88e5" radius={[6, 6, 0, 0]} />
+          <Bar dataKey="total" fill="#1e88e5" radius={[6, 6, 0, 0]}>
+            <LabelList dataKey="total" position="top" fontWeight={700} fontSize={14} />
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>
