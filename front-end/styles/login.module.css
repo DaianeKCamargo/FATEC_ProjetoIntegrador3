@@ -177,7 +177,7 @@
 
 .welcomeTitle {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 2rem;
     line-height: 1.55;
     font-weight: 600;
     letter-spacing: 0;
@@ -210,13 +210,13 @@
 
 .resetStepItem strong,
 .resetStepItemActive strong {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     line-height: 1.2;
 }
 
 .resetStepItem span,
 .resetStepItemActive span {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     line-height: 1.45;
     color: #5a6678;
 }

@@ -3,12 +3,12 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AxiosError } from 'axios'
-import api from '@/services/api'
 import { authApi } from '@/services/api'
-import { API_BASE_URL } from '@/services/apiBase'
 import { useAuth } from '@/context/AuthContext'
 import styles from '../../styles/login.module.css'
 
+
+// FRASE MOTIVACIONAL 
 const motivationalPhrases = [
     'Cada novo dia é uma chance de recomeçar.',
     'O progresso de hoje constrói a conquista de amanhã.',
@@ -82,7 +82,7 @@ export default function LoginPage() {
         <div className={styles.loginContainer}>
             <div className={styles.loginShell}>
                 <section className={styles.welcomePanel} aria-label="Mensagem de boas-vindas">
-                    <h1 className={styles.welcomeTitle}>Bem Vindo, estamos felizes em ter você por aqui!</h1>
+                    <h1 className={styles.welcomeTitle}>Seja Bem-Vindo!</h1>
                     <p className={styles.welcomePhrase}>{motivationalPhrases[phraseIndex]}</p>
                 </section>
 

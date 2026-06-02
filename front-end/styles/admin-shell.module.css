@@ -52,6 +52,13 @@
     color: #25324b;
 }
 
+.topActions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.backButton,
 .logoutButton {
     display: inline-flex;
     align-items: center;
@@ -59,14 +66,24 @@
     border: none;
     border-radius: 999px;
     padding: 0.8rem 1.15rem;
-    background: linear-gradient(135deg, #dabe25 0%, #c5a51a 100%);
-    color: #fff;
     font-size: 1.3rem;
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.backButton {
+    background: #fff;
+    color: #8a6a00;
+    border: 1px solid rgba(218, 190, 37, 0.3);
+}
+
+.logoutButton {
+    background: linear-gradient(135deg, #dabe25 0%, #c5a51a 100%);
+    color: #fff;
+}
+
+.backButton:hover,
 .logoutButton:hover {
     transform: translateY(-1px);
     box-shadow: 0 12px 24px rgba(218, 180, 37, 0.28);
@@ -97,8 +114,13 @@
         align-items: flex-start;
     }
 
-    .logoutButton {
+    .topActions {
         width: 100%;
+    }
+
+    .backButton,
+    .logoutButton {
+        flex: 1;
         justify-content: center;
     }
 }
