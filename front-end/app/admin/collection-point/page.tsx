@@ -656,7 +656,8 @@ export default function CollectionPointPage() {
                     </div>
 
                     {selectedPoint && editForm && (
-                        <article className={styles.detailPanel}>
+                        <div className={styles.modalOverlay}>
+                            <article className={`${styles.detailPanel} ${styles.modalContent}`}>
                             <div className={styles.detailHeader}>
                                 <div>
                                     <span
@@ -825,7 +826,8 @@ export default function CollectionPointPage() {
                                     </section>
                                 ))}
                             </div>
-                        </article>
+                            </article>
+                        </div>
                     )}
 
                     {loading ? (

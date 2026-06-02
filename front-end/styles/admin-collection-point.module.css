@@ -407,6 +407,25 @@
     border: 1px solid #f0e2ae;
 }
 
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-items: center;
+    padding: 1.5rem;
+    background: rgba(47, 40, 24, 0.46);
+    backdrop-filter: blur(4px);
+}
+
+.modalContent {
+    width: min(1120px, 100%);
+    max-height: min(88vh, 920px);
+    overflow-y: auto;
+    margin-bottom: 0;
+    box-shadow: 0 28px 70px rgba(47, 40, 24, 0.22);
+}
+
 .detailHeader {
     display: flex;
     align-items: flex-start;
@@ -782,6 +801,15 @@
     .requestPanel,
     .listPanel {
         padding: 1rem;
+    }
+
+    .modalOverlay {
+        padding: 0.75rem;
+        align-items: start;
+    }
+
+    .modalContent {
+        max-height: calc(100vh - 1.5rem);
     }
 
     .detailFields {
