@@ -146,7 +146,6 @@ export default function DashRegistration() {
         <button className={styles.backButton} onClick={()=>router.push('/admin')}>
           <MdArrowBack/> Voltar
         </button>
-        <h1 className={styles.title}>Registros</h1>
       </div>
 
       {loading ? <p>Carregando...</p> : (
@@ -155,11 +154,10 @@ export default function DashRegistration() {
 
         {/* ================= CAPS ================= */}
         <div className={styles.section}>
-          <h2>Tampinhas</h2>
-
+          <h1 className={styles.title}>Registro de Tampinhas</h1> 
           {/* CREATE */}
           <div className={styles.box}>
-            <h3>Cadastrar</h3>
+            <h2>Cadastrar</h2>
 
             <form onSubmit={createCap} className={styles.row}>
 
@@ -247,17 +245,17 @@ export default function DashRegistration() {
                 <div key={item.id} className={styles.card}>
 
                   <div className={styles.inlineField}>
-                    <label>Data:</label>
+                    <h5>Data:</h5>
                     <span>{new Date(item.data).toLocaleDateString()}</span>
                   </div>
 
                   <div className={styles.inlineField}>
-                    <label>Kg:</label>
+                    <h5>Kg:</h5>
                     <span>{item.quantidadeKg}</span>
                   </div>
 
                   <div className={styles.inlineField}>
-                    <label>Qtd:</label>
+                    <h5>Qtd:</h5>
                     <span>{qtd}</span>
                   </div>
 
@@ -292,7 +290,7 @@ export default function DashRegistration() {
 
         {/* ================= ANIMALS ================= */}
         <div className={styles.section}>
-          <h2>Animais</h2>
+          <h1 className={styles.title}>Registro de Animais</h1>
 
           {/* CREATE */}
           <div className={styles.box}>
