@@ -1,18 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { MdArrowBack, MdDelete, MdEdit, MdSave, MdClose } from 'react-icons/md';
-import { useRouter } from 'next/navigation';
-
+import { MdDelete, MdEdit, MdSave, MdClose } from 'react-icons/md';
 import capsService from '@/services/capsService';
 import animalsService from '@/services/animalsService';
-
 import styles from '@/styles/admin-dash-registration-records.module.css';
 
 export default function DashRegistration() {
-
-  const router = useRouter();
-
   // ✅ DADOS
   const [caps, setCaps] = useState<any[]>([]);
   const [animals, setAnimals] = useState<any[]>([]);
@@ -139,22 +133,77 @@ export default function DashRegistration() {
     });
   },[animals,filterAnimalDate,filterType]);
 
+  const summary = useMemo(() => {
+    const today = new Date();
+    today.setHours(23, 59, 59, 999);
+
+    const isUntilToday = (value: string) => {
+      const date = new Date(value);
+      return !Number.isNaN(date.getTime()) && date <= today;
+    };
+
+    const totalCaps = caps
+      .filter(item => isUntilToday(item.data))
+      .reduce((total, item) => {
+        const quantity =
+          item.quantidade_tampinhas ??
+          Math.round(Number(item.quantidadeKg || 0) * 500);
+
+        return total + Number(quantity || 0);
+      }, 0);
+
+    const totalCats = animals
+      .filter(item => isUntilToday(item.data) && item.tipoAnimal === 'gato')
+      .reduce((total, item) => total + Number(item.quantidade || 0), 0);
+
+    const totalDogs = animals
+      .filter(item => isUntilToday(item.data) && item.tipoAnimal === 'cachorro')
+      .reduce((total, item) => total + Number(item.quantidade || 0), 0);
+
+    return {
+      totalCaps,
+      totalCats,
+      totalDogs,
+    };
+  }, [caps, animals]);
+
   return (
     <div className={styles.page}>
 
-      <div className={styles.topBar}>
-        <button className={styles.backButton} onClick={()=>router.push('/admin')}>
-          <MdArrowBack/> Voltar
-        </button>
-      </div>
-
       {loading ? <p>Carregando...</p> : (
+
+      <div className={styles.panel}>
+        <h1 className={styles.mainTitle}>Registro</h1>
+
+        <section className={styles.summaryPanel}>
+          <h2 className={styles.summaryTitle}>Quantidades</h2>
+
+          <div className={styles.summaryGrid}>
+            <article className={styles.summaryCard}>
+              <span>Tampinhas arrecadadas</span>
+              <strong>{summary.totalCaps.toLocaleString('pt-BR')}</strong>
+              <small>unidade</small>
+            </article>
+
+            <article className={styles.summaryCard}>
+              <span>Gatos</span>
+              <strong>{summary.totalCats.toLocaleString('pt-BR')}</strong>
+              <small>castrados</small>
+            </article>
+
+            <article className={styles.summaryCard}>
+              <span>Cachorros</span>
+              <strong>{summary.totalDogs.toLocaleString('pt-BR')}</strong>
+              <small>castrados</small>
+            </article>
+          </div>
+        </section>
 
       <div className={styles.grid}>
 
         {/* ================= CAPS ================= */}
         <div className={styles.section}>
-          <h1 className={styles.title}>Registro de Tampinhas</h1> 
+          <span className={styles.kicker}>Tampinhas</span>
           {/* CREATE */}
           <div className={styles.box}>
             <h2>Cadastrar</h2>
@@ -162,7 +211,7 @@ export default function DashRegistration() {
             <form onSubmit={createCap} className={styles.row}>
 
               <div className={styles.inlineField}>
-                <h5>Data:</h5>
+                <label>Data:</label>
                 <input type="date"
                   value={capCreateForm.data}
                   onChange={e=>setCapCreateForm({...capCreateForm,data:e.target.value})}
@@ -170,7 +219,7 @@ export default function DashRegistration() {
               </div>
 
               <div className={styles.inlineField}>
-                <h5>Kg:</h5>
+                <label>Kg:</label>
                 <input type="number"
                   value={capCreateForm.quantidadeKg}
                   onChange={e=>setCapCreateForm({...capCreateForm,quantidadeKg:e.target.value})}
@@ -185,7 +234,7 @@ export default function DashRegistration() {
           {/* FILTER */}
           <div className={styles.filter}>
             <div className={styles.filterItem}>
-              <h5>Mês:</h5>
+              <label>Mês:</label>
               <input type="month"
                 value={filterCapDate}
                 onChange={e=>setFilterCapDate(e.target.value)}
@@ -207,7 +256,7 @@ export default function DashRegistration() {
                   <div key={item.id} className={styles.card}>
 
                     <div className={styles.inlineField}>
-                      <h5>Data:</h5>
+                      <label>Data:</label>
                       <input
                         type="date"
                         value={capForm.data}
@@ -216,7 +265,7 @@ export default function DashRegistration() {
                     </div>
 
                     <div className={styles.inlineField}>
-                      <h5>Kg:</h5>
+                      <label>Kg:</label>
                       <input
                         type="number"
                         value={capForm.quantidadeKg}
@@ -225,7 +274,7 @@ export default function DashRegistration() {
                     </div>
 
                     <div className={styles.inlineField}>
-                      <h5>Qtd:</h5>
+                      <label>Qtd:</label>
                       <span>{qtd}</span>
                     </div>
 
@@ -245,17 +294,17 @@ export default function DashRegistration() {
                 <div key={item.id} className={styles.card}>
 
                   <div className={styles.inlineField}>
-                    <h5>Data:</h5>
+                    <label>Data:</label>
                     <span>{new Date(item.data).toLocaleDateString()}</span>
                   </div>
 
                   <div className={styles.inlineField}>
-                    <h5>Kg:</h5>
+                    <label>Kg:</label>
                     <span>{item.quantidadeKg}</span>
                   </div>
 
                   <div className={styles.inlineField}>
-                    <h5>Qtd:</h5>
+                    <label>Qtd:</label>
                     <span>{qtd}</span>
                   </div>
 
@@ -290,7 +339,7 @@ export default function DashRegistration() {
 
         {/* ================= ANIMALS ================= */}
         <div className={styles.section}>
-          <h1 className={styles.title}>Registro de Animais</h1>
+          <span className={styles.kicker}>Animais</span>
 
           {/* CREATE */}
           <div className={styles.box}>
@@ -298,7 +347,7 @@ export default function DashRegistration() {
 
             <form onSubmit={createAnimal} className={styles.row}>
               <div className={styles.inlineField}>
-                <h5>Data:</h5>
+                <label>Data:</label>
                 <input type="date"
                   value={animalCreateForm.data}
                   onChange={e=>setAnimalCreateForm({...animalCreateForm,data:e.target.value})}
@@ -306,7 +355,7 @@ export default function DashRegistration() {
               </div>
 
               <div className={styles.inlineField}>
-                <h5>Tipo animal:</h5>
+                <label>Tipo animal:</label>
                 <select
                   value={animalCreateForm.tipoAnimal}
                   onChange={e=>setAnimalCreateForm({...animalCreateForm,tipoAnimal:e.target.value})}
@@ -317,7 +366,7 @@ export default function DashRegistration() {
               </div>
 
               <div className={styles.inlineField}>
-                <h5>Quantidade:</h5>
+                <label>Quantidade:</label>
                 <input type="number"
                   value={animalCreateForm.quantidade}
                   onChange={e=>setAnimalCreateForm({...animalCreateForm,quantidade:e.target.value})}
@@ -331,7 +380,7 @@ export default function DashRegistration() {
           {/* FILTER */}
           <div className={styles.filter}>
             <div className={styles.filterItem}>
-              <h5>Mês:</h5>
+              <label>Mês:</label>
               <input type="month"
                 value={filterAnimalDate}
                 onChange={e=>setFilterAnimalDate(e.target.value)}
@@ -339,7 +388,7 @@ export default function DashRegistration() {
             </div>
 
             <div className={styles.filterItem}>
-              <h5>Tipo animal:</h5>
+              <label>Tipo animal:</label>
               <select
                 value={filterType}
                 onChange={e=>setFilterType(e.target.value as any)}
@@ -367,7 +416,7 @@ export default function DashRegistration() {
                   <div key={item.id} className={styles.card}>
 
                     <div className={styles.inlineField}>
-                      <h5>Data:</h5>
+                      <label>Data:</label>
                       <input
                         type="date"
                         value={animalForm.data}
@@ -376,7 +425,7 @@ export default function DashRegistration() {
                     </div>
 
                     <div className={styles.inlineField}>
-                      <h5>Tipo:</h5>
+                      <label>Tipo:</label>
                       <select
                         value={animalForm.tipoAnimal}
                         onChange={e=>setAnimalForm({...animalForm,tipoAnimal:e.target.value})}
@@ -387,7 +436,7 @@ export default function DashRegistration() {
                     </div>
 
                     <div className={styles.inlineField}>
-                      <h5>Qtd:</h5>
+                      <label>Qtd:</label>
                       <input
                         type="number"
                         value={animalForm.quantidade}
@@ -413,17 +462,17 @@ export default function DashRegistration() {
                 <div key={item.id} className={styles.card}>
 
                   <div className={styles.inlineField}>
-                    <h5>Data:</h5>
+                    <label>Data:</label>
                     <span>{new Date(item.data).toLocaleDateString()}</span>
                   </div>
 
                   <div className={styles.inlineField}>
-                    <h5>Tipo:</h5>
+                    <label>Tipo:</label>
                     <span>{item.tipoAnimal}</span>
                   </div>
 
                   <div className={styles.inlineField}>
-                    <h5>Qtd:</h5>
+                    <label>Qtd:</label>
                     <span>{item.quantidade}</span>
                   </div>
 
@@ -457,6 +506,7 @@ export default function DashRegistration() {
 
         </div>
 
+      </div>
       </div>
       )}
     </div>
