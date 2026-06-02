@@ -554,7 +554,7 @@ export default function CollectionPointsPage() {
                     <span className={styles.bottomLabel}>Cadastre-se</span>
                     <strong>Torne-se um ponto de coleta</strong>
                     <p>Cadastre seu estabelecimento e ajude mais pessoas a encontrar um local de apoio perto de casa.</p>
-                    <Link href="/cadastro-ponto-coleta" className={styles.bottomLink}>
+                    <Link href="/collection-point-registration" className={styles.bottomLink}>
                         Quero participar <ArrowRight size={16} />
                     </Link>
                 </article>
