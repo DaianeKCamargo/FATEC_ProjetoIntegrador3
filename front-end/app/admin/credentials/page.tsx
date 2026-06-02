@@ -156,9 +156,6 @@ export default function CredentialsAdminPage() {
                         <MdRefresh size={18} />
                         Atualizar lista
                     </button>
-                    <Link href="/admin" className={styles.secondaryButton}>
-                        Voltar ao menu principal
-                    </Link>
                 </div>
             </section>
 
@@ -229,7 +226,7 @@ export default function CredentialsAdminPage() {
                 <section className={styles.card}>
                     <div className={styles.cardHeader}>
                         <div>
-                            <p className={styles.cardKicker}>Tabela AdminUser</p>
+                            <p className={styles.cardKicker}>histórico</p>
                             <h3 className={styles.cardTitle}>Credenciais cadastradas</h3>
                         </div>
                         <span className={styles.countBadge}>{admins.length} registros</span>

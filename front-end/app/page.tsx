@@ -11,7 +11,6 @@ import WhatsModal from "@/components/whatsModal";
 import CountUp from "@/components/countUp";
 import capsService from "@/services/capsService";
 import animalsService from "@/services/animalsService";
-import api from "@/services/api";
 import { FaCat, FaDog, FaHandHoldingHeart, FaMapMarkerAlt, FaPaw, FaClock, FaRoute } from "react-icons/fa";
 import { AiFillGold } from "react-icons/ai";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
