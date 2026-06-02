@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ConditionalNavbar from '@/components/conditionalNavbar';
 import ConditionalFooter from '@/components/conditionalFooter';
 import ConditionalCopyright from '@/components/conditionalCopyright';
+import AccessibilityWidget from '@/components/accessibilityWidget';
 import { AuthProvider } from "@/context/AuthContext";
 
 
@@ -19,10 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body>
         <AuthProvider >
           <ConditionalNavbar />
+          <AccessibilityWidget />
           {children}
           <ConditionalFooter />
           <ConditionalCopyright />
