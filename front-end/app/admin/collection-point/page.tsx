@@ -54,6 +54,44 @@ export default function CollectionPointPage() {
         carregarPontos();
     }, []);
 
+    async function alterarStatus(
+    idPc: number,
+    novoStatus: "APROVADO" | "REJEITADO"
+) {
+    try {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/collection-point/${idPc}/status`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    status: novoStatus,
+                    ...(novoStatus === "REJEITADO"
+                        ? { reason: "Ponto desativado pelo administrador" }
+                        : {}),
+                }),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Erro ao atualizar status");
+        }
+
+        setRegisteredPoints((prev) =>
+            prev.map((point) =>
+                point.idPc === idPc
+                    ? { ...point, status: novoStatus }
+                    : point
+            )
+        );
+    } catch (error) {
+        console.error("Erro ao alterar status:", error);
+        alert("Erro ao alterar status do ponto.");
+    }
+}
+
     return (
         <div className={styles.adminContainer}>
             <div className={styles.adminContent}>
@@ -143,7 +181,13 @@ export default function CollectionPointPage() {
                         <p>Nenhum ponto de coleta cadastrado.</p>
                     ) : (
                         <div className={styles.pointsList}>
-                            {registeredPoints.map((point) => (
+                            {registeredPoints
+                                .filter(
+                                    (point) =>
+                                        point.status === "APROVADO" ||
+                                        point.status === "REJEITADO"
+                                )
+                                .map((point) => (
                                 <article
                                     key={point.idPc}
                                     className={styles.pointRow}
@@ -163,7 +207,9 @@ export default function CollectionPointPage() {
                                                     ]
                                                 }`}
                                             >
-                                                {point.status}
+                                                {point.status === "APROVADO"
+                                                    ? "Ativo"
+                                                    : "Inativo"}
                                             </span>
                                         </div>
 
@@ -186,12 +232,40 @@ export default function CollectionPointPage() {
                                         </div>
                                     </div>
 
-                                    <button
-                                        className={styles.pointAction}
-                                        type="button"
+                                                                        <div
+                                        style={{
+                                            display: "flex",
+                                            gap: "10px",
+                                            alignItems: "center",
+                                        }}
                                     >
-                                        Detalhes <FaRoute />
-                                    </button>
+                                        <Link
+                                            href={`/admin/collection-point/edit/${point.idPc}`}
+                                            className={styles.pointAction}
+                                        >
+                                            Editar
+                                        </Link>
+
+                                        {point.status === "APROVADO" ? (
+                                            <button
+                                                className={styles.pointAction}
+                                                onClick={() =>
+                                                    alterarStatus(point.idPc, "REJEITADO")
+                                                }
+                                            >
+                                                Desativar
+                                            </button>
+                                        ) : (
+                                            <button
+                                                className={styles.pointAction}
+                                                onClick={() =>
+                                                    alterarStatus(point.idPc, "APROVADO")
+                                                }
+                                            >
+                                                Ativar
+                                            </button>
+                                        )}
+                                    </div>
                                 </article>
                             ))}
                         </div>
