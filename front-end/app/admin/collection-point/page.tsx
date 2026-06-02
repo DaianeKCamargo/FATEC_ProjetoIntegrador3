@@ -574,7 +574,7 @@ export default function CollectionPointPage() {
                             className={styles.cardButton}
                             href="/admin/collection-point/registration"
                         >
-                            Abrir registro
+                            Cadastrar
                         </Link>
                     </section>
 
@@ -586,7 +586,7 @@ export default function CollectionPointPage() {
                         <div className={styles.cardContent}>
                             <div className={styles.cardHeading}>
                                 <h2 className={styles.cardTitle}>
-                                    Revisar Solicitações
+                                    Solicitações Pendentes
                                 </h2>
                                 <span className={styles.reviewBadge}>
                                     {registeredPoints.filter(
@@ -602,14 +602,12 @@ export default function CollectionPointPage() {
                             </p>
                         </div>
 
-                        <div className={styles.reviewActions}>
-                            <button
-                                className={styles.cardButton}
-                                type="button"
-                            >
-                                Revisar agora
-                            </button>
-                        </div>
+                        <Link
+                            className={styles.cardButton}
+                            href="/admin/collection-point/registration-review"
+                        >
+                            Revisar
+                        </Link>
                     </section>
                 </div>
 
@@ -735,6 +733,21 @@ export default function CollectionPointPage() {
 
                             <div className={styles.detailGrid}>
                                 <section className={styles.detailGroup}>
+                                    <h4>Foto do ponto</h4>
+
+                                    <div className={styles.photoPreview}>
+                                        {selectedPoint.linkPhoto ? (
+                                            <img
+                                                src={selectedPoint.linkPhoto}
+                                                alt={`Foto do ponto ${selectedPoint.namePoint}`}
+                                            />
+                                        ) : (
+                                            <span>Imagem nao informada.</span>
+                                        )}
+                                    </div>
+                                </section>
+
+                                <section className={styles.detailGroup}>
                                     <h4>Informacoes do cadastro</h4>
 
                                     <div className={styles.detailFields}>
@@ -826,8 +839,15 @@ export default function CollectionPointPage() {
                                     key={point.idPc}
                                     className={styles.pointRow}
                                 >
-                                    <div className={styles.pointIcon}>
-                                        <FaStoreAlt />
+                                    <div className={styles.pointThumb}>
+                                        {point.linkPhoto ? (
+                                            <img
+                                                src={point.linkPhoto}
+                                                alt={`Foto do ponto ${point.namePoint}`}
+                                            />
+                                        ) : (
+                                            <FaStoreAlt />
+                                        )}
                                     </div>
 
                                     <div className={styles.pointInfo}>
