@@ -1,160 +1,238 @@
-/* ===== PAGE ===== */
 .page {
-  background: #f7edfe;
   min-height: 100vh;
+  padding: 4rem;
+  background: linear-gradient(to right, #ffffff, #ffffff, #edf6ff);
+  color: #1f2b3d;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
 }
 
-/* ===== HERO ===== */
 .hero {
-  background: #f7edfe;
-  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: min(100%, 1240px);
+  min-height: 24rem;
+  margin: 0 auto 2rem;
+  padding: 3rem;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(95, 129, 183, 0.12);
+  box-shadow: 0 18px 40px rgba(80, 80, 80, 0.08);
   text-align: center;
-  padding: 20px;
+  backdrop-filter: blur(10px);
 }
 
 .heroContent h1 {
-  font-size: 42px;
-  color: #333;
-  margin-bottom: 10px;
+  margin: 0;
+  color: #1f2b3d;
+  font-size: clamp(3rem, 5vw, 5.2rem);
+  line-height: 1.05;
+  font-weight: 800;
 }
 
 .heroContent p {
-  font-size: 20px;
-  color: #444;
+  max-width: 62rem;
+  margin: 1.2rem auto 0;
+  color: #4f5d72;
+  font-size: 1.55rem;
+  line-height: 1.6;
 }
 
-/* ===== CONTAINER ===== */
 .doar {
-  max-width: 900px;
-  margin: -110px auto 60px; /* faz subir sobre o hero */
-  padding: 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 1.6rem;
+  width: min(100%, 1240px);
+  margin: 0 auto;
 }
 
-/* ===== CARD ===== */
 .sectionBox {
-  background: #ffffff;
-  border: 2px solid #cb97e3;
-  border-radius: 18px;
-  padding: 24px 28px;
+  padding: 2.4rem 3rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(95, 129, 183, 0.12);
+  box-shadow: 0 14px 30px rgba(80, 80, 80, 0.08);
 }
 
-/* ===== HEADER ===== */
 .sectionHeader {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sectionHeader svg {
+  flex: 0 0 auto;
+  width: 4rem;
+  height: 4rem;
+  padding: 0.85rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #9d43c2, #5f81b7);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(95, 129, 183, 0.25);
 }
 
 .sectionHeader h2 {
-  font-size: 22px;
-  font-weight: bold;
-  color: #000000;
+  margin: 0;
+  color: #1f2b3d;
+  font-size: 2rem;
+  font-weight: 800;
 }
 
-/* ===== TEXTO ===== */
+.sectionContent {
+  display: grid;
+  gap: 1rem;
+}
+
 .sectionContent p {
-  font-size: 16px;
-  margin-bottom: 12px;
-  color: #000000;
+  margin: 0;
+  color: #4f5d72;
+  font-size: 1.5rem;
+  line-height: 1.65;
 }
 
 .sectionContent ul {
-  padding-left: 18px;
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .sectionContent li {
-  margin-bottom: 6px;
-  font-size: 15px;
+  position: relative;
+  padding: 1rem 1rem 1rem 3rem;
+  border-radius: 16px;
+  background: rgba(95, 129, 183, 0.08);
+  color: #4f5d72;
+  font-size: 1.4rem;
+  line-height: 1.5;
 }
 
-/* ===== ICONES LISTA ===== */
-.sectionContent i {
-  margin-right: 6px;
+.sectionContent li::before {
+  content: "";
+  position: absolute;
+  top: 1.45rem;
+  left: 1.2rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #dabe25;
+  box-shadow: 0 0 0 4px rgba(218, 190, 37, 0.18);
 }
 
-/* ===== GRID DE IMAGENS ===== */
 .gridImages {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 25px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.4rem;
 }
 
-.gridImages div {
+.gridImages > div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.4rem;
+  border-radius: 20px;
+  background: rgba(95, 129, 183, 0.08);
   text-align: center;
 }
 
 .gridImages h3 {
-  margin-bottom: 8px;
+  margin: 0;
+  color: #1f2b3d;
+  font-size: 1.45rem;
+  font-weight: 800;
+}
+
+.gridImages img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(80, 80, 80, 0.12);
 }
 
 .gridImages p {
-  font-size: 14px;
-}
-.gridImages img {
-  width: 300px;
-  height: auto;
-  align-content: center;
+  margin: 0;
+  color: #4f5d72;
+  font-size: 1.4rem;
+  line-height: 1.55;
 }
 
-/* ===== IMAGEM ===== */
-.Image-banner {
-  border-radius: 12px;
-  margin: 10px 0;
-}
-
-/* ===== DUAS COLUNAS (FAZ / NÃO FAZ) ===== */
 .doubleColumn {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 35px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem;
+}
+
+.doubleColumn > div {
+  padding: 1.4rem;
+  border-radius: 20px;
+  background: rgba(95, 129, 183, 0.08);
 }
 
 .doubleColumn h3 {
-  margin-bottom: 10px;
+  margin: 0 0 1rem;
+  color: #1f2b3d;
+  font-size: 1.5rem;
+  font-weight: 900;
 }
 
 .doubleColumn ul {
-  list-style: none;
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
   padding: 0;
+  list-style: none;
 }
 
 .doubleColumn li {
-  margin-bottom: 8px;
-  font-size: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  color: #4f5d72;
+  font-size: 1.4rem;
+  line-height: 1.45;
 }
 
-/* ===== RESPONSIVO ===== */
-@media (max-width: 768px) {
+.doubleColumn i {
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+}
+
+@media (max-width: 900px) {
+  .page {
+    padding: 1rem;
+  }
 
   .hero {
-    height: 240px;
+    min-height: auto;
+    padding: 2rem 1.5rem;
+    border-radius: 24px;
   }
 
-  .heroContent h1 {
-    font-size: 28px;
+  .sectionBox {
+    padding: 1.5rem;
   }
 
-  .heroContent p {
-    font-size: 15px;
+  .sectionHeader {
+    align-items: flex-start;
   }
 
-  .doar {
-    margin-top: -80px;
+  .sectionHeader h2 {
+    font-size: 1.7rem;
   }
 
-  .gridImages {
-    grid-template-columns: 1fr;
-  }
-
+  .gridImages,
   .doubleColumn {
     grid-template-columns: 1fr;
   }
 
+  .sectionContent p,
+  .sectionContent li,
+  .doubleColumn li {
+    font-size: 1.12rem;
+  }
 }

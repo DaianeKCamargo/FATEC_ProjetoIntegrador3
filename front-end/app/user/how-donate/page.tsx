@@ -46,7 +46,7 @@ export default function ComoDoar() {
           </div>
 
           <div className={style.sectionContent}>
-            <p>Para facilitar a triagem das tampinhas, não coloque junto delas:</p>
+            <p>Para facilitar a triagem das tampinhas, <strong>NÃO</strong> coloque junto delas:</p>
 
             <ul>
               <li>Itens não recicláveis</li>
