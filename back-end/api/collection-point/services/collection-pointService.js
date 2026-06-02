@@ -5,11 +5,6 @@ const {
 } = require("../validators/collection-pointValidator");
 const repository = require("../models/collection-pointModel");
 
-const baseUrl = (process.env.MS_PONTO_COLETA_URL || "http://localhost:5507").replace(
-    /\/$/,
-    ""
-);
-
 class HttpError extends Error {
     constructor(statusCode, message) {
         super(message);
@@ -38,44 +33,6 @@ function validarCoordenadas(lat, lng) {
         throw new HttpError(400, "Coordenadas inválidas");
     }
 }
-
-async function parseResponse(response) {
-    const contentType = response.headers.get("content-type") || "";
-    const isJson = contentType.includes("application/json");
-    const body = isJson ? await response.json() : await response.text();
-
-    if (!response.ok) {
-        const message =
-            (isJson && body && body.message) ||
-            response.statusText ||
-            "Erro no microsservico";
-
-        throw new HttpError(response.status, message);
-    }
-
-    return body;
-}
-
-async function requestMs(path, options = {}) {
-    try {
-        const response = await fetch(`${baseUrl}${path}`, {
-            ...options,
-            headers: {
-                "Content-Type": "application/json",
-                ...(options.headers || {}),
-            },
-        });
-
-        return parseResponse(response);
-    } catch (error) {
-        if (error instanceof HttpError) {
-            throw error;
-        }
-
-        throw new HttpError(503, "Nao foi possivel conectar ao microsservico de status");
-    }
-}
-
 
 async function criarPontoColeta(payload) {
     const data = validateCreate(payload);
@@ -127,14 +84,6 @@ async function atualizarPontoColeta(rawId, payload) {
         throw new HttpError(404, "Ponto de coleta nao encontrado");
     }
 
-    if (current.status !== "PENDENTE") {
-        throw new HttpError(
-            409,
-            "Somente pontos com status PENDENTE podem ser editados"
-        );
-    }
-
-    
     if (data.address) {
         const lat =
             data.address.latitude ?? current.address?.latitude;
@@ -165,26 +114,21 @@ async function removerPontoColeta(rawId) {
 async function atualizarStatusPontoColeta(rawId, payload) {
     const id = toIntId(rawId);
 
+    const current = await repository.findPointById(id);
+
+    if (!current) {
+        throw new HttpError(404, "Ponto de coleta nao encontrado");
+    }
+
     const data = validateStatus({
         status: payload.status,
         reason: payload.reason ?? payload.rejectionReason,
     });
 
-    const result = await requestMs(`/api/collection-point/${id}/status`, {
-        method: "PATCH",
-        body: JSON.stringify({
-            status: data.status,
-            reason: data.reason,
-        }),
-    });
-
-    const updated = result?.data || result;
-
     return repository.updatePointStatus(id, {
-        status: updated.status ?? data.status,
+        status: data.status,
         rejectionReason:
-            updated.rejectionReason ??
-            (data.status === "REJEITADO" ? data.reason : null),
+            data.status === "REJEITADO" ? data.reason : null,
     });
 }
 

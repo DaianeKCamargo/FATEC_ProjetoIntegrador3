@@ -287,6 +287,50 @@
     color: #6a5f43;
 }
 
+.sectionTools {
+    display: grid;
+    justify-items: end;
+    gap: 0.75rem;
+}
+
+.filterActions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem;
+    border-radius: 999px;
+    background: rgba(214, 178, 37, 0.10);
+    border: 1px solid rgba(214, 178, 37, 0.18);
+}
+
+.filterTitle {
+    padding: 0.45rem 0.8rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #7a6f52;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.filterButton {
+    border: none;
+    border-radius: 999px;
+    padding: 0.6rem 0.9rem;
+    color: #5a4a15;
+    background: transparent;
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filterButton:hover,
+.activeFilter {
+    color: #fff;
+    background: linear-gradient(135deg, #dabe25 0%, #c5a51a 100%);
+    box-shadow: 0 8px 18px rgba(212, 178, 37, 0.24);
+}
+
 .reviewGrid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -310,7 +354,8 @@
 .pointHeading h3 {
     margin: 0;
     color: #2f2818;
-    font-size: 1rem;
+    font-size: 1.7rem;
+    font-weight: 600;
 }
 
 .requestTopRow p,
@@ -318,7 +363,7 @@
 .pointInfo p {
     color: #685f46;
     line-height: 1.55;
-    font-size: 0.92rem;
+    font-size: 1.2rem;
 }
 
 .requestDescription {
@@ -350,6 +395,96 @@
 .pointsList {
     display: grid;
     gap: 0.85rem;
+}
+
+.detailPanel {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    padding: 1rem;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #ffffff 0%, #fff9e7 100%);
+    border: 1px solid #f0e2ae;
+}
+
+.detailHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.detailTitle {
+    margin: 0.55rem 0 0;
+    color: #2f2818;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.detailActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.detailGrid {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.detailGroup {
+    display: grid;
+    gap: 0.55rem;
+    align-content: start;
+    padding-top: 0.85rem;
+    border-top: 1px solid #efe1af;
+}
+
+.detailGroup h4 {
+    margin: 0;
+    color: #4e4216;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.detailFields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+    gap: 0.65rem;
+}
+
+.detailField {
+    display: grid;
+    gap: 0.3rem;
+    color: #6a5f43;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.detailInput {
+    width: 100%;
+    min-height: 38px;
+    border: 1px solid #e8d99f;
+    border-radius: 10px;
+    padding: 0.55rem 0.7rem;
+    color: #2f2818;
+    background: #fff;
+    font: inherit;
+    font-size: 1.1rem;
+}
+
+.detailInput:read-only {
+    color: #5f553b;
+    background: #fffdf6;
+}
+
+.addressStatus {
+    margin: 0;
+    color: #7a6f52;
+    font-size: 1.1rem;
+    font-weight: 700;
 }
 
 .pointRow {
@@ -392,7 +527,7 @@
     gap: 0.8rem 1rem;
     margin-top: 0.6rem;
     color: #7a6f52;
-    font-size: 0.88rem;
+    font-size: 1rem;
 }
 
 .pointMeta span {
@@ -410,6 +545,24 @@
     background: rgba(214, 178, 37, 0.14);
     border: 1px solid rgba(214, 178, 37, 0.22);
     cursor: pointer;
+}
+
+.pointAction:disabled {
+    cursor: not-allowed;
+    opacity: 0.72;
+    transform: none;
+}
+
+.successAction {
+    color: #fff;
+    background: linear-gradient(135deg, #2f8f46 0%, #1f6d34 100%);
+    border-color: rgba(31, 109, 52, 0.32);
+}
+
+.dangerAction {
+    color: #fff;
+    background: linear-gradient(135deg, #b83b32 0%, #8f2e27 100%);
+    border-color: rgba(143, 46, 39, 0.32);
 }
 
 .aprovado {
@@ -466,6 +619,7 @@
     }
 
     .sectionHeader,
+    .detailHeader,
     .pointRow,
     .requestTopRow,
     .pointHeading {
@@ -498,8 +652,23 @@
     }
 
     .reviewActions,
-    .requestActions {
+    .requestActions,
+    .detailActions {
         width: 100%;
+    }
+
+    .sectionTools {
+        width: 100%;
+        justify-items: stretch;
+    }
+
+    .filterActions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .filterButton {
+        flex: 1;
     }
 
     .pointAction {
@@ -571,6 +740,10 @@
     .requestPanel,
     .listPanel {
         padding: 1rem;
+    }
+
+    .detailFields {
+        grid-template-columns: 1fr;
     }
 
     .heroActions,
