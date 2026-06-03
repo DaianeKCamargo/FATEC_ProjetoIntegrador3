@@ -17,6 +17,15 @@ const allowedOrigins = new Set([
     ...(process.env.FRONTEND_ORIGIN ? process.env.FRONTEND_ORIGIN.split(",").map((value) => value.trim()).filter(Boolean) : []),
 ]);
 
+function isAllowedOrigin(origin) {
+    return (
+        !origin ||
+        allowedOrigins.has(origin) ||
+        /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin) ||
+        origin.endsWith(".vercel.app")
+    );
+}
+
 if (!SESSION_SECRET) {
     throw new Error("SESSION_SECRET deve ser configurado em producao.");
 }
@@ -27,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
     cors({
         origin: (origin, callback) => {
-            if (!origin || allowedOrigins.has(origin)) {
+            if (isAllowedOrigin(origin)) {
                 return callback(null, true);
             }
 
