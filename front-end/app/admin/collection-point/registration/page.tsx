@@ -536,7 +536,6 @@ export default function CreateCollectionPoint({
             `${process.env.NEXT_PUBLIC_API_URL}/collection-point`,
             {
                 method: "POST",
-                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -551,7 +550,6 @@ export default function CreateCollectionPoint({
                     `${process.env.NEXT_PUBLIC_API_URL}/collection-point/${createdPoint.idPc}/status`,
                     {
                         method: "PATCH",
-                        credentials: "include",
                         headers: {
                             "Content-Type": "application/json",
                         },

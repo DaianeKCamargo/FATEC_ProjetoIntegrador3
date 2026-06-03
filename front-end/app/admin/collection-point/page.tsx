@@ -263,10 +263,7 @@ export default function CollectionPointPage() {
         async function carregarPontos() {
             try {
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/collection-point`,
-                    {
-                        credentials: "include",
-                    }
+                    `${process.env.NEXT_PUBLIC_API_URL}/collection-point`
                 );
 
                 if (!response.ok) {
@@ -456,7 +453,6 @@ export default function CollectionPointPage() {
                 `${process.env.NEXT_PUBLIC_API_URL}/collection-point/${selectedPoint.idPc}`,
                 {
                     method: "PUT",
-                    credentials: "include",
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -496,7 +492,6 @@ export default function CollectionPointPage() {
             `${process.env.NEXT_PUBLIC_API_URL}/collection-point/${idPc}/status`,
             {
                 method: "PATCH",
-                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },

@@ -496,7 +496,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"emailUser\": \"{{adminEmail}}\",\n  \"senha\": \"{{adminPassword}}\"\n}"
+              "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"emailUser\": \"{{adminEmail}}\",\n  \"senha\": \"senha123\"\n}"
             },
             "url": "{{msAdminUsers}}/api/credentials"
           },
@@ -548,7 +548,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"senha\": \"{{newAdminPassword}}\"\n}"
+              "raw": "{\n  \"senha\": \"novaSenha123\"\n}"
             },
             "url": "{{msAdminUsers}}/api/credentials/{{idAdmin}}"
           }
@@ -572,7 +572,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"senha\": \"{{adminPassword}}\"\n}"
+              "raw": "{\n  \"username\": \"{{adminUsername}}\",\n  \"senha\": \"senha123\"\n}"
             },
             "url": "{{msAdminUsers}}/api/credentials/login"
           }
@@ -636,7 +636,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"emailUser\": \"{{adminEmail}}\",\n  \"resetToken\": \"seu_token_aqui\",\n  \"novaSenha\": \"{{newAdminPassword}}\"\n}"
+              "raw": "{\n  \"emailUser\": \"{{adminEmail}}\",\n  \"resetToken\": \"seu_token_aqui\",\n  \"novaSenha\": \"novaSenha123\"\n}"
             },
             "url": "{{msAdminUsers}}/api/credentials/recuperacao/redefinir"
           }

@@ -141,10 +141,10 @@ async function solicitarRecuperacao(req, res) {
             await enviarTokenRecuperacaoPorEmail({ emailUser, resetToken });
         } catch (erroEmail) {
             await model.limparTokenRecuperacao(emailUser);
-            console.error("Erro ao enviar e-mail de recuperacao:", erroEmail);
 
             return res.status(502).json({
                 message: "Não foi possível enviar o e-mail de recuperação. Tente novamente em instantes.",
+                error: erroEmail.message,
             });
         }
 
@@ -153,9 +153,7 @@ async function solicitarRecuperacao(req, res) {
         });
     } catch (erro) {
         if (erro.message === "Email não encontrado") {
-            return res.status(200).json({
-                message: "Se o e-mail estiver cadastrado, enviaremos as instrucoes de recuperacao.",
-            });
+            return res.status(404).json({ message: erro.message });
         }
 
         return res.status(400).json({ message: erro.message });

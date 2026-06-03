@@ -2,6 +2,3 @@
 
 # pastas
 /node_modules
-
-# variaveis de ambiente
-.env

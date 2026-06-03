@@ -253,9 +253,7 @@ export default function RegistrationReview() {
     useEffect(() => {
         async function loadPendingPoints() {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/collection-point`, {
-                    credentials: "include",
-                });
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/collection-point`);
 
                 if (!response.ok) {
                     throw new Error("Erro ao buscar solicitacoes pendentes");
@@ -419,7 +417,6 @@ export default function RegistrationReview() {
                 `${process.env.NEXT_PUBLIC_API_URL}/collection-point/${selectedPoint.idPc}`,
                 {
                     method: "PUT",
-                    credentials: "include",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload),
                 }
@@ -454,7 +451,6 @@ export default function RegistrationReview() {
                 `${process.env.NEXT_PUBLIC_API_URL}/collection-point/${idPc}/status`,
                 {
                     method: "PATCH",
-                    credentials: "include",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         status,
