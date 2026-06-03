@@ -8,11 +8,11 @@ import FaixaColorida from "@/components/colorLine";
 
 export default function Footer() {
     const menuItems = [
-        { href: "/sobre-nos", label: "Sobre Nós" },
+        { href: "/user/about-us", label: "Sobre Nós" },
         { href: "/user/news", label: "Tampets na Mídia" },
-        { href: "/relatorio", label: "Relatório" },
-        { href: "/ponto-coleta", label: "Ponto de Coleta" },
-        { href: "/como-doar", label: "Como Doar" },
+        { href: "/user/dashboard", label: "Relatório" },
+        { href: "/user/collection-point", label: "Ponto de Coleta" },
+        { href: "/user/how-to-donate", label: "Como Doar" },
     ];
 
     const socialLinks = [
