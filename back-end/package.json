@@ -15,6 +15,7 @@
     "prisma:migrate": "prisma migrate deploy",
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:studio": "prisma studio",
+    "postinstall": "prisma generate",
     "setup": "npm install && npm run prisma:generate && npm run prisma:migrate:dev",
     "test": "echo \"No tests configured yet\" && exit 0"
   },
