@@ -12,15 +12,6 @@ interface Noticia {
   imagem: string;
 }
 
-function getAdminAuthorizationHeader(): Record<string, string> {
-  if (typeof window === "undefined") {
-    return {};
-  }
-
-  const sessionToken = localStorage.getItem("adminSessionToken");
-  return sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {};
-}
-
 export default function CadastroNoticias() {
 
   const [formData, setFormData] = useState({
@@ -100,7 +91,6 @@ export default function CadastroNoticias() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          ...getAdminAuthorizationHeader(),
         },
         body: JSON.stringify(formData),
       });
@@ -163,7 +153,6 @@ export default function CadastroNoticias() {
         {
           method: "DELETE",
           credentials: "include",
-          headers: getAdminAuthorizationHeader(),
         }
       );
 

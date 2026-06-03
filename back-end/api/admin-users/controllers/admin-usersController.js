@@ -1,9 +1,5 @@
 const axios = require("axios");
 const model = require("../models/admin-usersModels");
-const {
-    clearAdminSessionCookie,
-    setAdminSessionCookie,
-} = require("../authSession");
 
 const RESET_PASS_EMAIL_SERVICE_URL = (process.env.PASSWORD_RESET_EMAIL_SERVICE_URL || "http://localhost:5509").replace(/\/$/, "");
 
@@ -104,12 +100,10 @@ async function login(req, res) {
         // Salvar informações de sessão
         req.session.admin = admin;
         req.session.logado = true;
-        const sessionToken = setAdminSessionCookie(res, admin);
 
         return res.status(200).json({
             message: "Login realizado com sucesso",
-            admin,
-            sessionToken
+            admin
         });
     } catch (erro) {
         if (erro.message === "Usuário não encontrado") {
@@ -125,8 +119,6 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-    clearAdminSessionCookie(res);
-
     req.session.destroy((erro) => {
         if (erro) {
             return res.status(500).json({ message: "Erro ao fazer logout" });

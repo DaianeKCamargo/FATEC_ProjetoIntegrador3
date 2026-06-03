@@ -16,18 +16,6 @@ const authApi = axios.create({
   withCredentials: true,
 });
 
-authApi.interceptors.request.use((config) => {
-  if (typeof window !== 'undefined') {
-    const sessionToken = localStorage.getItem('adminSessionToken')
-
-    if (sessionToken) {
-      config.headers.Authorization = `Bearer ${sessionToken}`
-    }
-  }
-
-  return config
-})
-
 export { authApi };
 
 export default api;

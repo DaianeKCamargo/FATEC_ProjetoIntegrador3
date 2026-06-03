@@ -19,7 +19,6 @@ function clearSessionStorage() {
   localStorage.removeItem('isLogged')
   localStorage.removeItem('role')
   localStorage.removeItem('admin')
-  localStorage.removeItem('adminSessionToken')
   localStorage.removeItem(SESSION_EXPIRES_AT_KEY)
 }
 

@@ -43,14 +43,10 @@ export default function LoginPage() {
             })
 
             const admin = response.data?.admin
-            const sessionToken = response.data?.sessionToken
             const role = admin?.role || 'admin'
 
             if (typeof window !== 'undefined' && admin) {
                 localStorage.setItem('admin', JSON.stringify(admin))
-                if (sessionToken) {
-                    localStorage.setItem('adminSessionToken', sessionToken)
-                }
             }
 
             login(role)
