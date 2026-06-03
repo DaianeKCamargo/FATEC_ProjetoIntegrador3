@@ -12,7 +12,7 @@ export default function Footer() {
         { href: "/user/news", label: "Tampets na Mídia" },
         { href: "/user/dashboard", label: "Relatório" },
         { href: "/user/collection-point", label: "Ponto de Coleta" },
-        { href: "/user/how-to-donate", label: "Como Doar" },
+        { href: "/user/how-donate", label: "Como Doar" },
     ];
 
     const socialLinks = [
