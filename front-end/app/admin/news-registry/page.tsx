@@ -88,6 +88,7 @@ export default function CadastroNoticias() {
 
       const response = await fetch(url, {
         method: metodo,
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -151,6 +152,7 @@ export default function CadastroNoticias() {
         `${API_BASE_URL}/news/${id}`,
         {
           method: "DELETE",
+          credentials: "include",
         }
       );
 

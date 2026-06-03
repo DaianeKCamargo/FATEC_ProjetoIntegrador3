@@ -22,7 +22,10 @@ function handleError(res, error) {
 
 async function criarPontoColeta(req, res) {
     try {
-        const created = await service.criarPontoColeta(req.body);
+        const payload = req.session?.logado
+            ? req.body
+            : { ...req.body, status: "PENDENTE" };
+        const created = await service.criarPontoColeta(payload);
         return res.status(201).json(created);
     } catch (error) {
         return handleError(res, error);

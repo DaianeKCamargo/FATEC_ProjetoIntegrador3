@@ -5,10 +5,29 @@ const session = require("express-session");
 require("dotenv").config();
 
 const app = express();
+const isProduction = process.env.NODE_ENV === "production";
+const sessionSecret = process.env.SESSION_SECRET || (isProduction ? "" : "tampets-dev-session-secret");
+const allowedOrigins = new Set([
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    ...(process.env.FRONTEND_ORIGIN ? process.env.FRONTEND_ORIGIN.split(",").map((value) => value.trim()).filter(Boolean) : []),
+]);
+
+if (!sessionSecret) {
+    throw new Error("SESSION_SECRET deve ser configurado em producao.");
+}
 
 app.use(
     cors({
-        origin: true,
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.has(origin)) {
+                return callback(null, true);
+            }
+
+            return callback(new Error(`CORS bloqueado para a origem: ${origin}`));
+        },
         credentials: true,
     })
 );
@@ -18,13 +37,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || "tampets-session-secret",
+        secret: sessionSecret,
         resave: false,
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
             maxAge: 1000 * 60 * 60 * 24,
         },
     })

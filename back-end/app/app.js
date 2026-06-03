@@ -10,26 +10,24 @@ const adminUsersRoutes = require("../api/admin-users/routes/admin-usersRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5500;
+const isProduction = process.env.NODE_ENV === "production";
+const sessionSecret = process.env.SESSION_SECRET || (isProduction ? "" : "tampets-dev-session-secret");
+const allowedOrigins = new Set([
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    ...(process.env.FRONTEND_ORIGIN ? process.env.FRONTEND_ORIGIN.split(",").map((value) => value.trim()).filter(Boolean) : []),
+]);
+
+if (!sessionSecret) {
+    throw new Error("SESSION_SECRET deve ser configurado em producao.");
+}
 
 app.use(
     cors({
         origin: (origin, callback) => {
-            const allowedOrigins = new Set([
-                "http://localhost:3000",
-                "http://localhost:3001",
-                "http://127.0.0.1:3000",
-                "http://127.0.0.1:3001",
-                ...(process.env.FRONTEND_ORIGIN ? process.env.FRONTEND_ORIGIN.split(",").map((value) => value.trim()).filter(Boolean) : []),
-            ]);
-
-            const isAllowed =
-                !origin ||
-                allowedOrigins.has(origin) ||
-                origin.endsWith(".vercel.app") ||
-                origin.startsWith("https://vercel.app") ||
-                origin.startsWith("https://www.vercel.app");
-
-            if (isAllowed) {
+            if (!origin || allowedOrigins.has(origin)) {
                 return callback(null, true);
             }
 
@@ -44,13 +42,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
     session({
-        secret: process.env.SESSION_SECRET || "tampets-session-secret",
+        secret: sessionSecret,
         resave: false,
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
             maxAge: 1000 * 60 * 60 * 24,
         },
     })
