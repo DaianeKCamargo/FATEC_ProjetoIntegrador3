@@ -401,7 +401,7 @@ export default function Home() {
           <Section> Resultados do Projeto até Hoje </Section>
         </div>
 
-        <a className={styles.paginas} href="/relatorio">
+        <a className={styles.paginas} href="/user/dashboard">
           <div className={styles.animacao}>
             <div className={styles.gatos}>
               <div className={styles.circle}>
