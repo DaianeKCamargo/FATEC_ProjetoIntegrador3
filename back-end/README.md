@@ -1,194 +1,200 @@
-# PROJETO INTEGRADOR: TAMPETS 🐱🐶
+# Tampets Back-end
 
-Solução de Software end-to-end para arrecadação de fundos e apoio à castração de animais em situação de rua.
+Back-end do projeto Tampets, responsavel pelas APIs REST, regras de negocio, validacoes, integracao com banco de dados e documentacao Postman.
 
-## Integrantes:
+## Funcao do Projeto
 
-Daiane Kelly de Almeida Camargo;
-Maria Eduarda Moreno Lopes;
-Nícolas de Oliveira Dias;
-Nicole Janine Bolzani Oliveira;
-Sabrina Sant'Ana da Silva Alves;
+O back-end centraliza os dados e operacoes do sistema Tampets. Ele gerencia administradores, autenticacao, recuperacao de senha, pontos de coleta, noticias, registros de tampinhas e registros de castracoes.
 
+O projeto pode rodar como uma API principal local ou como APIs separadas por dominio para desenvolvimento, testes e documentacao.
 
+## Ferramentas Utilizadas
 
-## Visão Geral
+- Node.js
+- Express
+- Prisma
+- JavaScript
+- TypeScript no arquivo de configuracao do Prisma
+- Zod
+- cpf-cnpj-validator
+- Axios
+- bcrypt
+- express-session
+- dotenv
+- Postman
 
-Este projeto tem como objetivo desenvolver uma solução completa de software, abrangendo todo o ciclo de vida de desenvolvimento: desde o levantamento de requisitos até a implementação, testes e disponibilização da aplicação.
+## Estrutura Principal
 
-A solução foi projetada para resolver um problema real de negócio, utilizando boas práticas de engenharia de software, arquitetura escalável e tecnologias modernas de desenvolvimento.
-
-O projeto beneficente Tampets surgiu em 2019 pela idealizadora Lia, com o objetivo de diminuir a quantidade de animais nas ruas, focando na redução da reprodução de cães e gatos por meio da castração. 
-
-
-## Problema de Negócio
-
-O crescimento da população de animais em situação de rua é um problema recorrente, causado principalmente pela reprodução descontrolada, abandono e falta de conscientização. Esse cenário impacta tanto os animais quanto organizações e protetores que atuam no resgate e cuidado.
-
-Projetos beneficentes, como o Tampets, buscam arrecadar recursos para custear castrações — uma das principais formas de controle populacional. No entanto, a gestão dessas iniciativas, incluindo o controle de arrecadações, registro de castrações e organização de pontos de coleta, pode se tornar ineficiente quando realizada sem um sistema estruturado.
-
-Dessa forma, surge a necessidade de uma solução digital que centralize essas informações, otimize a gestão do projeto e aumente a transparência das ações realizadas.
-
-
-## Solução Proposta
-
-A solução proposta consiste em um sistema web integrado a uma API RESTful, desenvolvido para atender tanto usuários quanto administradores. Entre suas principais funcionalidades, destacam-se o registro da arrecadação de tampinhas, o controle das castrações realizadas, o cadastro e a aprovação de pontos de coleta, além da exibição de notícias e informações relevantes sobre o projeto.
-
-No que se refere às tecnologias e à arquitetura adotada, o sistema será estruturado seguindo o padrão MVC (Model-View-Controller), com a implementação de uma API REST que permitirá a realização das operações básicas (GET, POST, PUT e DELETE).
-
-Como diferencial, a solução promove a integração entre a arrecadação de recursos e o impacto social gerado, oferecendo também um sistema de notificações para usuários e administradores, além de um controle administrativo completo que garante maior eficiência na gestão do projeto.
-
-
-## Arquitetura da Solução
-
-O sistema será dividido em:
-
-- Interface do Usuário: visualização de dados, cadastro de pontos de coleta
-- Interface do Admin: gerenciamento completo dos dados
-- Backend/API: regras de negócio e validações
-- Banco de Dados: armazenamento das informações
-
-
-## Documentação do Projeto
-
-- Link do [Confluence](https://projetointegradortampets.atlassian.net/wiki/spaces/PIT/overview)
-- Link do [Jira](https://meupi2026.atlassian.net/jira/software/projects/TP/summary)
-- Link para [Figma](https://www.figma.com/proto/mtIcD2QxLWZ79KkHnIds0n/Site?node-id=0-1&t=xRFWEgf0wMYKvXt2-1)
-
-
-
-## Sprints
-
-| Nº Sprint |      Objetivo     | Data Início | Data Término |
-|---|---|---|---|
-| 1         | Back-end Parte 1  | 01/04/2026  | 22/04/2026   |
-
-
-## Técnologias Utilizadas
-
-- Linguagem: [A definir]
-- Frontend: [A definir]
-- Backend: [A definir]
-- Banco de Dados: [A definir]
-- Infraestrutura: Vercel
-- Versionamento: Git / GitHub
-- Gestão: Confluence, Jira
-
-
-
-## Funcionalidades
-
-F1: Login de administrador com credenciais fixas;
-F2: Cadastro, edição e exclusão de dados;
-F3: Registro de relatórios de tampinhas (data e peso);
-F4: Registro de castrações (data, tipo de animal, quantidade);
-F5: Visualização de histórico e totais mensais;
-F6: Cadastro de pontos de coleta por usuários;
-F7: Aprovação/reprovação de cadastros pelo administrador;
-F8: Notificações para admin e usuários;
-F9: Cadastro de notícias (imagem, título e link);
-
-
-## Resultados Esperados
-
-- Redução da quantidade de animais em situação de rua;
-- Melhor organização e controle do projeto beneficente;
-- Maior transparência dos dados;
-- Facilidade na gestão de pontos de coleta;
-- Base escalável para evolução futura do sistema;
-
-
-
-## Como Executar o Produto
-- Node.js instalado
-- Gerenciador de pacotes (npm)
-
-
-## Instalação
-
-### Clonar o repositório
-<code>git clone FATEC_ProjetoIntegrador3</code>
-
-### Acessar a pasta do projeto
-<code>cd FATEC_ProjetoIntegrador3</code>
-
-### Instalar dependências
-<code>npm install</code>
-
-### Rodar aplicação
-
-**App Principal:**
-<code>npm start</code> - app principal na porta 5500 <br>
-
-**Microsserviços independentes** (execute cada um em um terminal separado para testes):
-
-```bash
-# Terminal 1 - Microsserviço de Conversão de Tampinhas
-cd microservice/caps-conversion-service
-npm install
-npm start
-# Rodará na porta 5506
-# Teste: GET http://localhost:5506/health
+```text
+back-end/
+  app/                         API principal local
+  api/
+    admin-users/               Administradores, login e recuperacao de senha
+    animals-registration/      Registros de castracoes
+    caps-registration/         Registros de tampinhas
+    collection-point/          Pontos de coleta
+    news/                      Noticias
+  lib/prisma/                  Schema e cliente Prisma compartilhado
+  prisma.config.ts             Configuracao do Prisma
+  Tampets.postman_collection.json
 ```
 
-```bash
-# Terminal 2 - Microsserviço de Ponto de Coleta
-cd microservice/collection-point-review-service
-npm install
-npm start
-# Rodará na porta 5507
-# Teste: GET http://localhost:5507/health
-```
-Esse microsserviço é voltado para revisão de pontos de coleta: consulta de aprovados e alteração de status para `APROVADO` ou `REJEITADO`.
+## Banco de Dados
+
+O back-end usa Prisma para acessar o banco configurado pela variavel `DATABASE_URL`.
+
+Modelos principais:
+
+- `AdminUser`
+- `News`
+- `PointCollection`
+- `AddressPoint`
+- `RegistrosAnimais`
+- `CapsRegistration`
+
+
+## Como Rodar
+
+### Instalar dependencias
 
 ```bash
-# Terminal 3 - Microsserviço de Conversão de CO2
-cd microservice/co2-conversion-service
+cd back-end
 npm install
-npm start
-# Rodará na porta 5508
-# Teste: GET http://localhost:5508/health
 ```
 
-**APIs que são parte da aplicação** (use npm scripts a partir da pasta back-end-admin):
-<code>npm run start:ms:admin-users</code> - gerenciamento de usuários admin (porta 5502) <br>
-<code>npm run start:ms:animals-registration</code> - registro de animais (porta 5503) <br>
-<code>npm run start:ms:caps-registration</code> - cadastro de tampinhas (porta 5504) <br>
-<code>npm run start:ms:collection-point</code> - pontos de coleta (porta 5501) <br>
-<code>npm run start:ms:news</code> - notícias (porta 5505) <br>
+### Gerar Prisma Client
 
-## Documentação Postman
+```bash
+npm run prisma:generate
+```
 
-Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Postman do repositorio.
+### Rodar migracoes em desenvolvimento
 
-### Arquivos de coleção
+```bash
+npm run prisma:migrate:dev
+```
 
-- `Tampets.postman_collection.json` (colecao consolidada da app principal + microservicos)
+### Rodar migracoes em deploy/producao
 
-### Variaveis usadas na coleção principal
+```bash
+npm run prisma:migrate
+```
 
-- `app`: `http://localhost:5500` (app principal)
-- `msPontoColeta`: `http://localhost:5507` (microsserviço ponto de coleta)
-- `msAdminUsers`: `http://localhost:5502` (microsserviço gerenciamento de usuários admin)
-- `msRelatorioAnimais`: `http://localhost:5503` (microsserviço relatório animais)
-- `msCapsRegistration`: `http://localhost:5504` (microsserviço caps-registration)
-- `msNoticias`: `http://localhost:5505` (microsserviço notícias)
-- `msConversaoTampinhas`: `http://localhost:5506` (microsserviço conversão tampinhas)
+### Rodar API principal
 
-### Como importar no Postman
+```bash
+npm start
+```
 
-1. Abra o Postman.
-2. Clique em **Import**.
-3. Selecione o arquivo `Tampets.postman_collection.json`.
-4. Ajuste as variaveis de URL se alguma porta estiver diferente no seu ambiente.
+A API principal fica disponivel em:
 
-### Cobertura da colecao principal
+```text
+http://localhost:5500
+```
 
-- Healthchecks dos servicos ativos
-- CRUD da app principal: usuarios, pontos de coleta e noticias
-- Fluxo do ms ponto-coleta: requests, review e approved
-- CRUD do ms admin-users
-- CRUD do ms relatorio-animais
-- CRUD do ms caps-registration
-- CRUD do ms noticias
-- Conversão de kg em tampinhas (ms conversao-tampinhas)
+## Como Rodar APIs por Dominio
+
+Execute dentro da pasta `back-end/`, em terminais separados quando precisar testar cada dominio de forma isolada.
+
+```bash
+npm run start:ms:collection-point
+npm run start:ms:admin-users
+npm run start:ms:animals-registration
+npm run start:ms:caps-registration
+npm run start:ms:news
+```
+
+## Portas
+
+| API | Porta | Base local |
+|---|---:|---|
+| API principal | `5500` | `http://localhost:5500` |
+| Pontos de coleta | `5501` | `http://localhost:5501/api/collection-point` |
+| Admin users | `5502` | `http://localhost:5502/api/credentials` |
+| Registros de animais | `5503` | `http://localhost:5503/api/animals-registration` |
+| Registros de tampinhas | `5504` | `http://localhost:5504/api/caps-registration` |
+| Noticias | `5505` | `http://localhost:5505/api/news` |
+
+## Rotas Principais
+
+### API principal
+
+- `GET /health`
+- `GET /api/health`
+- `/api/credentials`
+- `/api/animals-registration`
+- `/api/caps-registration`
+- `/api/collection-point`
+- `/api/news`
+
+### Admin users
+
+- `GET /`
+- `GET /:idAdmin`
+- `POST /`
+- `PUT /:idAdmin`
+- `DELETE /:idAdmin`
+- `POST /login`
+- `POST /logout`
+- `POST /recuperacao/solicitar`
+- `POST /recuperacao/validar`
+- `POST /recuperacao/redefinir`
+
+### Pontos de coleta
+
+- `GET /`
+- `GET /approved`
+- `GET /:id`
+- `POST /`
+- `PUT /:id`
+- `DELETE /:id`
+- `PATCH /:id/status`
+
+Para criar ponto de coleta, o endereco deve incluir `latitude` e `longitude`.
+
+### Noticias, animais e tampinhas
+
+Cada modulo possui rotas CRUD:
+
+- `GET /`
+- `GET /:id`
+- `POST /`
+- `PUT /:id`
+- `DELETE /:id`
+
+## Documentacao Postman
+
+A collection atualizada fica em:
+
+```text
+back-end/Tampets.postman_collection.json
+```
+
+Ela cobre:
+
+- Healthchecks.
+- API principal.
+- Admin users, login, logout e recuperacao de senha.
+- Pontos de coleta, incluindo aprovacao e reprovacao.
+- Noticias.
+- Registros de animais.
+- Registros de tampinhas.
+- Conversao de tampinhas.
+- Conversao de CO2.
+- Envio de token por email.
+
+## Scripts Disponiveis
+
+| Script | Funcao |
+|---|---|
+| `npm start` | Roda a API principal |
+| `npm run start:app` | Roda a API principal |
+| `npm run start:ms:collection-point` | Roda a API de pontos de coleta |
+| `npm run start:ms:news` | Roda a API de noticias |
+| `npm run start:ms:admin-users` | Roda a API de administradores |
+| `npm run start:ms:animals-registration` | Roda a API de registros de animais |
+| `npm run start:ms:caps-registration` | Roda a API de registros de tampinhas |
+| `npm run prisma:generate` | Gera o Prisma Client |
+| `npm run prisma:migrate:dev` | Executa migracoes em desenvolvimento |
+| `npm run prisma:migrate` | Executa migracoes em deploy/producao |
+| `npm run prisma:studio` | Abre o Prisma Studio |

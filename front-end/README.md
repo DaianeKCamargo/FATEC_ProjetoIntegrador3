@@ -1,50 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tampets Front-end
 
-## Getting Started
+Aplicacao web do projeto Tampets, responsavel pelas telas publicas e administrativas do sistema.
 
-First, run the development server:
+## Funcao do Projeto
+
+O front-end permite que usuarios conhecam o projeto, acompanhem noticias, consultem pontos de coleta aprovados e acessem informacoes institucionais. Tambem oferece a area administrativa para gestao de noticias, pontos de coleta, registros de tampinhas, registros de animais e usuarios administradores.
+
+## Ferramentas Utilizadas
+
+- Next.js
+- React
+- TypeScript
+- Bootstrap
+- Bootstrap Icons
+- Tailwind CSS
+- Axios
+- Recharts
+- Framer Motion
+- Lucide React
+- React Icons
+- ESLint
+
+## Estrutura Principal
+
+```text
+front-end/
+  app/             Rotas e paginas da aplicacao Next.js
+  components/      Componentes reutilizaveis
+  services/        Configuracao de comunicacao com APIs
+  styles/          Arquivos CSS e modulos de estilo
+  public/          Assets publicos
+```
+
+
+## Como Rodar
+
+### Instalar dependencias
+
+```bash
+cd front-end
+npm install
+```
+
+### Rodar em desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A aplicacao fica disponivel em:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## extensões
-project tree generator => gerar a árvore dos arquivos do projeto
-
-## Galeria do Instagram
-
-Para a galeria da home funcionar, configure estas variáveis de ambiente no front-end:
+### Gerar build
 
 ```bash
-IG_ACCESS_TOKEN=seu_token_do_instagram
-IG_MEDIA_LIMIT=6
+npm run build
 ```
 
-A rota interna `GET /api/instagram-media` busca as publicações pela API do Instagram e a home exibe os itens retornados.
+### Rodar build local
+
+```bash
+npm start
+```
+
+### Verificar lint
+
+```bash
+npm run lint
+```
+
+## Comunicacao com o Back-end
+
+O front-end se comunica com o back-end por meio dos arquivos em `front-end/services/`, principalmente:
+
+- `services/apiBase.ts`: resolve a URL base da API.
+- `services/api.ts`: configura clientes Axios para API geral e autenticacao.
+
+Em desenvolvimento, a API principal normalmente roda em `http://localhost:5500`. Em producao, configure as URLs equivalentes nas variaveis de ambiente do Vercel.
