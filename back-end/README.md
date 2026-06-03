@@ -164,7 +164,6 @@ Para validar os endpoints da aplicacao e dos microservicos, use as colecoes Post
 ### Arquivos de coleção
 
 - `Tampets.postman_collection.json` (colecao consolidada da app principal + microservicos)
-- `microsservicos/ponto-coleta/ponto-coleta.postman_collection.json` (colecao dedicada do microservico de ponto de coleta)
 
 ### Variaveis usadas na coleção principal
 

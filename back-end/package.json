@@ -11,7 +11,6 @@
     "start:ms:admin-users": "node api/admin-users/app.js",
     "start:ms:animals-registration": "node api/animals-registration/app.js",
     "start:ms:caps-registration": "node api/caps-registration/app.js",
-    "start:ms:conversao-tampinhas": "node microsservicos/conversao-tampinhas/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:migrate:dev": "prisma migrate dev",
@@ -33,12 +32,8 @@
     "cors": "^2.8.6",
     "cpf-cnpj-validator": "^1.0.3",
     "dotenv": "^16.6.1",
-    "ejs": "^5.0.2",
     "express": "^4.22.1",
     "express-session": "^1.19.0",
-    "method-override": "^3.0.0",
-    "nodemailer": "^8.0.7",
-    "pg": "^8.20.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

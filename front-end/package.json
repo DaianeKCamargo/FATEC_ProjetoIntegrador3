@@ -9,11 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@prisma/client": "^7.8.0",
     "axios": "^1.16.1",
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
-    "cors": "^2.8.6",
     "framer-motion": "^12.39.0",
     "lucide-react": "^1.16.0",
     "next": "^16.2.6",
