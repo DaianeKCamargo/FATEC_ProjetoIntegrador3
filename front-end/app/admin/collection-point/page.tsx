@@ -3,7 +3,7 @@
 import { type ChangeEvent, useEffect, useState } from "react";
 import styles from "@/styles/admin-collection-point.module.css";
 import Link from "next/link";
-import { FaCheckCircle, FaClock, FaClipboardList, FaEdit, FaEye, FaMapMarkedAlt, FaPowerOff, FaSave, FaStoreAlt } from "react-icons/fa";
+import { FaCheckCircle, FaClock, FaClipboardList, FaEdit, FaEye, FaMapMarkedAlt, FaPowerOff, FaSave, FaSearch, FaStoreAlt } from "react-icons/fa";
 
 type CollectionPoint = {
     idPc: number;
@@ -257,6 +257,7 @@ export default function CollectionPointPage() {
     const [addressLoading, setAddressLoading] = useState(false);
     const [addressStatus, setAddressStatus] = useState("");
     const [pointFilter, setPointFilter] = useState<PointFilter>("APROVADO");
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         async function carregarPontos() {
@@ -539,12 +540,17 @@ export default function CollectionPointPage() {
         return editForm[name as Exclude<keyof EditableCollectionPoint, "address">] ?? "";
     }
 
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+
     const visiblePoints = registeredPoints.filter((point) => {
         if (point.status !== "APROVADO" && point.status !== "REJEITADO") {
             return false;
         }
 
-        return pointFilter === "TODOS" || point.status === pointFilter;
+        const matchesStatus = pointFilter === "TODOS" || point.status === pointFilter;
+        const matchesSearch = point.namePoint.toLowerCase().includes(normalizedSearch);
+
+        return matchesStatus && matchesSearch;
     });
 
     return (
@@ -622,6 +628,17 @@ export default function CollectionPointPage() {
                                 Pontos de Coleta Cadastrados
                             </h2>
                         </div>
+
+                        <label className={styles.searchBox}>
+                            <FaSearch />
+                            <input
+                                type="search"
+                                value={searchTerm}
+                                onChange={(event) => setSearchTerm(event.target.value)}
+                                placeholder="Pesquisar por nome"
+                                aria-label="Pesquisar ponto de coleta por nome"
+                            />
+                        </label>
 
                         <div className={styles.sectionTools}>
                             <span className={styles.sectionHint}>
