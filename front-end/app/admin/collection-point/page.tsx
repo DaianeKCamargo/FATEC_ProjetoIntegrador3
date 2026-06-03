@@ -138,6 +138,15 @@ function onlyDigits(value: string) {
     return value.replace(/\D/g, "");
 }
 
+function getAdminAuthorizationHeader(): Record<string, string> {
+    if (typeof window === "undefined") {
+        return {};
+    }
+
+    const sessionToken = localStorage.getItem("adminSessionToken");
+    return sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {};
+}
+
 function formatCep(value: string) {
     const digits = onlyDigits(value).slice(0, 8);
 
@@ -266,6 +275,7 @@ export default function CollectionPointPage() {
                     `${process.env.NEXT_PUBLIC_API_URL}/collection-point`,
                     {
                         credentials: "include",
+                        headers: getAdminAuthorizationHeader(),
                     }
                 );
 
@@ -459,6 +469,7 @@ export default function CollectionPointPage() {
                     credentials: "include",
                     headers: {
                         "Content-Type": "application/json",
+                        ...getAdminAuthorizationHeader(),
                     },
                     body: JSON.stringify(payload),
                 }
@@ -499,6 +510,7 @@ export default function CollectionPointPage() {
                 credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
+                    ...getAdminAuthorizationHeader(),
                 },
                 body: JSON.stringify({
                     status: novoStatus,

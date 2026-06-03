@@ -1,15 +1,8 @@
 const express = require("express");
 const controller = require("../controllers/admin-usersController");
+const { requireAdminSession } = require("../authSession");
 
 const router = express.Router();
-
-function requireAdminSession(req, res, next) {
-    if (req.session?.logado && req.session?.admin) {
-        return next();
-    }
-
-    return res.status(401).json({ message: "Autenticacao obrigatoria" });
-}
 
 router.post("/login", controller.login);
 router.post("/logout", controller.logout);

@@ -1,15 +1,8 @@
 const express = require("express");
 const controller = require("../controllers/caps-registrationController");
+const { requireAdminSession } = require("../../admin-users/authSession");
 
 const router = express.Router();
-
-function requireAdminSession(req, res, next) {
-    if (req.session?.logado && req.session?.admin) {
-        return next();
-    }
-
-    return res.status(401).json({ message: "Autenticacao obrigatoria" });
-}
 
 router.get("/", controller.listar);
 router.get("/:id", controller.buscarPorId);

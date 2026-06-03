@@ -121,6 +121,15 @@ export default function CreateCollectionPoint({
         return digits;
     }
 
+    function getAdminAuthorizationHeader(): Record<string, string> {
+        if (typeof window === "undefined") {
+            return {};
+        }
+
+        const sessionToken = localStorage.getItem("adminSessionToken");
+        return sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {};
+    }
+
     function getStateUf(state?: string) {
         if (!state) {
             return "";
@@ -539,6 +548,7 @@ export default function CreateCollectionPoint({
                 credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
+                    ...getAdminAuthorizationHeader(),
                 },
                 body: JSON.stringify(payload),
             });
@@ -554,6 +564,7 @@ export default function CreateCollectionPoint({
                         credentials: "include",
                         headers: {
                             "Content-Type": "application/json",
+                            ...getAdminAuthorizationHeader(),
                         },
                         body: JSON.stringify({ status: "APROVADO" }),
                     }

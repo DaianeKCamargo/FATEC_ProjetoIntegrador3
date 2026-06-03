@@ -135,6 +135,15 @@ function onlyDigits(value: string) {
     return value.replace(/\D/g, "");
 }
 
+function getAdminAuthorizationHeader(): Record<string, string> {
+    if (typeof window === "undefined") {
+        return {};
+    }
+
+    const sessionToken = localStorage.getItem("adminSessionToken");
+    return sessionToken ? { Authorization: `Bearer ${sessionToken}` } : {};
+}
+
 function formatCep(value: string) {
     const digits = onlyDigits(value).slice(0, 8);
 
@@ -255,6 +264,7 @@ export default function RegistrationReview() {
             try {
                 const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/collection-point`, {
                     credentials: "include",
+                    headers: getAdminAuthorizationHeader(),
                 });
 
                 if (!response.ok) {
@@ -420,7 +430,7 @@ export default function RegistrationReview() {
                 {
                     method: "PUT",
                     credentials: "include",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json", ...getAdminAuthorizationHeader() },
                     body: JSON.stringify(payload),
                 }
             );
@@ -455,7 +465,7 @@ export default function RegistrationReview() {
                 {
                     method: "PATCH",
                     credentials: "include",
-                    headers: { "Content-Type": "application/json" },
+                    headers: { "Content-Type": "application/json", ...getAdminAuthorizationHeader() },
                     body: JSON.stringify({
                         status,
                         ...(status === "REJEITADO"
