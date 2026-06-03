@@ -4,15 +4,15 @@
   background: rgba(0, 0, 0, 0.55);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  /* <-- NÃO CENTRALIZA mais */
-  padding-top: 120%;
-  /* <-- controla altura do modal na tela */
+  align-items: center;
+  padding: 1rem;
   z-index: 9999;
 }
 
 .modalContent {
-  width: 500px;
+  width: min(100%, 500px);
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
   background: white;
   padding: 20px;
   border-radius: 12px;
@@ -25,7 +25,6 @@
 .modalContent label {
   font-size: 1.2rem;
 }
-
 
 .modalContent input,
 .modalContent textarea {
@@ -63,12 +62,7 @@
 }
 
 @media (max-width: 768px) {
-  .modalOverlay {
-
-    padding-top: 310%;
-  }
-
   .modalContent {
-    margin: 1rem;
+    padding: 16px;
   }
 }
