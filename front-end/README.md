@@ -1,10 +1,10 @@
 # Tampets Front-end
 
-Aplicacao web do projeto Tampets, responsavel pelas telas publicas e administrativas do sistema.
+Aplicação web do projeto Tampets, responsável pelas telas públicas e administrativas do sistema.
 
 ## Funcao do Projeto
 
-O front-end permite que usuarios conhecam o projeto, acompanhem noticias, consultem pontos de coleta aprovados e acessem informacoes institucionais. Tambem oferece a area administrativa para gestao de noticias, pontos de coleta, registros de tampinhas, registros de animais e usuarios administradores.
+O front-end permite que usuários conhecam o projeto, acompanhem notícias, consultem pontos de coleta aprovados e acessem informações institucionais. Também oferece a área administrativa para gestão de notícias, pontos de coleta, registros de tampinhas, registros de animais e usuários administradores.
 
 ## Ferramentas Utilizadas
 
@@ -35,7 +35,7 @@ front-end/
 
 ## Como Rodar
 
-### Instalar dependencias
+### Instalar dependências
 
 ```bash
 cd front-end
@@ -48,7 +48,7 @@ npm install
 npm run dev
 ```
 
-A aplicacao fica disponivel em:
+A aplicação fica disponível em:
 
 ```text
 http://localhost:3000
@@ -72,11 +72,11 @@ npm start
 npm run lint
 ```
 
-## Comunicacao com o Back-end
+## Comunicação com o Back-end
 
 O front-end se comunica com o back-end por meio dos arquivos em `front-end/services/`, principalmente:
 
 - `services/apiBase.ts`: resolve a URL base da API.
 - `services/api.ts`: configura clientes Axios para API geral e autenticacao.
 
-Em desenvolvimento, a API principal normalmente roda em `http://localhost:5500`. Em producao, configure as URLs equivalentes nas variaveis de ambiente do Vercel.
+Em desenvolvimento, a API principal normalmente roda em `http://localhost:5500`. Em produção, configure as URLs equivalentes nas variáveis de ambiente do Vercel.

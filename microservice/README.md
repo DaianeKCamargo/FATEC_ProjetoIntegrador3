@@ -1,15 +1,15 @@
 # Tampets Microservicos
 
-Microservicos auxiliares do projeto Tampets. Eles complementam a API principal com funcionalidades independentes de conversao, revisao de pontos de coleta e envio de token de recuperacao de senha.
+Microserviços auxiliares do projeto Tampets. Eles complementam a API princípal com funcionalidades independentes de conversão, revisão de pontos de coleta e envio de token de recuperação de senha.
 
-## Funcao do Projeto
+## Função do Projeto
 
-A pasta `microservice/` agrupa servicos que podem ser executados separadamente da API principal:
+A pasta `microservice/` agrupa serviços que podem ser executados separadamente da API princípal:
 
-- Conversao de kg de tampinhas para quantidade estimada de tampinhas.
-- Estimativa de reducao de CO2 a partir da quantidade de tampinhas.
-- Revisao de pontos de coleta aprovados/rejeitados.
-- Envio de token de recuperacao de senha por email.
+- Conversão de kg de tampinhas para quantidade estimada de tampinhas.
+- Estimativa de redulão de CO2 à partir da quantidade de tampinhas.
+- Revisão de pontos de coleta aprovados/rejeitados.
+- Envio de token de recuperação de senha por email.
 
 ## Ferramentas Utilizadas
 
@@ -26,15 +26,15 @@ A pasta `microservice/` agrupa servicos que podem ser executados separadamente d
 
 ```text
 microservice/
-  caps-conversion-service/          Conversao de kg para tampinhas
-  co2-conversion-service/           Conversao de tampinhas para estimativa de CO2
-  collection-point-review-service/  Revisao de pontos de coleta
-  reset-pass-email-service/         Envio de token de recuperacao por email
+  caps-conversion-service/          Conversão de kg para tampinhas
+  co2-conversion-service/           Conversão de tampinhas para estimativa de CO2
+  collection-point-review-service/  Revisão de pontos de coleta
+  reset-pass-email-service/         Envio de token de recuperacão por email
 ```
 
 ## Servicos e Portas
 
-| Servico | Porta padrao | Healthcheck | Endpoint principal |
+| Serviço | Porta padrão | Healthcheck | Endpoint princípal |
 |---|---:|---|---|
 | `caps-conversion-service` | `5506` | `GET /health` | `POST /converter` |
 | `collection-point-review-service` | `5507` | `GET /health` | `GET /api/collection-point/approved` e `PATCH /api/collection-point/:id/status` |
@@ -44,9 +44,9 @@ microservice/
 
 ## Como Rodar
 
-Execute cada microservico em um terminal separado.
+Execute cada microserviço em um terminal separado.
 
-### Conversao de tampinhas
+### Conversão de tampinhas
 
 ```bash
 cd microservice/caps-conversion-service
@@ -54,7 +54,7 @@ npm install
 npm start
 ```
 
-### Conversao de CO2
+### Conversão de CO2
 
 ```bash
 cd microservice/co2-conversion-service
@@ -62,7 +62,7 @@ npm install
 npm start
 ```
 
-### Revisao de pontos de coleta
+### Revisão de pontos de coleta
 
 ```bash
 cd microservice/collection-point-review-service
@@ -79,13 +79,13 @@ npm install
 npm start
 ```
 
-Para desenvolvimento com reinicio automatico no servico de email:
+Para desenvolvimento com reinicio automático no serviço de email:
 
 ```bash
 npm run dev
 ```
 
-## Exemplos de Requisicao
+## Exemplos de Requisição
 
 ### Converter kg em tampinhas
 
@@ -111,7 +111,7 @@ Content-Type: application/json
 }
 ```
 
-### Enviar token de recuperacao
+### Enviar token de recuperação
 
 ```http
 POST http://localhost:5509/api/reset-pass-email/send-token
