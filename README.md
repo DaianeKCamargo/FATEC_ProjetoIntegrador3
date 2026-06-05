@@ -10,7 +10,7 @@ Solução de software end-to-end para apoiar o projeto beneficente Tampets na ar
 - Nicole Janine Bolzani Oliveira
 - Sabrina Sant'Ana da Silva Alves
 
-## Visao Geral
+## Visão Geral
 
 O projeto beneficente Tampets surgiu em 2019 com o objetivo de diminuir a quantidade de animais em situação de rua, apoiando a castração de cães e gatos por meio da arrecadacão de tampinhas plásticas.
 
