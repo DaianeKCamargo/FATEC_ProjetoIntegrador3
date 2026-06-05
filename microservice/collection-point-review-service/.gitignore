@@ -2,3 +2,4 @@
 
 # pastas
 /node_modules
+.env
