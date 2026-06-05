@@ -1,12 +1,12 @@
 # Tampets Back-end
 
-Back-end do projeto Tampets, responsavel pelas APIs REST, regras de negocio, validacoes, integracao com banco de dados e documentacao Postman.
+Back-end do projeto Tampets, responsável pelas APIs REST, regras de negócio, validações, integracão com banco de dados e documentação Postman.
 
-## Funcao do Projeto
+## Funcão do Projeto
 
-O back-end centraliza os dados e operacoes do sistema Tampets. Ele gerencia administradores, autenticacao, recuperacao de senha, pontos de coleta, noticias, registros de tampinhas e registros de castracoes.
+O back-end centraliza os dados e operações do sistema Tampets. Ele gerencia administradores, autenticacão, recuperacão de senha, pontos de coleta, notícias, registros de tampinhas e registros de castrações.
 
-O projeto pode rodar como uma API principal local ou como APIs separadas por dominio para desenvolvimento, testes e documentacao.
+O projeto pode rodar como uma API principal local ou como APIs separadas por domínio para desenvolvimento, testes e documentação.
 
 ## Ferramentas Utilizadas
 
@@ -14,7 +14,7 @@ O projeto pode rodar como uma API principal local ou como APIs separadas por dom
 - Express
 - Prisma
 - JavaScript
-- TypeScript no arquivo de configuracao do Prisma
+- TypeScript no arquivo de configuração do Prisma
 - Zod
 - cpf-cnpj-validator
 - Axios
@@ -41,7 +41,7 @@ back-end/
 
 ## Banco de Dados
 
-O back-end usa Prisma para acessar o banco configurado pela variavel `DATABASE_URL`.
+O back-end usa Prisma para acessar o banco configurado pela variável `DATABASE_URL`.
 
 Modelos principais:
 
@@ -68,13 +68,13 @@ npm install
 npm run prisma:generate
 ```
 
-### Rodar migracoes em desenvolvimento
+### Rodar migrações em desenvolvimento
 
 ```bash
 npm run prisma:migrate:dev
 ```
 
-### Rodar migracoes em deploy/producao
+### Rodar migrações em deploy/produção
 
 ```bash
 npm run prisma:migrate
@@ -86,15 +86,15 @@ npm run prisma:migrate
 npm start
 ```
 
-A API principal fica disponivel em:
+A API princípal fica disponível em:
 
 ```text
 http://localhost:5500
 ```
 
-## Como Rodar APIs por Dominio
+## Como Rodar APIs por Domínio
 
-Execute dentro da pasta `back-end/`, em terminais separados quando precisar testar cada dominio de forma isolada.
+Execute dentro da pasta `back-end/`, em terminais separados quando precisar testar cada domínio de forma isolada.
 
 ```bash
 npm run start:ms:collection-point
@@ -150,9 +150,9 @@ npm run start:ms:news
 - `DELETE /:id`
 - `PATCH /:id/status`
 
-Para criar ponto de coleta, o endereco deve incluir `latitude` e `longitude`.
+Para criar ponto de coleta, o endereço deve incluir `latitude` e `longitude`.
 
-### Noticias, animais e tampinhas
+### Notícias, animais e tampinhas
 
 Cada modulo possui rotas CRUD:
 
@@ -162,7 +162,7 @@ Cada modulo possui rotas CRUD:
 - `PUT /:id`
 - `DELETE /:id`
 
-## Documentacao Postman
+## Documentação Postman
 
 A collection atualizada fica em:
 
@@ -174,27 +174,27 @@ Ela cobre:
 
 - Healthchecks.
 - API principal.
-- Admin users, login, logout e recuperacao de senha.
-- Pontos de coleta, incluindo aprovacao e reprovacao.
-- Noticias.
+- Admin users, login, logout e recuperação de senha.
+- Pontos de coleta, incluindo aprovação e reprovação.
+- Notícias.
 - Registros de animais.
 - Registros de tampinhas.
-- Conversao de tampinhas.
-- Conversao de CO2.
+- Conversão de tampinhas.
+- Conversão de CO2.
 - Envio de token por email.
 
-## Scripts Disponiveis
+## Scripts Disponíveis
 
-| Script | Funcao |
+| Script | Função |
 |---|---|
 | `npm start` | Roda a API principal |
 | `npm run start:app` | Roda a API principal |
 | `npm run start:ms:collection-point` | Roda a API de pontos de coleta |
-| `npm run start:ms:news` | Roda a API de noticias |
+| `npm run start:ms:news` | Roda a API de notícias |
 | `npm run start:ms:admin-users` | Roda a API de administradores |
 | `npm run start:ms:animals-registration` | Roda a API de registros de animais |
 | `npm run start:ms:caps-registration` | Roda a API de registros de tampinhas |
 | `npm run prisma:generate` | Gera o Prisma Client |
-| `npm run prisma:migrate:dev` | Executa migracoes em desenvolvimento |
-| `npm run prisma:migrate` | Executa migracoes em deploy/producao |
+| `npm run prisma:migrate:dev` | Executa migrações em desenvolvimento |
+| `npm run prisma:migrate` | Executa migrações em deploy/produção |
 | `npm run prisma:studio` | Abre o Prisma Studio |
