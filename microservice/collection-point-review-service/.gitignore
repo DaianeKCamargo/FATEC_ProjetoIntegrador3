@@ -1,5 +1,5 @@
 # Arquivos a srem ignorados pelo Git
+.env
 
 # pastas
 /node_modules
-.env
