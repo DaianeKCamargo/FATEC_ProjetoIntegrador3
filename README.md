@@ -1,6 +1,6 @@
 # PROJETO INTEGRADOR: TAMPETS
 
-Solucao de software end-to-end para apoiar o projeto beneficente Tampets na arrecadacao de tampinhas, gestao de pontos de coleta, controle de castracoes e divulgacao de noticias.
+Solução de software end-to-end para apoiar o projeto beneficente Tampets na arrecadação de tampinhas, gestão de pontos de coleta, da visibilidade do projeto na mídia e atrair mais voluntários para o projeto.
 
 ## Integrantes
 
@@ -12,23 +12,23 @@ Solucao de software end-to-end para apoiar o projeto beneficente Tampets na arre
 
 ## Visao Geral
 
-O projeto beneficente Tampets surgiu em 2019 com o objetivo de diminuir a quantidade de animais em situacao de rua, apoiando a castracao de caes e gatos por meio da arrecadacao de tampinhas plasticas.
+O projeto beneficente Tampets surgiu em 2019 com o objetivo de diminuir a quantidade de animais em situação de rua, apoiando a castração de cães e gatos por meio da arrecadacão de tampinhas plásticas.
 
-Este repositorio contem a solucao completa desenvolvida para o Projeto Integrador III. A aplicacao possui uma interface web para usuarios e administradores, uma API principal, APIs por dominio e microservicos auxiliares. O objetivo e centralizar os dados do projeto, facilitar a gestao das informacoes e melhorar a transparencia das acoes realizadas.
+Este repositório contém a solução completa desenvolvida para o Projeto Integrador do 3° Semestre. A aplicação possuí uma interface web para usuários e administradores, uma API principal, APIs por domínio e microserviços auxiliares. O objetivo é centralizar os dados do projeto, facilitar a gestão das informações e melhorar a transparência das ações realizadas.
 
-## Problema de Negocio
+## Problema de Negócio
 
-O crescimento da populacao de animais em situacao de rua e um problema recorrente, causado principalmente pela reproducao descontrolada, abandono e falta de conscientizacao. Projetos beneficentes atuam na arrecadacao de recursos para castracoes, mas a gestao manual de pontos de coleta, arrecadacoes, noticias e registros de animais pode gerar retrabalho, perda de informacao e baixa visibilidade dos resultados.
+O crescimento da populacão de animais em situacão de rua é um problema recorrente, causado principalmente pela reprodução descontrolada, abandono e falta de conscientização. Projetos beneficentes atuam na arrecadação de recursos para castrações, mas a gestão manual de pontos de coleta, arrecadações, notícias e registros de animais pode gerar retrabalho, perda de informação e baixa visibilidade dos resultados.
 
-Dessa forma, existe a necessidade de uma solucao digital que organize os processos do projeto Tampets e facilite o acompanhamento das acoes por administradores, voluntarios, parceiros e comunidade.
+Dessa forma, existe a necessidade de uma solução digital que organize os processos do projeto Tampets e facilite o acompanhamento das ações por administradores, voluntários, parceiros e comunidade.
 
-## Solucao Proposta
+## Solução Proposta
 
-A solucao proposta e um sistema web integrado a uma API RESTful. O sistema permite que usuarios consultem informacoes do projeto, vejam pontos de coleta aprovados e acompanhem noticias. A area administrativa permite gerenciar noticias, registros de tampinhas, castracoes, pontos de coleta e usuarios administradores.
+A solução proposta e um sistema web integrado a uma API RESTful. O sistema permite que usuários consultem informações do projeto, vejam pontos de coleta aprovados e acompanhem notícias. A área administrativa permite gerenciar notícias, registros de tampinhas, castrações, pontos de coleta e usuários administradores.
 
-O back-end concentra as regras de negocio, persistencia dos dados e integracoes com microservicos. Os microservicos complementam a aplicacao com conversoes ambientais, revisao de pontos de coleta e envio de token para recuperacao de senha.
+O back-end concentra as regras de negócio, persistência dos dados e integrações com microserviços. Os microserviços complementam a aplicação com conversões ambientais, revisão de pontos de coleta e envio de token para recuperacão de senha.
 
-## Estrutura do Repositorio
+## Estrutura do Repositório
 
 ```text
 FATEC_ProjetoIntegrador3/
@@ -41,7 +41,7 @@ FATEC_ProjetoIntegrador3/
 
 ### Front-end
 
-Aplicacao web responsavel pelas telas publicas e administrativas. Contem a home, paginas institucionais, ajuda, noticias, pontos de coleta, login administrativo e paineis de gestao.
+Aplicação web responsável pelas telas públicas e administrativas. Contém a home, páginas institucionais, ajuda, notícias, pontos de coleta, login administrativo e paineis de gestão.
 
 Documentacao especifica: `front-end/README.md`
 
@@ -57,44 +57,44 @@ Servicos auxiliares independentes para conversao de tampinhas, estimativa de CO2
 
 Documentacao especifica: `microservice/README.md`
 
-## Arquitetura da Solucao
+## Arquitetura da Solução
 
-O sistema e dividido em:
+O sistema é dividido em:
 
-- Interface do usuario: visualizacao de dados, noticias, informacoes do projeto e pontos de coleta.
-- Interface do administrador: gerenciamento completo de noticias, arrecadacoes, castracoes, pontos de coleta e administradores.
-- Back-end/API: regras de negocio, validacoes, rotas REST e persistencia dos dados.
-- Banco de dados: armazenamento de noticias, pontos de coleta, administradores, registros de animais e registros de tampinhas.
-- Microservicos: funcionalidades complementares executadas de forma independente.
+- Interface do usuário: visualização de dados, notícias, informações do projeto e pontos de coleta.
+- Interface do administrador: gerenciamento completo de notícias, arrecadacões, castrações, pontos de coleta e administradores.
+- Back-end/API: regras de negocio, validações, rotas REST e persistência dos dados.
+- Banco de dados: armazenamento de notícias, pontos de coleta, administradores, registros de animais e registros de tampinhas.
+- Microserviços: funcionalidades complementares executadas de forma independente.
 
 ## Tecnologias Utilizadas
 
 - Front-end: Next.js, React, TypeScript, Bootstrap, Tailwind CSS, Axios, Recharts, Lucide React
 - Back-end: Node.js, Express, Prisma, Zod, Axios, bcrypt, express-session
-- Microservicos: Node.js, Express, HTTP nativo e Nodemailer
+- Microserviços: Node.js, Express, HTTP nativo e Nodemailer
 - Banco de dados: banco relacional configurado via `DATABASE_URL`
-- Documentacao de API: Postman
+- Documentação de API: Postman
 - Infraestrutura/deploy: Vercel
 - Versionamento: Git e GitHub
-- Gestao e prototipacao: Jira, Confluence e Figma
+- Gestão e prototipação: Jira, Confluence e Figma
 
 ## Funcionalidades
 
-- Login, logout e recuperacao de senha de administradores.
-- Cadastro, edicao, listagem e exclusao de administradores.
-- Cadastro publico de pontos de coleta.
-- Aprovacao, reprovacao, edicao, listagem e exclusao de pontos de coleta.
-- Listagem publica de pontos de coleta aprovados.
-- Cadastro, edicao, listagem e exclusao de noticias.
-- Registro de arrecadacao de tampinhas por data e quantidade em kg.
-- Conversao de kg de tampinhas para quantidade estimada de tampinhas.
-- Estimativa de reducao de CO2 com base na quantidade de tampinhas.
-- Registro de castracoes por data, tipo de animal e quantidade.
-- Healthchecks para API principal, APIs por dominio e microservicos.
+- Login, logout e recuperação de senha de administradores.
+- Cadastro, edição, listagem e exclusão de administradores.
+- Cadastro público de pontos de coleta.
+- Aprovação, reprovação, edição, listagem e exclusão de pontos de coleta.
+- Listagem pública de pontos de coleta aprovados.
+- Cadastro, edição, listagem e exclusão de notícias.
+- Registro de arrecadação de tampinhas por data e quantidade em kg.
+- Conversão de kg de tampinhas para quantidade estimada de tampinhas.
+- Estimativa de redução de CO2 com base na quantidade de tampinhas.
+- Registro de castracões por data, tipo de animal e quantidade.
+- Healthchecks para API principal, APIs por domínio e microserviços.
 
 ## Portas Padrao
 
-| Servico | Porta |
+| Serviço | Porta |
 |---|---:|
 | Front-end | `3000` |
 | API principal | `5500` |
@@ -103,18 +103,18 @@ O sistema e dividido em:
 | API registros de animais | `5503` |
 | API registros de tampinhas | `5504` |
 | API noticias | `5505` |
-| Microservico conversao de tampinhas | `5506` |
-| Microservico revisao de pontos de coleta | `5507` |
-| Microservico conversao de CO2 | `5508` |
-| Microservico envio de token por email | `5509` |
+| Microserviço conversão de tampinhas | `5506` |
+| Microserviço revisão de pontos de coleta | `5507` |
+| Microserviço conversão de CO2 | `5508` |
+| Microserviço envio de token por email | `5509` |
 
-## Documentacao do Projeto
+## Documentação do Projeto
 
 - Confluence: https://projetointegradortampets.atlassian.net/wiki/spaces/PIT/overview
 - Jira: https://meupi2026.atlassian.net/jira/software/projects/TP/summary
 - Figma: https://www.figma.com/proto/mtIcD2QxLWZ79KkHnIds0n/Site?node-id=0-1&t=xRFWEgf0wMYKvXt2-1
 
-## Documentacao Postman
+## Documentacão Postman
 
 A collection atualizada da API fica em:
 
@@ -122,17 +122,17 @@ A collection atualizada da API fica em:
 back-end/Tampets.postman_collection.json
 ```
 
-Ela cobre API principal, APIs por dominio, healthchecks, admin users, pontos de coleta, noticias, registros de animais, registros de tampinhas, conversao de tampinhas, conversao de CO2 e envio de token de recuperacao.
+Ela cobre API principal, APIs por domínio, healthchecks, admin users, pontos de coleta, notícias, registros de animais, registros de tampinhas, conversão de tampinhas, conversão de CO2 e envio de token de recuperação.
 
 ## Como Executar o Produto
 
-Consulte os READMEs especificos para rodar cada parte do projeto:
+Consulte os READMEs específicos para rodar cada parte do projeto:
 
 - `front-end/README.md`
 - `back-end/README.md`
 - `microservice/README.md`
 
-Fluxo basico local:
+Fluxo básico local:
 
 ```bash
 cd back-end
@@ -150,8 +150,8 @@ npm run dev
 
 ## Resultados Esperados
 
-- Reducao da quantidade de animais em situacao de rua.
-- Melhor organizacao e controle do projeto beneficente.
-- Maior transparencia dos dados de arrecadacao e castracao.
-- Facilidade na gestao de pontos de coleta.
-- Base escalavel para evolucao futura da solucao.
+- Redução da quantidade de animais em situacao de rua.
+- Melhor organização e controle do projeto beneficente.
+- Maior transparência dos dados de arrecadação e castração.
+- Facilidade na gestão de pontos de coleta.
+- Base escalavel para evolução futura da solução.
