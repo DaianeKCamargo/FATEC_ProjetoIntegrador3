@@ -70,8 +70,15 @@ app.use("/api/caps-registration", capsRegistrationRoute);
 app.use("/api/animals-registration", registrosAnimaisRoute);
 app.use("/api/credentials", adminUsersRoutes);
 
-app.use((req, res) => {
+app.use((req, res, next) => {
+    res.setHeader(
+        "Strict-Transport-Security",
+        "max-age=31536000; includeSubDomains"
+    );
+
     res.status(404).json({ message: "Rota nao encontrada" });
+
+    next();
 });
 
 app.listen(PORT, () => {
